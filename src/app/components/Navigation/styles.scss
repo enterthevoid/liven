@@ -1,0 +1,29 @@
+.navbar {
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-width: 300px;
+    padding-left: 42px;
+  }
+
+  &__item {
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    padding-top: 12px;
+    margin: 0;
+    color: black;
+
+    &--active {
+      text-decoration: line-through;
+    }
+  }
+
+  &__sub-item {
+    font-weight: 500;
+  }
+}
+
+.dark {
+  color: white;
+}

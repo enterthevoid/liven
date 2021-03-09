@@ -1,0 +1,40 @@
+.carousel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: calc(100vh - 202px);
+}
+
+.carousel .slide {
+  background: transparent !important;
+}
+
+.carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-bottom: 42px;
+  padding-right: 42px;
+
+  p {
+    padding-top: 12px;
+    margin: 0px;
+  }
+}
+
+.control-arrow {
+  color: red;
+  fill: turquoise;
+
+  border: red;
+}
+
+.carousel-image {
+  object-fit: contain;
+  height: calc(100vh - 202px);
+}
+
+.revert {
+  transform: rotate(180deg);
+}

@@ -1,0 +1,47 @@
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-height: 100vh;
+  height: inherit;
+  overflow: hidden;
+}
+
+.flex {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.heading-wrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.heading-wrapper h1 {
+  padding: 42px;
+  margin: 0px;
+}
+
+.dark {
+  background-color: black;
+  color: aliceblue;
+}
+
+.animate-enter {
+  opacity: 0.1;
+}
+
+.animate-enter.animate-enter-active {
+  opacity: 1;
+  transition: opacity 200ms ease-in;
+}
+
+.animate-leave {
+  opacity: 1;
+}
+
+.animate-leave.animate-leave-active {
+  opacity: 0.1;
+  display: none;
+  transition: opacity 0ms ease-in;
+}
