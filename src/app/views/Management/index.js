@@ -44,8 +44,6 @@ const ManagementPage = () => {
   };
 
   const handleDelete = (workId) => {
-    console.log("I ID", workId);
-
     dispatch(deleteWork(workId));
     setSelectedWork(false);
   };
