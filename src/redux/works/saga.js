@@ -63,7 +63,10 @@ export function* createWork({ work }) {
 
   formData.append("name", work.name);
   formData.append("description", work.description);
-  formData.append("photos", work.photos);
+
+  if (work.photos.length > 0) {
+    work.photos.map((img) => formData.append("photos", img));
+  }
 
   const accessToken = global.window.localStorage.getItem("accessToken");
   const requestParams = {
@@ -82,7 +85,7 @@ export function* createWork({ work }) {
 
     toast.success("Successfully created!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
   } catch (error) {
     let errorMessage = error.message;
@@ -92,7 +95,7 @@ export function* createWork({ work }) {
 
     toast.error(errorMessage || "Error create work!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
 
     yield put(createWorkFailure());
@@ -126,7 +129,7 @@ export function* updateWork({ work }) {
 
     toast.success("Successfully created!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
   } catch (error) {
     let errorMessage = error.message;
@@ -136,7 +139,7 @@ export function* updateWork({ work }) {
 
     toast.error(errorMessage || "Error update work", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
 
     yield put(updateWorkFailure());
@@ -157,12 +160,11 @@ export function* deleteWork({ workId }) {
     },
   };
   try {
-    const response = yield call(axios, requestParams);
-    const { work } = response.data;
+    yield call(axios, requestParams);
 
     toast.success("Successfully deleted!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
 
     yield put(deleteWorkSuccess(workId));
@@ -174,7 +176,7 @@ export function* deleteWork({ workId }) {
 
     toast.error("Error delete!", {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 3000,
     });
     yield put(deleteWorkFailure());
     console.error("DELETE WORK:", errorMessage);
