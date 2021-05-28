@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 // Selectors
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 
+// Components
+import Button from "../Button";
+
 // Styles
 import "./styles.scss";
 
@@ -12,15 +15,23 @@ import "./styles.scss";
 // import { NavIcon } from "../../../assets/navigate.svg";
 
 const WorkItem = (props) => {
+  document.addEventListener("keydown", (e) => onKeyPressed(e));
+
   const [currentSlide, changeSelectedItem] = useState(0);
   const { work } = props;
 
   const next = () => {
     changeSelectedItem(currentSlide + 1);
   };
-
   const prev = () => {
     changeSelectedItem(currentSlide - 1);
+  };
+
+  const onKeyPressed = (e) => {
+    if (!!work) {
+      if (e.keyCode === 37) prev();
+      if (e.keyCode === 39) next();
+    }
   };
 
   const onChangeSelectedItem = (index) => {
@@ -29,21 +40,16 @@ const WorkItem = (props) => {
     }
   };
 
-  const renderButton = (callback, isReverted) => (
-    <button
-      onClick={callback}
-      className={isReverted ? "button revert" : "button"}
+  const icon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24"
+      viewBox="0 0 24 24"
+      width="24"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="24"
-        viewBox="0 0 24 24"
-        width="24"
-      >
-        <path d="M0 0h24v24H0z" fill="none" />
-        <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-      </svg>
-    </button>
+      <path d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+    </svg>
   );
 
   if (!!work?.id) {
@@ -60,11 +66,24 @@ const WorkItem = (props) => {
         >
           {Object.values(work?.photos)?.map((photo, index) => (
             <div key={index}>
-              {/* {renderButton(prev, true)}
-              {renderButton(next)} */}
+              <Button
+                styles={{ position: "absolute", top: "40%", right: 0 }}
+                onClick={next}
+                icon={icon}
+              />
+              <Button
+                onClick={prev}
+                icon={icon}
+                styles={{
+                  left: 0,
+                  transform: "rotate(180deg)",
+                  position: "absolute",
+                  top: "40%",
+                }}
+              />
               <img
                 className="carousel-image"
-                src={`data:image/jpeg;base64, ${photo.img}`}
+                src={photo?.img || ""}
                 alt={"liven_img"}
               />
             </div>

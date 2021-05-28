@@ -1,0 +1,58 @@
+import React from "react";
+import Modal from "react-modal";
+
+// Components
+import Button from "../Button";
+
+// Styles
+import "./styles.scss";
+
+// Assets
+import { ReactComponent as CloseIcon } from "../../../assets/close.svg";
+
+const smallModalStyles = {
+  content: {
+    width: "80%",
+    height: "60%",
+    position: "fixed",
+    inset: "20% auto auto 10%",
+    padding: "0",
+    overflowX: "auto",
+    border: "1px solid #1A1B1C",
+    borderRadius: "0",
+    boxShadow: "3px 5px 0 #1A1B1C",
+    backgroundColor: "#F9F8F6",
+  },
+  overlay: {
+    backgroundColor: "rgba(26,27,28,0.5)",
+  },
+};
+
+const SmallModal = (props) => {
+  const { isOpen, onClose, title, children, className } = props;
+
+  return (
+    <Modal
+      className={className}
+      closeTimeoutMS={500}
+      isOpen={isOpen}
+      onClose={onClose}
+      onRequestClose={onClose}
+      portalClassName="small"
+      style={{
+        content: smallModalStyles.content,
+        overlay: smallModalStyles.overlay,
+      }}
+    >
+      <div className="small-modal--heading-wrapper">
+        <div className="small-modal--heading">
+          <h3>{title}</h3>
+          <Button onClick={onClose} icon={<CloseIcon />} />
+        </div>
+      </div>
+      <div className="small-modal--content-wrapper">{children}</div>
+    </Modal>
+  );
+};
+
+export default SmallModal;

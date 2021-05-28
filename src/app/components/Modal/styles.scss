@@ -1,0 +1,35 @@
+.small-modal {
+  &--heading-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+  }
+
+  &--heading {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    button {
+      margin-left: 1rem;
+    }
+
+    h3 {
+      margin: 0px;
+      font-weight: 400;
+      font-size: 32px;
+    }
+  }
+
+  &--content-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  &--close-button {
+    margin-left: 24px;
+    cursor: pointer;
+  }
+}

@@ -20,7 +20,7 @@ const MOUNT_NODE = document.getElementById("root");
 ReactDOM.render(
   <React.Fragment>
     <Provider store={store}>
-      <BrowserRouter history={history}>
+      <BrowserRouter>
         <App />
       </BrowserRouter>
     </Provider>

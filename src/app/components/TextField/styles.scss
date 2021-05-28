@@ -1,0 +1,25 @@
+.input {
+  min-width: 200px;
+  height: 24px;
+  background: none;
+  padding: 4px;
+
+  &-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+  }
+
+  &-label {
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+    letter-spacing: 0.025em;
+  }
+
+  &__error {
+    &-message {
+      padding-top: 0.6rem;
+      height: 1.2rem;
+    }
+  }
+}

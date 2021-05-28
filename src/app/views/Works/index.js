@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
+import { withRouter } from "react-router-dom";
 
 // Selectors
 import {
@@ -49,4 +50,4 @@ const mapDispatchToProps = {
   onLoadWorksList: () => loadWorksList(),
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Works);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Works));
