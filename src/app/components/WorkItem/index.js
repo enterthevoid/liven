@@ -11,28 +11,9 @@ import Button from "../Button";
 // Styles
 import "./styles.scss";
 
-// Assets
-// import { NavIcon } from "../../../assets/navigate.svg";
-
 const WorkItem = (props) => {
-  document.addEventListener("keydown", (e) => onKeyPressed(e));
-
   const [currentSlide, changeSelectedItem] = useState(0);
   const { work } = props;
-
-  const next = () => {
-    changeSelectedItem(currentSlide + 1);
-  };
-  const prev = () => {
-    changeSelectedItem(currentSlide - 1);
-  };
-
-  const onKeyPressed = (e) => {
-    if (!!work) {
-      if (e.keyCode === 37) prev();
-      if (e.keyCode === 39) next();
-    }
-  };
 
   const onChangeSelectedItem = (index) => {
     if (currentSlide !== index) {
@@ -56,31 +37,40 @@ const WorkItem = (props) => {
     return (
       <div className="carousel-wrapper">
         <Carousel
+          autoFocus
           className="carousel"
-          showArrows={false}
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
           selectedItem={currentSlide}
+          useKeyboardArrows
           onChange={onChangeSelectedItem}
+          renderArrowPrev={(onClickHandler, hasPrev, label) =>
+            hasPrev && (
+              <Button
+                onClick={onClickHandler}
+                icon={icon}
+                styles={{
+                  left: 4,
+                  transform: "rotate(180deg)",
+                  position: "absolute",
+                  top: "46%",
+                }}
+              />
+            )
+          }
+          renderArrowNext={(onClickHandler, hasNext, label) =>
+            hasNext && (
+              <Button
+                onClick={onClickHandler}
+                styles={{ position: "absolute", top: "47%", right: 4 }}
+                icon={icon}
+              />
+            )
+          }
         >
           {Object.values(work?.photos)?.map((photo, index) => (
             <div key={index}>
-              <Button
-                styles={{ position: "absolute", top: "40%", right: 0 }}
-                onClick={next}
-                icon={icon}
-              />
-              <Button
-                onClick={prev}
-                icon={icon}
-                styles={{
-                  left: 0,
-                  transform: "rotate(180deg)",
-                  position: "absolute",
-                  top: "40%",
-                }}
-              />
               <img
                 className="carousel-image"
                 src={photo?.img || ""}
@@ -95,7 +85,7 @@ const WorkItem = (props) => {
     );
   }
 
-  return "try to load them first)";
+  return null;
 };
 
 const mapStateToProps = () => {

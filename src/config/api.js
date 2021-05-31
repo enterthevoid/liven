@@ -1,6 +1,7 @@
 // API Endpoints
 
-const API_URL = () => process.env.REACT_APP_API_URL || "http://localhost:4000";
+const API_URL = () =>
+  process.env.REACT_APP_API_URL || "https://gentle-forest-86099.herokuapp.com";
 
 export const API_LOGIN = `${API_URL()}/user/login`;
 

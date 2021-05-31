@@ -65,7 +65,7 @@ export function* createWork({ work }) {
   formData.append("description", work.description);
 
   if (work.photos.length > 0) {
-    work.photos.map((img) => formData.append("photos", img));
+    work.photos.forEach((img) => formData.append("photos", img));
   }
 
   const accessToken = global.window.localStorage.getItem("accessToken");
@@ -108,9 +108,24 @@ export function* createWork({ work }) {
 export function* updateWork({ work }) {
   const formData = new FormData();
 
+  console.log("BEFORE", work);
+
   formData.append("name", work.name);
   formData.append("description", work.description);
-  formData.append("photos", work.photos);
+
+  let oldImages = [];
+
+  work.photos.forEach((photo) => {
+    if (!!photo?.workId) {
+      oldImages = [...oldImages, photo];
+    } else {
+      formData.append("photos", photo);
+    }
+  });
+
+  if (oldImages.length > 0) {
+    formData.append("photos", JSON.stringify(oldImages));
+  }
 
   const accessToken = global.window.localStorage.getItem("accessToken");
   const requestParams = {
@@ -122,12 +137,14 @@ export function* updateWork({ work }) {
     data: formData,
   };
   try {
-    const response = yield call(axios, requestParams);
-    const { work } = response.data;
+    yield call(axios, requestParams);
+    // const { work } = response.data;
+
+    // console.log("SAGA", response.data);
 
     yield put(updateWorkSuccess(work));
 
-    toast.success("Successfully created!", {
+    toast.success("Successfully updated!", {
       position: "top-center",
       autoClose: 3000,
     });

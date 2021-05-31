@@ -65,13 +65,14 @@ class App extends React.Component {
     routes.push(
       <Route exact path="/login" component={Login} key="100" />,
       <Route exact path="/works" component={Works} key="101" />,
-      <Route exact path="/about" component={About} key="102" />
+      <Route exact path="/about" component={About} key="102" />,
+      <Redirect exact path="/" to="/works" key="103" />
     );
 
     if (!!auth) {
       routes.push(
-        <Route exact path="/management" component={Management} key="103" />,
-        <Redirect path="/login" to="/management" key="104" />
+        <Route exact path="/management" component={Management} key="104" />,
+        <Redirect path="/login" to="/management" key="105" />
       );
     }
 
