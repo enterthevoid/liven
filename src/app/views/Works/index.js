@@ -8,6 +8,7 @@ import {
   makeSelectWorksList,
   makeSelectWorksCount,
   makeSelectWorksLoading,
+  makeSelectWorksIdList,
 } from "../../../redux/works/selectors";
 
 // Actions
@@ -28,22 +29,26 @@ class Works extends Component {
   }
 
   render() {
-    const { worksCount, location } = this.props;
+    const { location, worksLoadedIds } = this.props;
 
-    console.log(worksCount, "worksCount");
+    console.log(location.search);
 
-    // if (Object.values(worksList)?.length > 0) {
-    //   const { photos } = Object.values(worksList)[0];
-
-    //   return "hello";
-    // }
-    return <WorkItem workId={location.search.substring(1)} />;
+    return (
+      <WorkItem
+        workId={
+          worksLoadedIds.length > 0 && location.search === ""
+            ? worksLoadedIds[0]
+            : location.search.substring(1)
+        }
+      />
+    );
   }
 }
 
 const mapStateToProps = createStructuredSelector({
   worksCount: makeSelectWorksCount(),
   worksLoading: makeSelectWorksLoading(),
+  worksLoadedIds: makeSelectWorksIdList(),
 });
 
 const mapDispatchToProps = {
