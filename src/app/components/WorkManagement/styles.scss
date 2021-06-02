@@ -1,1 +1,70 @@
+.work-management {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-left: 16px;
 
+  h3 {
+    margin-top: 0px;
+  }
+
+  &--form {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    margin-right: 16px;
+  }
+
+  &--flex {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &--img-section {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  &--actions {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    margin-top: 24px;
+    margin-bottom: 4px;
+  }
+
+  &--image-list-wrapper {
+    height: 77vh;
+    width: 100%;
+    overflow: auto;
+  }
+
+  &--image-list {
+    margin-top: 24px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &--image-wrapper {
+    position: relative;
+
+    button {
+      position: absolute;
+      right: -2px;
+      top: -2px;
+      border: 1px solid rgb(211 211 211);
+    }
+
+    img {
+      padding: 8px;
+      margin: 4px;
+      max-height: 200px;
+      max-width: 200px;
+      object-fit: contain;
+      background: rgb(211 211 211);
+    }
+  }
+}

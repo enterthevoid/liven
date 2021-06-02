@@ -3,8 +3,8 @@ import {
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
   LOGOUT,
-  // CHECK_AUTH_SUCCESS,
-  // CHECK_AUTH_FAILURE,
+  CHECK_AUTH_SUCCESS,
+  CHECK_AUTH_FAILURE,
 } from "./constants";
 
 const StateRecord = {
@@ -44,22 +44,20 @@ function authReducer(state = StateRecord, action) {
 
     // Check Auth
 
-    // case CHECK_AUTH_SUCCESS: {
-    //   const { accessToken, user } = action.userData;
+    case CHECK_AUTH_SUCCESS: {
+      const { accessToken, user } = action.userData;
 
-    //   return {
-    //     ...state,
-    //     auth: {
-    //       ...user,
-    //       accessToken,
-    //     },
-    //     authChecked: true,
-    //   };
-    // }
-    // case CHECK_AUTH_FAILURE:
-    //   return { ...state, authChecked: true };
-
-    // Update user
+      return {
+        ...state,
+        auth: {
+          ...user,
+          accessToken,
+        },
+        authChecked: true,
+      };
+    }
+    case CHECK_AUTH_FAILURE:
+      return { ...state, authChecked: true };
 
     default:
       return state;

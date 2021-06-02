@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
+import { isBrowser } from "react-device-detect";
 
 // Selectors
 import {
-  makeSelectWorksList,
   makeSelectWorksCount,
   makeSelectWorksLoading,
   makeSelectWorksIdList,
@@ -25,18 +25,16 @@ class Works extends Component {
   componentDidMount() {
     const { onLoadWorksList, worksCount, worksLoading } = this.props;
 
-    if (worksCount === 0 && !worksLoading) onLoadWorksList();
+    if (worksCount === null && !worksLoading) onLoadWorksList();
   }
 
   render() {
     const { location, worksLoadedIds } = this.props;
 
-    console.log(location.search);
-
     return (
       <WorkItem
         workId={
-          worksLoadedIds.length > 0 && location.search === ""
+          isBrowser && worksLoadedIds.length > 0 && location.search === ""
             ? worksLoadedIds[0]
             : location.search.substring(1)
         }

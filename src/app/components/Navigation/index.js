@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
+import { isBrowser, isMobile } from "react-device-detect";
 
 // Constants
 import { themes } from "../../../utils/constants";
@@ -10,11 +11,11 @@ import "./styles.scss";
 
 const Navigation = (props) => {
   const { worksList, triggerSwitchTheme, isDark, location, auth } = props;
-  const setDark = isDark ? "dark" : " ";
+  const setDark = isDark ? "dark" : "";
 
   return (
-    <div className={`navbar-wrapper ${setDark}`}>
-      {!!worksList && (
+    <div className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}>
+      {!!worksList && isBrowser && (
         <React.Fragment>
           <h3 className={`navbar__item ${setDark}`}>Works</h3>
           {worksList.map((navItem) => {
@@ -40,6 +41,17 @@ const Navigation = (props) => {
           })}
         </React.Fragment>
       )}
+      {isMobile && (
+        <NavLink
+          className={`navbar__item ${setDark}`}
+          activeClassName={`navbar__item navbar__item--active ${setDark}`}
+          to="works"
+          title="Works"
+          onClick={() => triggerSwitchTheme(themes.LIGHT)}
+        >
+          Works
+        </NavLink>
+      )}
       <NavLink
         className={`navbar__item ${setDark}`}
         activeClassName={`navbar__item navbar__item--active ${setDark}`}
@@ -49,7 +61,7 @@ const Navigation = (props) => {
       >
         About
       </NavLink>
-      {!!auth && (
+      {Object.keys(auth).length > 0 && (
         <NavLink
           className={`navbar__item ${setDark}`}
           activeClassName={`navbar__item navbar__item--active ${setDark}`}

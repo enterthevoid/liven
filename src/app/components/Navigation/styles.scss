@@ -4,6 +4,13 @@
     flex-direction: column;
     min-width: 300px;
     padding-left: 42px;
+
+    &--mobile {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 10%;
+      margin-bottom: 8px;
+    }
   }
 
   &__item {

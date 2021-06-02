@@ -99,41 +99,41 @@ export function* unsetAuthUser() {
 
 // Check authentication
 
-// export function* checkAuth() {
-//   try {
-//     const accessToken = global.window.localStorage.getItem("accessToken");
-//     const refreshToken = global.window.localStorage.getItem("refreshToken");
-//     const authUser = global.window.localStorage.getItem("authUser");
-//     let formattedUser;
+export function* checkAuth() {
+  try {
+    const accessToken = global.window.localStorage.getItem("accessToken");
+    // const refreshToken = global.window.localStorage.getItem("refreshToken");
+    const authUser = global.window.localStorage.getItem("authUser");
+    let formattedUser;
 
-//     if (!refreshToken && !accessToken) {
-//       yield put(checkAuthFailure());
-//     }
+    if (!accessToken) {
+      yield put(checkAuthFailure());
+    }
 
-//     if (authUser !== undefined && authUser !== null) {
-//       formattedUser = JSON.parse(authUser);
+    if (authUser !== undefined && authUser !== null) {
+      formattedUser = JSON.parse(authUser);
 
-//       if (!accessToken) {
-//         yield call(setAccessToken, {
-//           accessToken: formattedUser.accessToken,
-//         });
-//         window.location.reload();
-//       }
-//     }
-//     if (accessToken && refreshToken && formattedUser && formattedUser.id) {
-//       const user = { ...formattedUser, accessToken };
+      if (!accessToken) {
+        yield call(setAccessToken, {
+          accessToken: formattedUser.accessToken,
+        });
+        window.location.reload();
+      }
+    }
+    if (accessToken && formattedUser && formattedUser.id) {
+      const user = { ...formattedUser, accessToken };
 
-//       yield put(
-//         checkAuthSuccess({
-//           accessToken,
-//           user,
-//         })
-//       );
-//     }
-//   } catch (error) {
-//     yield put(checkAuthFailure());
-//   }
-// }
+      yield put(
+        checkAuthSuccess({
+          accessToken,
+          user,
+        })
+      );
+    }
+  } catch (error) {
+    yield put(checkAuthFailure());
+  }
+}
 
 export default function* loginSaga() {
   yield takeLatest(LOGIN, login);
@@ -144,6 +144,6 @@ export default function* loginSaga() {
   yield takeLatest(LOGOUT, unsetAuthUser);
   yield takeLatest(LOGOUT, unsetRefreshToken);
 
-  // yield takeLatest(CHECK_AUTH, checkAuth);
-  // yield takeLatest(CHECK_AUTH_FAILURE, unsetAccessToken);
+  yield takeLatest(CHECK_AUTH, checkAuth);
+  yield takeLatest(CHECK_AUTH_FAILURE, unsetAccessToken);
 }

@@ -7,17 +7,6 @@
   text-transform: uppercase;
   cursor: pointer;
 
-  &--text {
-    margin-left: 9px;
-
-    &:disabled {
-      &:hover {
-        letter-spacing: inherit;
-        background-color: inherit;
-      }
-    }
-  }
-
   &--icon {
     width: 28px;
     height: 28px;
@@ -34,11 +23,6 @@
     z-index: 1;
   }
 
-  &--small {
-    width: 32px;
-    height: 32px;
-  }
-
   &--link {
     font-size: 1.4rem;
     line-height: 1;
@@ -47,13 +31,7 @@
     color: #f9f8f6;
   }
 
-  &--edit {
-    color: #cc913d;
-    border-color: currentColor;
-  }
-
   &--delete {
-    color: #f32735;
-    border-color: currentColor;
+    background: rgb(255, 163, 153);
   }
 }

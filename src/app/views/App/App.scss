@@ -6,20 +6,36 @@
   overflow: hidden;
 }
 
-.flex {
+.page-content {
   display: flex;
   width: 100%;
   height: 100%;
+
+  &--mobile {
+    flex-direction: column;
+    height: 100%;
+  }
 }
 
 .heading-wrapper {
   display: flex;
   justify-content: flex-end;
-}
 
-.heading-wrapper h1 {
-  padding: 42px;
-  margin: 0px;
+  h1 {
+    padding: 42px;
+    margin: 0px;
+  }
+
+  &--mobile {
+    justify-content: center;
+
+    h1 {
+      text-align: center;
+      font-size: 14px;
+      padding-top: 56px;
+      padding-bottom: 0px;
+    }
+  }
 }
 
 .dark {

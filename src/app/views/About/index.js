@@ -1,13 +1,14 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
+import { isMobile } from "react-device-detect";
 
 // Styles
 import "./styles.scss";
 
 const About = () => {
   return (
-    <div className="about-wrapper">
-      <div className="about-content">
+    <div className="about">
+      <div className={`about-content ${isMobile && "--mobile"}`}>
         <h1>
           Hi, I’m <span>Alexandra Liven (Stets)</span> media artist which mostly
           work with

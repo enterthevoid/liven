@@ -7,15 +7,14 @@ import Button from "../Button";
 // Styles
 import "./styles.scss";
 
-// Assets
-import { ReactComponent as CloseIcon } from "../../../assets/close.svg";
-
 const smallModalStyles = {
   content: {
-    width: "80%",
-    height: "60%",
+    width: "fit-content",
+    height: "fit-content",
     position: "fixed",
-    inset: "20% auto auto 10%",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
     padding: "0",
     overflowX: "auto",
     border: "1px solid #1A1B1C",
@@ -29,7 +28,8 @@ const smallModalStyles = {
 };
 
 const SmallModal = (props) => {
-  const { isOpen, onClose, title, children, className } = props;
+  const { isOpen, onClose, title, children, className, onSubmit, submitLabel } =
+    props;
 
   return (
     <Modal
@@ -44,13 +44,23 @@ const SmallModal = (props) => {
         overlay: smallModalStyles.overlay,
       }}
     >
-      <div className="small-modal--heading-wrapper">
+      {title && (
         <div className="small-modal--heading">
           <h3>{title}</h3>
-          <Button onClick={onClose} icon={<CloseIcon />} />
+        </div>
+      )}
+      <div className="small-modal--content-wrapper">
+        {children}
+
+        <div className="small-modal--actions">
+          <Button
+            className={`button${submitLabel === "delete" ? "--delete" : ""}`}
+            onClick={onSubmit}
+            label={submitLabel}
+          />
+          <Button onClick={onClose} label="Cancel" />
         </div>
       </div>
-      <div className="small-modal--content-wrapper">{children}</div>
     </Modal>
   );
 };

@@ -28,7 +28,7 @@ const TextField = (props) => {
 
       {type === "textarea" ? (
         <textarea
-          style={{ minHeight: "200px" }}
+          style={{ minHeight: "200px", border: "2px solid rgb(0 0 0)" }}
           className={`input ${isError ? "input--error" : ""}`}
           type={type ? inputType : "text"}
           id={id}

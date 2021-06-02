@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
 import { connect } from "react-redux";
+import { isMobile } from "react-device-detect";
+import { NavLink, withRouter } from "react-router-dom";
 
 // Selectors
 import { makeSelectWorkById } from "../../../redux/works/selectors";
@@ -13,7 +16,9 @@ import "./styles.scss";
 
 const WorkItem = (props) => {
   const [currentSlide, changeSelectedItem] = useState(0);
-  const { work } = props;
+  const { work, location } = props;
+
+  const worksList = useSelector((state) => state.works.worksList);
 
   const onChangeSelectedItem = (index) => {
     if (currentSlide !== index) {
@@ -33,17 +38,46 @@ const WorkItem = (props) => {
     </svg>
   );
 
+  const mobileClass = isMobile ? "--mobile" : "";
+
+  if (isMobile && !work?.id) {
+    return (
+      <div className="work-items">
+        {Object.values(worksList).map((navItem) => {
+          const { name, id } = navItem;
+
+          return (
+            <NavLink
+              key={id}
+              className={`navbar__sub-item navbar__item`}
+              activeClassName={` 
+          ${
+            id === location?.search?.substring(1) ? "navbar__item--active" : ""
+          } `}
+              to={`works?${id}`}
+              title={name}
+            >
+              {name}
+            </NavLink>
+          );
+        })}
+      </div>
+    );
+  }
+
   if (!!work?.id) {
     return (
-      <div className="carousel-wrapper">
+      <div className={`carousel-wrapper${mobileClass}`}>
         <Carousel
           autoFocus
-          className="carousel"
+          className={`carousel${mobileClass}`}
           showIndicators={false}
           showStatus={false}
           showThumbs={false}
+          showArrows={!isMobile}
           selectedItem={currentSlide}
           useKeyboardArrows
+          // swipeable
           onChange={onChangeSelectedItem}
           renderArrowPrev={(onClickHandler, hasPrev, label) =>
             hasPrev && (
@@ -70,22 +104,23 @@ const WorkItem = (props) => {
           }
         >
           {Object.values(work?.photos)?.map((photo, index) => (
-            <div key={index}>
-              <img
-                className="carousel-image"
-                src={photo?.img || ""}
-                alt={"liven_img"}
-              />
-            </div>
+            <img
+              key={index}
+              className={`carousel-image${mobileClass}`}
+              src={photo?.img || ""}
+              alt={"liven_img"}
+            />
           ))}
         </Carousel>
 
-        <p>{work.name}</p>
+        <p>
+          {currentSlide + 1}/{Object.values(work?.photos).length} {work.name}
+        </p>
       </div>
     );
   }
 
-  return null;
+  return <div>No works found</div>;
 };
 
 const mapStateToProps = () => {
@@ -96,4 +131,4 @@ const mapStateToProps = () => {
   });
 };
 
-export default connect(mapStateToProps, null)(WorkItem);
+export default withRouter(connect(mapStateToProps, null)(WorkItem));

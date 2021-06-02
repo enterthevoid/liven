@@ -3,23 +3,25 @@
  * App
  *
  */
-import React, { Fragment } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
-
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { TransitionGroup, CSSTransition } from "react-transition-group";
 import Modal from "react-modal";
+import { isMobile } from "react-device-detect";
 
 // Actions
 import { loadWorksList } from "../../../redux/works/actions";
+import { checkAuth } from "../../../redux/auth/actions";
 
 // Selectors
-import { makeSelectWorksList } from "../../../redux/works/selectors";
+import {
+  makeSelectWorksList,
+  makeSelectWorksCount,
+} from "../../../redux/works/selectors";
 import { makeSelectAuth } from "../../../redux/auth/selectors";
 
 // Components
@@ -45,9 +47,18 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    const { onLoadWorksList } = this.props;
+    const { onLoadWorksList, location, worksCount, onCheckAuth } = this.props;
+    const { theme } = this.state;
 
-    onLoadWorksList();
+    if (location.pathname === "/about" && theme !== themes.DARK) {
+      this.setState({ theme: themes.DARK });
+    }
+
+    if (worksCount) {
+      onLoadWorksList();
+    }
+
+    onCheckAuth();
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -69,7 +80,7 @@ class App extends React.Component {
       <Redirect exact path="/" to="/works" key="103" />
     );
 
-    if (!!auth) {
+    if (Object.keys(auth).length > 0) {
       routes.push(
         <Route exact path="/management" component={Management} key="104" />,
         <Redirect path="/login" to="/management" key="105" />
@@ -95,11 +106,11 @@ class App extends React.Component {
         </Helmet>
         <div className={`page-wrapper ${isDark ? "dark" : ""}`}>
           {!isLogin && (
-            <div className="heading-wrapper">
+            <div className={`heading-wrapper${isMobile ? "--mobile" : ""}`}>
               <h1>Alexandra Liven</h1>
             </div>
           )}
-          <div className="flex">
+          <div className={`page-content${isMobile ? "--mobile" : ""}`}>
             {!isLogin && (
               <Navigation
                 worksList={Object.values(worksList || [])}
@@ -110,17 +121,9 @@ class App extends React.Component {
                 auth={auth}
               />
             )}
-            {/* <TransitionGroup>
-              <CSSTransition
-                key={location.key}
-                classNames="animate"
-                timeout={250}
-              > */}
-            <div className="flex">
+            <div className="page-content">
               <Switch location={location}>{this.generateRoutes()}</Switch>
             </div>
-            {/* </CSSTransition>
-            </TransitionGroup> */}
           </div>
           <ToastContainer
             position="top-center"
@@ -140,11 +143,13 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   worksList: makeSelectWorksList(),
+  worksCount: makeSelectWorksCount(),
   auth: makeSelectAuth(),
 });
 
 const mapDispatchToProps = {
   onLoadWorksList: () => loadWorksList(),
+  onCheckAuth: () => checkAuth(),
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

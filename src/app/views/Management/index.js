@@ -13,6 +13,7 @@ import {
 // Components
 import Button from "../../components/Button";
 import WorkManagement from "../../components/WorkManagement";
+import SmallModal from "../../components/Modal";
 
 // Styles
 import "./styles.scss";
@@ -23,14 +24,14 @@ const ManagementPage = () => {
   const worksCount = useSelector((state) => state.works.worksCount);
   const worksLoading = useSelector((state) => state.works.worksCount);
   const worksList = useSelector((state) => state.works.worksList);
-  const worksLoadCheck = worksCount === 0 && !worksLoading;
 
   useEffect(() => {
     dispatch(loadWorksList());
-  }, [worksLoadCheck]);
+  }, [worksCount === null && !worksLoading]);
 
   const [selectedWork, setSelectedWork] = useState(false);
   const [isCreateWork, setCreateWork] = useState(false);
+  const [isDeleteConfirm, setDeleteConfirm] = useState(false);
 
   const handleSubmit = (work) => {
     if (isCreateWork) {
@@ -78,12 +79,20 @@ const ManagementPage = () => {
         ))}
       </div>
 
+      <SmallModal
+        isOpen={isDeleteConfirm}
+        onClose={() => setDeleteConfirm(false)}
+        title="Are you sure you want to delete work?"
+        submitLabel="delete"
+        onSubmit={() => handleDelete(selectedWork.id)}
+      />
+
       {!!selectedWork || isCreateWork ? (
         <WorkManagement
           work={
             isCreateWork
               ? {
-                  name: "New Work",
+                  name: "New Work Title",
                   description: "Type in some description",
                   photos: [],
                 }
@@ -91,7 +100,7 @@ const ManagementPage = () => {
           }
           onClose={() => setSelectedWork(false)}
           onSubmit={(work) => handleSubmit(work)}
-          onDelete={(workId) => handleDelete(workId)}
+          onDelete={() => setDeleteConfirm(true)}
         />
       ) : (
         <div className="management-placeholder">

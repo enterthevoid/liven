@@ -51,11 +51,11 @@ const WorkManagement = (props) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(updatedWork);
+    // onSubmit(updatedWork);
 
-    // if (validate()) {
-    //   onSubmit(updatedWork);
-    // }
+    if (validate()) {
+      onSubmit(updatedWork);
+    }
   };
 
   const handleDelete = (workId) => {
@@ -70,35 +70,18 @@ const WorkManagement = (props) => {
     setUpdateWork(newWork);
   };
 
-  console.log("PHOTOS", updatedWork?.photos);
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        marginLeft: 16,
-      }}
-    >
-      <h3 style={{ marginTop: 0 }}>Work Details</h3>
-      <div style={{ display: "flex" }}>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            width: "40%",
-            marginRight: 16,
-          }}
-        >
+    <div className="work-management">
+      <h3>Work Details</h3>
+      <div className="work-management--flex">
+        <div className="work-management--form">
           <TextField
             id="name"
             label="Name"
             type="text-area"
             value={updatedWork?.name}
             onChange={(value) => handleChange("name", value)}
-
-            // isError={errors.name}
+            isError={workErrors.name}
           />
           <TextField
             id="description"
@@ -106,66 +89,43 @@ const WorkManagement = (props) => {
             label="Description"
             value={updatedWork?.description}
             onChange={(value) => handleChange("description", value)}
-
-            // isError={errors.description}
+            isError={workErrors.description}
           />
 
           {!isEqual(updatedWork, work) && (
             <Button onClick={() => handleSubmit()} label="Save" />
           )}
         </div>
-        <div
-          style={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
-          }}
-        >
-          <div
-            style={{
-              position: "relative",
-              display: "flex",
-              width: "100%",
-              justifyContent: "flex-end",
-              marginTop: 24,
-              marginBottom: 4,
-            }}
-          >
+        <div className="work-management--img-section">
+          <div className="work-management--actions">
             <ImagePicker
               style={{ position: "absolute", left: 0 }}
               onChange={(files) => handleChange("photos", files)}
             />
-            <Button
-              styles={{ background: "#ffa399" }}
-              onClick={() => handleDelete(updatedWork.id)}
-              label="Delete Work"
-            />
+
+            {updatedWork?.id && (
+              <Button
+                className="button--delete"
+                onClick={() => handleDelete(updatedWork.id)}
+                label="Delete Work"
+              />
+            )}
           </div>
 
-          <div style={{ height: "77vh", width: "100%", overflow: "auto" }}>
-            <div style={{ marginTop: 24, display: "flex", flexWrap: "wrap" }}>
+          <div className="work-management--image-list-wrapper">
+            <div className="work-management--image-list">
               {updatedWork?.photos?.length > 0 &&
                 Object.values(updatedWork?.photos)?.map((img, index) => {
                   return (
                     <div
-                      styles={{ display: "flex", flexDirection: "row-reverse" }}
+                      className="work-management--image-wrapper"
                       key={img.img || `img#${index}`}
                     >
                       <Button
-                        style={{ position: "absolute", right: 0, top: 0 }}
                         onClick={() => handleRemoveImage(index)}
                         icon={<CloseIcon />}
                       />
                       <img
-                        style={{
-                          padding: 8,
-                          margin: 4,
-                          maxHeight: 200,
-                          maxWidth: 200,
-                          objectFit: "contain",
-                          background: "rgb(211 211 211)",
-                        }}
                         alt={img.id}
                         src={img?.img || window?.URL?.createObjectURL(img)}
                       />

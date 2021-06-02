@@ -2,9 +2,9 @@ import {
   LOGIN,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  // CHECK_AUTH,
-  // CHECK_AUTH_SUCCESS,
-  // CHECK_AUTH_FAILURE,
+  CHECK_AUTH,
+  CHECK_AUTH_SUCCESS,
+  CHECK_AUTH_FAILURE,
   LOGOUT,
 } from "./constants";
 
@@ -33,18 +33,15 @@ export const logout = () => ({
 
 // Check auth
 
-// export const checkAuth = () => ({
-//   type: CHECK_AUTH,
-// });
+export const checkAuth = () => ({
+  type: CHECK_AUTH,
+});
 
-// export const checkAuthSuccess = (userData: {
-//   user: any,
-//   accessToken: string,
-// }) => ({
-//   type: CHECK_AUTH_SUCCESS,
-//   userData,
-// });
+export const checkAuthSuccess = (userData) => ({
+  type: CHECK_AUTH_SUCCESS,
+  userData,
+});
 
-// export const checkAuthFailure = () => ({
-//   type: CHECK_AUTH_FAILURE,
-// });
+export const checkAuthFailure = () => ({
+  type: CHECK_AUTH_FAILURE,
+});

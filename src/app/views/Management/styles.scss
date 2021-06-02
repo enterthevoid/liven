@@ -10,6 +10,14 @@
     margin-top: 0;
   }
 
+  &-delete-modal {
+    display: flex;
+
+    button:first-child {
+      margin-right: 12px;
+    }
+  }
+
   &-work-list {
     max-width: 50%;
     min-width: 30%;
@@ -21,6 +29,7 @@
       justify-content: space-between;
       cursor: pointer;
       overflow: hidden;
+      // max-height: 56px;
 
       &-count {
         align-self: center;
@@ -45,6 +54,7 @@
           margin: 4px 0px;
           text-overflow: ellipsis;
           overflow: hidden;
+          max-height: 56px;
         }
 
         h3 {
