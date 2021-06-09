@@ -6,7 +6,6 @@ import { createStore, applyMiddleware, compose } from "redux";
 import { routerMiddleware } from "connected-react-router";
 import createSagaMiddleware from "redux-saga";
 // import { getDefaultMiddleware } from "@reduxjs/toolkit";
-import env from "../.env";
 import rootReducer from "./rootReducer";
 import rootSaga from "./rootSaga";
 
@@ -16,7 +15,7 @@ export default function configureStore(initialState = {}, history) {
 
   // If Redux Dev Tools and Saga Dev Tools Extensions are installed, enable them
   /* istanbul ignore next */
-  if (env.NODE_ENV !== "production" && typeof window === "object") {
+  if (process.env.NODE_ENV !== "production" && typeof window === "object") {
     /* eslint-disable no-underscore-dangle */
     if (window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__)
       composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({});
