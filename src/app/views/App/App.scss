@@ -8,6 +8,7 @@
   &--heading {
     display: flex;
     justify-content: flex-end;
+    height: 124px;
 
     h1 {
       padding: 42px;
@@ -16,6 +17,7 @@
 
     &--mobile {
       justify-content: center;
+      height: auto;
 
       h1 {
         text-align: center;
@@ -42,22 +44,3 @@
   background-color: black;
   color: aliceblue;
 }
-
-// .animate-enter {
-//   opacity: 0.1;
-// }
-
-// .animate-enter .animate-enter-active {
-//   opacity: 1;
-//   transition: opacity 200ms ease-in;
-// }
-
-// .animate-leave {
-//   opacity: 1;
-// }
-
-// .animate-leave.animate-leave-active {
-//   opacity: 0.1;
-//   display: none;
-//   transition: opacity 0ms ease-in;
-// }

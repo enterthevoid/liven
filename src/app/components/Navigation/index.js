@@ -16,54 +16,42 @@ const Navigation = (props) => {
 
   return (
     <div className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}>
-      {!!worksList && isBrowser && (
-        <React.Fragment>
-          <NavLink
-            className={`navbar__item ${setDark}`}
-            activeClassName={`navbar__item navbar__item--active ${setDark}`}
-            to="works"
-            title="Works"
-            onClick={() => triggerSwitchTheme(themes.LIGHT)}
-          >
-            Works
-          </NavLink>
+      <NavLink
+        className={`navbar__item ${setDark}`}
+        activeClassName={`navbar__item navbar__item--active ${setDark}`}
+        to="works"
+        title="Works"
+        onClick={() => triggerSwitchTheme(themes.LIGHT)}
+      >
+        Works
+      </NavLink>
 
-          {worksList.map((navItem) => {
-            const { name, id } = navItem;
+      {!!worksList &&
+        isBrowser &&
+        worksList.map((navItem) => {
+          const { name, id } = navItem;
 
-            return (
-              <NavLink
-                key={id}
-                className={`navbar__sub-item navbar__item ${setDark} ${
-                  isMobile ? "mobile" : ""
-                }`}
-                activeClassName={` 
+          return (
+            <NavLink
+              key={id}
+              className={`navbar__sub-item navbar__item ${setDark} ${
+                isMobile ? "mobile" : ""
+              }`}
+              activeClassName={` 
                 ${
                   id === location?.search?.substring(1)
                     ? "navbar__item--active"
                     : ""
                 } ${setDark}`}
-                to={`works?${id}`}
-                title={name}
-                onClick={() => triggerSwitchTheme(themes.LIGHT)}
-              >
-                {name}
-              </NavLink>
-            );
-          })}
-        </React.Fragment>
-      )}
-      {isMobile && (
-        <NavLink
-          className={`navbar__item ${setDark}`}
-          activeClassName={`navbar__item navbar__item--active ${setDark}`}
-          to="works"
-          title="Works"
-          onClick={() => triggerSwitchTheme(themes.LIGHT)}
-        >
-          Works
-        </NavLink>
-      )}
+              to={`works?${id}`}
+              title={name}
+              onClick={() => triggerSwitchTheme(themes.LIGHT)}
+            >
+              {name}
+            </NavLink>
+          );
+        })}
+
       <NavLink
         className={`navbar__item ${setDark}`}
         activeClassName={`navbar__item navbar__item--active ${setDark}`}

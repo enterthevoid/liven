@@ -18,10 +18,6 @@ import { loadWorksList } from "../../../redux/works/actions";
 // Components
 import WorkItem from "../../components/WorkItem";
 
-// Styles
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import "./styles.scss";
-
 class Works extends Component {
   componentDidMount() {
     const { onLoadWorksList, worksCount, worksLoading } = this.props;

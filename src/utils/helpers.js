@@ -6,13 +6,4 @@ const checkEmail = (value) => {
   return re.test(String(value).toLowerCase());
 };
 
-const checkImage = (image_url) => {
-  var http = new XMLHttpRequest();
-
-  http.open("HEAD", image_url, false);
-  http.send();
-
-  return http.status !== 404;
-};
-
-export { checkEmail, checkImage };
+export { checkEmail };

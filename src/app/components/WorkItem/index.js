@@ -12,10 +12,11 @@ import { makeSelectWorkById } from "../../../redux/works/selectors";
 // Components
 import Button from "../Button";
 
-// Utils
-import { checkImage } from "../../../utils/helpers";
+// Assets
+import placeholder from "../../../assets/placeholder.jpg";
 
 // Styles
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./styles.scss";
 
 const WorkItem = (props) => {
@@ -56,7 +57,6 @@ const WorkItem = (props) => {
 
           return (
             <NavLink
-              style={{ maxHeight: 24 }}
               key={id}
               className={`navbar__sub-item navbar__item`}
               activeClassName={` 
@@ -113,45 +113,42 @@ const WorkItem = (props) => {
           }
         >
           {Object.values(work?.photos)?.map((photo, index) => {
-            let isErr = false;
-
             return (
-              <div
-                key={index}
-                style={{
-                  height: "100%",
-                  width: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                {isErr ? (
-                  <h3>No image</h3>
-                ) : (
-                  <img
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src =
-                        "https://scontent.fudj2-1.fna.fbcdn.net/v/t1.6435-9/121314868_1559910897533945_3883595861769649035_n.jpg?_nc_cat=105&ccb=1-3&_nc_sid=730e14&_nc_ohc=jWkfchUwCncAX-JKz09&_nc_oc=AQmhsCWNnReU_P1CoBU870vFlzAEO3HqlMwKhMih5Ui_kP9PwMgDgYW8zXU-FH4vNyM&_nc_ht=scontent.fudj2-1.fna&oh=e6c5691db3041f51b3eb41ec8337bb56&oe=60E5B029";
-                    }}
-                    className={`carousel-image${mobileClass}`}
-                    src={photo?.img || ""}
-                    alt={"liven_img"}
-                  />
-                )}
+              <div key={index} className="slide-item">
+                <img
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = placeholder;
+                  }}
+                  loading={<h3>Loader</h3>}
+                  className={`carousel-image${mobileClass}`}
+                  src={photo?.img || ""}
+                  alt={"liven_img"}
+                />
               </div>
             );
           })}
         </Carousel>
         <p>
-          {currentSlide + 1}/{Object.values(work?.photos).length} {work.name}
+          {currentSlide + 1} / {Object.values(work?.photos).length} {work.name}
         </p>
       </div>
     );
   }
 
-  return <div>No works found</div>;
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <h3>No works found or loading</h3>
+    </div>
+  );
 };
 
 // Props

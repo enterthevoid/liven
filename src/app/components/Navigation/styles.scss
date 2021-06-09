@@ -4,6 +4,9 @@
     flex-direction: column;
     min-width: 250px;
     padding-left: 42px;
+    margin-bottom: 24px;
+    height: calc(100vh - 124px);
+    overflow-y: auto;
 
     &--mobile {
       display: flex;
@@ -23,9 +26,14 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-height: 22px;
 
     &--active {
       text-decoration: line-through;
+    }
+
+    &:last-child {
+      margin-bottom: 24px;
     }
   }
 
