@@ -5,11 +5,13 @@
  * constants here.
  */
 
+// Login
+
 export const LOGIN = "LOGIN";
 export const LOGIN_FAILURE = "LOGIN_FAILURE";
 export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
 
-export const LOGOUT = "LOGOUT";
+// Check Auth
 
 export const CHECK_AUTH = "CHECK_AUTH";
 export const CHECK_AUTH_FAILURE = "CHECK_AUTH_FAILURE";

@@ -8,7 +8,7 @@ import "./styles.scss";
 const About = () => {
   return (
     <div className="about">
-      <div className={`about-content ${isMobile && "--mobile"}`}>
+      <div className={`about--content${isMobile ? "--mobile" : ""}`}>
         <h1>
           Hi, I’m <span>Alexandra Liven (Stets)</span> media artist which mostly
           work with
@@ -28,7 +28,9 @@ const About = () => {
           Archeology’ .
         </h1>
 
-        <div className="about-contacts-wrapper">
+        <div
+          className={`about--content--contacts${isMobile ? "--mobile" : ""}`}
+        >
           <div>
             <h1>
               <span>Contact</span>

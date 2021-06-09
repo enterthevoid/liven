@@ -2,7 +2,7 @@
   &-wrapper {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    min-width: 250px;
     padding-left: 42px;
 
     &--mobile {
@@ -17,9 +17,12 @@
     font-size: 18px;
     font-weight: 700;
     text-decoration: none;
-    padding-top: 12px;
+    padding: 12px;
     margin: 0;
     color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &--active {
       text-decoration: line-through;

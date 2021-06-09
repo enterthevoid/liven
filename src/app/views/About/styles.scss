@@ -2,70 +2,95 @@
   display: flex;
   justify-content: center;
 
-  &-content {
+  h1 {
+    font-family: Source Serif Pro;
+    font-size: 24px;
+    font-weight: 300;
+    text-align: justify;
+    line-height: 1.2;
+    color: #bdbdbd;
+  }
+
+  span {
+    font-style: italic;
+    font-weight: 700;
+    color: #ffff !important;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  &--content {
     user-select: none;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 
-    h1 {
-      font-family: Source Serif Pro;
-      font-size: 24px;
-      font-weight: 300;
-      text-align: justify;
-      line-height: 1.2;
-      color: #bdbdbd;
+    &--contacts {
+      margin-top: 20%;
+      display: flex;
+      justify-content: space-between;
+
+      &--mobile {
+        margin-top: 24px;
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
-    span {
-      font-style: italic;
-      font-weight: 700;
-      color: #ffff !important;
+    &--contacts:first-child {
+      justify-content: flex-start;
+      padding-left: 0px;
     }
 
-    a {
-      color: inherit;
+    &--mobile {
+      justify-content: flex-start;
+      padding: 24px;
+
+      // &--contacts {
+      //   margin-top: 24px;
+      // }
+
+      h1 {
+        font-size: 16px;
+      }
     }
-  }
-
-  &-contacts-wrapper {
-    margin-top: 20%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &-contacts-wrapper:first-child {
-    justify-content: flex-start;
-    padding-left: 0px;
   }
 }
 
-.--mobile {
-  padding: 28px;
+// .--mobile {
+//   justify-content: flex-start;
+//   padding: 24px;
 
-  h1 {
-    font-size: 16px;
-  }
-}
+//   &--contacts-wrapper {
+//     margin-top: 24px;
+//   }
+
+//   h1 {
+//     font-size: 16px;
+//   }
+// }
 
 @media screen and (min-width: 700px) and (max-width: 1280px) {
-  .about-wrapper {
-    margin-top: 0px;
-    justify-content: flex-start;
-    align-items: center;
-  }
+  // .about--wrapper {
+  //   margin-top: 0px;
+  //   justify-content: flex-start;
+  //   align-items: center;
+  // }
 
-  .about-content {
+  .about--content {
     width: 100%;
     padding-right: 84px;
   }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 4200px) {
-  .about-content {
+  .about--content {
     width: 50%;
   }
 
-  .about-wrapper {
-    margin-top: 10%;
-  }
+  // .about--wrapper {
+  //   margin-top: 10%;
+  // }
 }

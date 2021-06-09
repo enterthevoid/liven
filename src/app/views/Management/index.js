@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { isMobile } from "react-device-detect";
 
 // Actions
 import {
@@ -49,9 +50,11 @@ const ManagementPage = () => {
     setSelectedWork(false);
   };
 
+  if (isMobile) return <h3>Sorry but this page available only for desctop</h3>;
+
   return (
     <div className="management">
-      <div className="management-work-list">
+      <div className="management---work-list">
         <h3>Works List</h3>
         <Button
           styles={{ margin: "24px 0px" }}
@@ -62,17 +65,17 @@ const ManagementPage = () => {
           <div
             style={work.id === selectedWork.id ? { background: "#dadada" } : {}}
             key={work.id}
-            className="management-work-list-item"
+            className="management--work-list--item"
             onClick={() => {
               setCreateWork(false);
               setSelectedWork(work);
             }}
           >
-            <div className="management-work-list-item-naming">
+            <div className="management--work-list--item--naming">
               <h3>{work.name}</h3>
               <p>{work.description}</p>
             </div>
-            <div className="management-work-list-item-count">
+            <div className="management--work-list--item--count">
               {work?.photos?.length || 0}
             </div>
           </div>
@@ -103,7 +106,7 @@ const ManagementPage = () => {
           onDelete={() => setDeleteConfirm(true)}
         />
       ) : (
-        <div className="management-placeholder">
+        <div className="management--placeholder">
           <h3>Select Item</h3>
         </div>
       )}

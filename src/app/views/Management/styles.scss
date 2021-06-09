@@ -10,7 +10,7 @@
     margin-top: 0;
   }
 
-  &-delete-modal {
+  &--delete-modal {
     display: flex;
 
     button:first-child {
@@ -18,20 +18,19 @@
     }
   }
 
-  &-work-list {
+  &--work-list {
     max-width: 50%;
     min-width: 30%;
 
-    &-item {
+    &--item {
       display: flex;
       padding: 8px 12px;
       border-top: 1px black solid;
       justify-content: space-between;
       cursor: pointer;
       overflow: hidden;
-      // max-height: 56px;
 
-      &-count {
+      &--count {
         align-self: center;
         min-width: 28px;
         width: 28px;
@@ -44,7 +43,7 @@
         justify-content: center;
       }
 
-      &-naming {
+      &--naming {
         display: flex;
         flex-direction: column;
         max-width: 85%;
@@ -63,12 +62,12 @@
       }
     }
 
-    &-item:last-of-type {
+    &--item:last-of-type {
       border-bottom: 1px black solid;
     }
   }
 
-  &-placeholder {
+  &--placeholder {
     display: flex;
     align-items: center;
     justify-content: center;

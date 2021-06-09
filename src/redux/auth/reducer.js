@@ -2,11 +2,11 @@ import {
   LOGIN,
   LOGIN_FAILURE,
   LOGIN_SUCCESS,
-  LOGOUT,
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_FAILURE,
 } from "./constants";
 
+// Default state
 const StateRecord = {
   auth: {},
   loading: false,
@@ -34,14 +34,6 @@ function authReducer(state = StateRecord, action) {
     case LOGIN_FAILURE:
       return { ...state, loading: false, authChecked: false };
 
-    // Log Out
-
-    case LOGOUT:
-      return {
-        ...state,
-        auth: StateRecord.auth,
-      };
-
     // Check Auth
 
     case CHECK_AUTH_SUCCESS: {
@@ -50,14 +42,14 @@ function authReducer(state = StateRecord, action) {
       return {
         ...state,
         auth: {
-          ...user,
+          user,
           accessToken,
         },
         authChecked: true,
       };
     }
     case CHECK_AUTH_FAILURE:
-      return { ...state, authChecked: true };
+      return { ...state, authChecked: false, auth: {} };
 
     default:
       return state;

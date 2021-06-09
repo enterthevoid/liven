@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
@@ -28,13 +29,29 @@ class Works extends Component {
     if (worksCount === null && !worksLoading) onLoadWorksList();
   }
 
+  isNotSelected = () => {
+    const { location, worksLoadedIds } = this.props;
+
+    return isBrowser && worksLoadedIds.length > 0 && location.search === "";
+  };
+
+  componentDidUpdate() {
+    const { history, worksLoadedIds } = this.props;
+
+    if (this.isNotSelected()) {
+      history.push({
+        search: `?${worksLoadedIds[0]}`,
+      });
+    }
+  }
+
   render() {
     const { location, worksLoadedIds } = this.props;
 
     return (
       <WorkItem
         workId={
-          isBrowser && worksLoadedIds.length > 0 && location.search === ""
+          this.isNotSelected()
             ? worksLoadedIds[0]
             : location.search.substring(1)
         }
@@ -42,6 +59,15 @@ class Works extends Component {
     );
   }
 }
+
+// Props
+
+Works.propTypes = {
+  worksCount: PropTypes.number,
+  worksLoading: PropTypes.bool,
+  worksLoadedIds: PropTypes.array,
+  onLoadWorksList: PropTypes.func,
+};
 
 const mapStateToProps = createStructuredSelector({
   worksCount: makeSelectWorksCount(),

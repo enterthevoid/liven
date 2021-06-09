@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 // Styles
 import "./styles.scss";
@@ -6,7 +7,7 @@ import "./styles.scss";
 const TextField = (props) => {
   const {
     id,
-    className,
+    className = "",
     label,
     value,
     type,
@@ -19,9 +20,9 @@ const TextField = (props) => {
   const inputType = type === "email" ? "text" : type;
 
   return (
-    <div className={`input-wrapper ${className ? className : ""}`}>
+    <div className={`input--wrapper ${className}`}>
       {label && (
-        <label className="input-label" htmlFor={id}>
+        <label className="input--label" htmlFor={id}>
           {label}
         </label>
       )}
@@ -29,9 +30,9 @@ const TextField = (props) => {
       {type === "textarea" ? (
         <textarea
           style={{ minHeight: "200px", border: "2px solid rgb(0 0 0)" }}
-          className={`input ${isError ? "input--error" : ""}`}
+          className={`input ${!!isError ? "input--error" : ""}`}
           type={type ? inputType : "text"}
-          id={id}
+          id={id || inputType}
           name={label ? label.toLowerCase() : ""}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
@@ -41,9 +42,9 @@ const TextField = (props) => {
         />
       ) : (
         <input
-          className={`input ${isError ? "input--error" : ""}`}
+          className={`input ${!!isError ? "input--error" : ""}`}
           type={type ? inputType : "text"}
-          id={id}
+          id={id || inputType}
           name={label ? label.toLowerCase() : ""}
           placeholder={placeholder}
           onChange={(e) => onChange(e.target.value)}
@@ -53,9 +54,24 @@ const TextField = (props) => {
         />
       )}
 
-      <span className="input__error-message">{isError || "  "}</span>
+      <span className="input--error--message">{isError || "  "}</span>
     </div>
   );
+};
+
+// Props
+
+TextField.propTypes = {
+  id: PropTypes.string,
+  className: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.string,
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  onChange: PropTypes.func,
+  isError: PropTypes.string,
+  disabled: PropTypes.bool,
+  autoFocus: PropTypes.bool,
 };
 
 export default TextField;

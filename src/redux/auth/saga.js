@@ -2,6 +2,7 @@
 import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import axios from "axios";
+import jwt from "jwt-decode";
 
 // Action Types
 import {
@@ -9,7 +10,6 @@ import {
   LOGIN_FAILURE,
   CHECK_AUTH,
   CHECK_AUTH_FAILURE,
-  LOGOUT,
 } from "./constants";
 
 // Actions
@@ -44,12 +44,7 @@ export function* login({ credentials }) {
     yield call(setAuthUser, { formattedUser });
     yield call(setAccessToken, { token });
 
-    // yield call(setRefreshToken, { refreshToken });
-
-    toast.success("Дарова Шефка", {
-      position: "top-center",
-      autoClose: 5000,
-    });
+    toast.success("Дарова Шефка");
   } catch (error) {
     let errorMessage = error;
     if (error?.response) {
@@ -57,11 +52,10 @@ export function* login({ credentials }) {
     }
     if (error.response.data.statusCode === 401) {
       errorMessage = "Incorrect username or password.";
+
+      toast.error(errorMessage);
     }
-    toast.error("Wrong login or password", {
-      position: "top-center",
-      autoClose: 5000,
-    });
+
     yield put(loginFailure(errorMessage));
   }
 }
@@ -70,10 +64,6 @@ export function* login({ credentials }) {
 
 export function* setAccessToken({ token }) {
   return global.window.localStorage.setItem("accessToken", token);
-}
-
-export function* setRefreshToken({ refreshToken }) {
-  return global.window.localStorage.setItem("refreshToken", refreshToken);
 }
 
 export function* setAuthUser({ formattedUser }) {
@@ -89,10 +79,6 @@ export function* unsetAccessToken() {
   return global.window.localStorage.removeItem("accessToken");
 }
 
-export function* unsetRefreshToken() {
-  return global.window.localStorage.removeItem("refreshToken");
-}
-
 export function* unsetAuthUser() {
   return global.window.localStorage.removeItem("authUser");
 }
@@ -102,11 +88,11 @@ export function* unsetAuthUser() {
 export function* checkAuth() {
   try {
     const accessToken = global.window.localStorage.getItem("accessToken");
-    // const refreshToken = global.window.localStorage.getItem("refreshToken");
     const authUser = global.window.localStorage.getItem("authUser");
+    let currentTime = new Date().getTime() / 1000;
     let formattedUser;
 
-    if (!accessToken) {
+    if (!accessToken || currentTime > jwt(accessToken).exp) {
       yield put(checkAuthFailure());
     }
 
@@ -138,12 +124,11 @@ export function* checkAuth() {
 export default function* loginSaga() {
   yield takeLatest(LOGIN, login);
   yield takeLatest(LOGIN_FAILURE, unsetAccessToken);
-  yield takeLatest(LOGIN_FAILURE, unsetRefreshToken);
-
-  yield takeLatest(LOGOUT, unsetAccessToken);
-  yield takeLatest(LOGOUT, unsetAuthUser);
-  yield takeLatest(LOGOUT, unsetRefreshToken);
 
   yield takeLatest(CHECK_AUTH, checkAuth);
+
+  yield takeLatest(CHECK_AUTH_FAILURE, checkAuthFailure);
   yield takeLatest(CHECK_AUTH_FAILURE, unsetAccessToken);
+  yield takeLatest(CHECK_AUTH_FAILURE, unsetAccessToken);
+  yield takeLatest(CHECK_AUTH_FAILURE, unsetAuthUser);
 }

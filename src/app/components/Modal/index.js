@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import PropTypes from "prop-types";
 
 // Components
 import Button from "../Button";
@@ -63,6 +64,18 @@ const SmallModal = (props) => {
       </div>
     </Modal>
   );
+};
+
+// Props
+
+SmallModal.propTypes = {
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  title: PropTypes.string,
+  children: PropTypes.any,
+  className: PropTypes.string,
+  onSubmit: PropTypes.func,
+  submitLabel: PropTypes.string,
 };
 
 export default SmallModal;

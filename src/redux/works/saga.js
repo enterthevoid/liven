@@ -26,11 +26,9 @@ import {
 // API
 import { API_WORKS } from "../../config/api";
 
-export function* loadWorksList({ offset, limit, workId }) {
+export function* loadWorksList({ workId }) {
   const accessToken = global.window.localStorage.getItem("accessToken");
   const queryParams = [];
-
-  if (!!limit && offset) queryParams.push(`limit=${limit}&offset=${offset}`);
   if (!!workId) queryParams.push(`workId=${workId}`);
 
   const requestParams = {
@@ -83,22 +81,16 @@ export function* createWork({ work }) {
 
     yield put(createWorkSuccess(work));
 
-    toast.success("Successfully created!", {
-      position: "top-center",
-      autoClose: 3000,
-    });
+    toast.success("Successfully created!");
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
     }
 
-    toast.error(errorMessage || "Error create work!", {
-      position: "top-center",
-      autoClose: 3000,
-    });
-
     yield put(createWorkFailure());
+
+    toast.error(errorMessage || "Error create work!");
     console.error("CREATE WORK:", errorMessage);
   }
 }
@@ -107,8 +99,6 @@ export function* createWork({ work }) {
 
 export function* updateWork({ work }) {
   const formData = new FormData();
-
-  console.log("BEFORE", work);
 
   formData.append("name", work.name);
   formData.append("description", work.description);
@@ -138,29 +128,18 @@ export function* updateWork({ work }) {
   };
   try {
     yield call(axios, requestParams);
-    // const { work } = response.data;
-
-    // console.log("SAGA", response.data);
-
     yield put(updateWorkSuccess(work));
 
-    toast.success("Successfully updated!", {
-      position: "top-center",
-      autoClose: 3000,
-    });
+    toast.success("Successfully updated!");
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
     }
 
-    toast.error(errorMessage || "Error update work", {
-      position: "top-center",
-      autoClose: 3000,
-    });
-
     yield put(updateWorkFailure());
 
+    toast.error(errorMessage || "Error update work");
     console.error("UPDATE WORK:", errorMessage);
   }
 }
@@ -179,46 +158,20 @@ export function* deleteWork({ workId }) {
   try {
     yield call(axios, requestParams);
 
-    toast.success("Successfully deleted!", {
-      position: "top-center",
-      autoClose: 3000,
-    });
-
     yield put(deleteWorkSuccess(workId));
+    toast.success("Successfully deleted!");
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
     }
 
-    toast.error("Error delete!", {
-      position: "top-center",
-      autoClose: 3000,
-    });
     yield put(deleteWorkFailure());
+
+    toast.error("Error delete!");
     console.error("DELETE WORK:", errorMessage);
   }
 }
-
-// export function* loadWork({ workId }) {
-//   const accessToken = global.window.localStorage.getItem("accessToken");
-//   const requestParams = {
-//     method: "get",
-//     url: `${API_WORKS}/${workId}`,
-//     headers: {
-//       Authorization: `Bearer ${accessToken}`,
-//     },
-//   };
-
-//   try {
-//     const response = yield call(axios, requestParams);
-//     const { work } = response.data;
-//     yield put(updateLocationSuccess(work));
-//   } catch (error) {
-//     yield put(updateLocationFailure());
-//     console.error(`Load Works ${workId}:`, error);
-//   }
-// }
 
 export default function* overviewSaga() {
   yield takeEvery(LOAD_WORKS_LIST, loadWorksList);

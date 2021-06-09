@@ -26,8 +26,10 @@ const Icon = (props) => {
   //   </svg>
   // );
 };
+// TODO: REFACTOR THIS
 
 // Props
+
 Icon.propTypes = {
   size: PropTypes.string,
   color: PropTypes.string,

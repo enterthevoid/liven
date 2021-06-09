@@ -9,9 +9,10 @@ import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Modal from "react-modal";
 import { isMobile } from "react-device-detect";
+import PropTypes from "prop-types";
+import Modal from "react-modal";
+import "react-toastify/dist/ReactToastify.css";
 
 // Actions
 import { loadWorksList } from "../../../redux/works/actions";
@@ -22,7 +23,7 @@ import {
   makeSelectWorksList,
   makeSelectWorksCount,
 } from "../../../redux/works/selectors";
-import { makeSelectAuth } from "../../../redux/auth/selectors";
+import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
 import Navigation from "../../components/Navigation";
@@ -54,7 +55,7 @@ class App extends React.Component {
       this.setState({ theme: themes.DARK });
     }
 
-    if (worksCount) {
+    if (worksCount === null) {
       onLoadWorksList();
     }
 
@@ -70,20 +71,23 @@ class App extends React.Component {
   }
 
   generateRoutes = () => {
-    const { auth } = this.props;
+    const { authChecked } = this.props;
     const routes = [];
 
     routes.push(
       <Route exact path="/login" component={Login} key="100" />,
       <Route exact path="/works" component={Works} key="101" />,
       <Route exact path="/about" component={About} key="102" />,
-      <Redirect exact path="/" to="/works" key="103" />
+      <Redirect exact path="/" to="/works" key="103" />,
+      !authChecked ? (
+        <Redirect exact path="/management" to="/works" key="104" />
+      ) : undefined
     );
 
-    if (Object.keys(auth).length > 0) {
+    if (authChecked) {
       routes.push(
-        <Route exact path="/management" component={Management} key="104" />,
-        <Redirect path="/login" to="/management" key="105" />
+        <Redirect exact path="/login" to="/management" key="104" />,
+        <Route exact path="/management" component={Management} key="104" />
       );
     }
 
@@ -91,7 +95,7 @@ class App extends React.Component {
   };
 
   render() {
-    const { worksList, location, auth } = this.props;
+    const { worksList, location, authChecked } = this.props;
     const { theme } = this.state;
 
     const isDark = theme === themes?.DARK;
@@ -104,13 +108,13 @@ class App extends React.Component {
           <title>Alexandra Liven</title>
           <meta name="description" content="Liven" />
         </Helmet>
-        <div className={`page-wrapper ${isDark ? "dark" : ""}`}>
+        <div className={`app ${isDark ? "dark" : ""}`}>
           {!isLogin && (
-            <div className={`heading-wrapper${isMobile ? "--mobile" : ""}`}>
+            <div className={`app--heading${isMobile ? "--mobile" : ""}`}>
               <h1>Alexandra Liven</h1>
             </div>
           )}
-          <div className={`page-content${isMobile ? "--mobile" : ""}`}>
+          <div className={`app--content${isMobile ? "--mobile" : ""}`}>
             {!isLogin && (
               <Navigation
                 worksList={Object.values(worksList || [])}
@@ -118,16 +122,16 @@ class App extends React.Component {
                   this.setState({ theme: themeType })
                 }
                 isDark={isDark}
-                auth={auth}
+                authChecked={authChecked}
               />
             )}
-            <div className="page-content">
+            <div className="app--content">
               <Switch location={location}>{this.generateRoutes()}</Switch>
             </div>
           </div>
           <ToastContainer
             position="top-center"
-            autoClose={5000}
+            autoClose={3000}
             hideProgressBar={true}
             closeOnClick
             rtl={false}
@@ -141,10 +145,20 @@ class App extends React.Component {
 
 // Props
 
+App.propTypes = {
+  worksList: PropTypes.object,
+  worksCount: PropTypes.number,
+  isDark: PropTypes.bool,
+  location: PropTypes.object,
+  authChecked: PropTypes.bool,
+  onLoadWorksList: PropTypes.func,
+  onCheckAuth: PropTypes.func,
+};
+
 const mapStateToProps = createStructuredSelector({
   worksList: makeSelectWorksList(),
   worksCount: makeSelectWorksCount(),
-  auth: makeSelectAuth(),
+  authChecked: makeSelectAuthChecked(),
 });
 
 const mapDispatchToProps = {

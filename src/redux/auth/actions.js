@@ -5,7 +5,6 @@ import {
   CHECK_AUTH,
   CHECK_AUTH_SUCCESS,
   CHECK_AUTH_FAILURE,
-  LOGOUT,
 } from "./constants";
 
 // Login
@@ -23,12 +22,6 @@ export const loginSuccess = (formattedUser) => ({
 export const loginFailure = (errors) => ({
   type: LOGIN_FAILURE,
   errors,
-});
-
-// Logout
-
-export const logout = () => ({
-  type: LOGOUT,
 });
 
 // Check auth

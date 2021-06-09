@@ -10,21 +10,33 @@ import { themes } from "../../../utils/constants";
 import "./styles.scss";
 
 const Navigation = (props) => {
-  const { worksList, triggerSwitchTheme, isDark, location, auth } = props;
+  const { worksList, triggerSwitchTheme, isDark, location, authChecked } =
+    props;
   const setDark = isDark ? "dark" : "";
 
   return (
     <div className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}>
       {!!worksList && isBrowser && (
         <React.Fragment>
-          <h3 className={`navbar__item ${setDark}`}>Works</h3>
+          <NavLink
+            className={`navbar__item ${setDark}`}
+            activeClassName={`navbar__item navbar__item--active ${setDark}`}
+            to="works"
+            title="Works"
+            onClick={() => triggerSwitchTheme(themes.LIGHT)}
+          >
+            Works
+          </NavLink>
+
           {worksList.map((navItem) => {
             const { name, id } = navItem;
 
             return (
               <NavLink
                 key={id}
-                className={`navbar__sub-item navbar__item ${setDark}`}
+                className={`navbar__sub-item navbar__item ${setDark} ${
+                  isMobile ? "mobile" : ""
+                }`}
                 activeClassName={` 
                 ${
                   id === location?.search?.substring(1)
@@ -61,7 +73,7 @@ const Navigation = (props) => {
       >
         About
       </NavLink>
-      {Object.keys(auth).length > 0 && (
+      {authChecked && !isMobile && (
         <NavLink
           className={`navbar__item ${setDark}`}
           activeClassName={`navbar__item navbar__item--active ${setDark}`}
@@ -82,7 +94,7 @@ Navigation.propTypes = {
   triggerSwitchTheme: PropTypes.func,
   isDark: PropTypes.bool,
   location: PropTypes.object,
-  auth: PropTypes.object,
+  authChecked: PropTypes.bool,
 };
 
 export default withRouter(Navigation);

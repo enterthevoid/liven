@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
@@ -7,10 +8,7 @@ import { withRouter } from "react-router-dom";
 import { login } from "../../../redux/auth/actions";
 
 // Selectors
-import {
-  makeSelectLoading,
-  makeSelectAuthChecked,
-} from "../../../redux/auth/selectors";
+import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
 import TextField from "../../components/TextField";
@@ -31,7 +29,6 @@ class LoginPage extends React.Component {
       email: "",
       password: "",
     },
-    openResetForm: false,
   };
 
   componentDidMount() {
@@ -43,9 +40,9 @@ class LoginPage extends React.Component {
   }
 
   componentDidUpdate(prevState, prevProps) {
-    const { authChecked } = this.props;
+    const { authChecked, history } = this.props;
     if (!prevProps.authChecked && authChecked) {
-      this.props.history.push("/management");
+      history.push("/management");
     }
   }
   onKeyPressed(e) {
@@ -72,7 +69,7 @@ class LoginPage extends React.Component {
         errors[prop] = "This email is not valid.";
       }
       if (isOutOfBounds(user[prop])) {
-        errors[prop] = "This field is required and cannot be empty.";
+        errors[prop] = "This field is required.";
       }
     });
 
@@ -102,27 +99,21 @@ class LoginPage extends React.Component {
 
     return (
       <div className="login">
-        <div className="login__form-inputs">
+        <div>
           <TextField
-            id="email"
-            className="login__input-email"
             label="E-mail address"
             type="email"
-            placeholder="example@domain.com"
             onChange={(text) => this.handleChange("email", text)}
             isError={errors.email}
           />
           <TextField
-            id="password"
-            className="login__input-password"
             label="Password"
             type="password"
-            placeholder="********"
             onChange={(text) => this.handleChange("password", text)}
             isError={errors.password}
           />
           <button
-            className="login__form-submit"
+            className="login--form-submit"
             onClick={() => this.handleSubmit()}
           >
             Login
@@ -133,8 +124,12 @@ class LoginPage extends React.Component {
   }
 }
 
+LoginPage.propTypes = {
+  authChecked: PropTypes.bool,
+  onLogin: PropTypes.func,
+};
+
 const mapStateToProps = createStructuredSelector({
-  isLoading: makeSelectLoading(),
   authChecked: makeSelectAuthChecked(),
 });
 
