@@ -28,6 +28,7 @@ const ManagementPage = () => {
 
   useEffect(() => {
     dispatch(loadWorksList());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksCount === null && !worksLoading]);
 
   const [selectedWork, setSelectedWork] = useState(false);
@@ -54,7 +55,7 @@ const ManagementPage = () => {
 
   return (
     <div className="management">
-      <div className="management---work-list">
+      <div className="management--work-list">
         <h3>Works List</h3>
         <Button
           styles={{ margin: "24px 0px" }}
@@ -73,7 +74,6 @@ const ManagementPage = () => {
           >
             <div className="management--work-list--item--naming">
               <h3>{work.name}</h3>
-              <p>{work.description}</p>
             </div>
             <div className="management--work-list--item--count">
               {work?.photos?.length || 0}

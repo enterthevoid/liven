@@ -46,11 +46,7 @@
 
     &--mobile {
       justify-content: flex-start;
-      padding: 24px;
-
-      // &--contacts {
-      //   margin-top: 24px;
-      // }
+      padding: 34px;
 
       h1 {
         font-size: 16px;
@@ -59,26 +55,7 @@
   }
 }
 
-// .--mobile {
-//   justify-content: flex-start;
-//   padding: 24px;
-
-//   &--contacts-wrapper {
-//     margin-top: 24px;
-//   }
-
-//   h1 {
-//     font-size: 16px;
-//   }
-// }
-
 @media screen and (min-width: 700px) and (max-width: 1280px) {
-  // .about--wrapper {
-  //   margin-top: 0px;
-  //   justify-content: flex-start;
-  //   align-items: center;
-  // }
-
   .about--content {
     width: 100%;
     padding-right: 84px;
@@ -89,8 +66,4 @@
   .about--content {
     width: 50%;
   }
-
-  // .about--wrapper {
-  //   margin-top: 10%;
-  // }
 }
