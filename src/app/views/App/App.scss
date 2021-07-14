@@ -31,10 +31,14 @@
   &--content {
     display: flex;
     width: 100%;
+    overflow: hidden;
+
+    &--page {
+      width: 100%;
+    }
 
     &--mobile {
       flex-direction: column;
-      height: 100%;
     }
   }
 }

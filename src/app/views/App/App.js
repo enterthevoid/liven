@@ -125,7 +125,7 @@ class App extends React.Component {
                 authChecked={authChecked}
               />
             )}
-            <div className="app--content">
+            <div className="app--content--page">
               <Switch location={location}>{this.generateRoutes()}</Switch>
             </div>
           </div>

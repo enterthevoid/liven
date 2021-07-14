@@ -70,7 +70,7 @@ export const deleteWork = (workId) => ({
   workId,
 });
 
-export const deleteWorkSuccess = (workId, work) => ({
+export const deleteWorkSuccess = (workId) => ({
   type: DELETE_WORK_SUCCESS,
   workId,
 });

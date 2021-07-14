@@ -1,6 +1,7 @@
 .about {
   display: flex;
   justify-content: center;
+  height: 100%;
 
   h1 {
     font-family: Source Serif Pro;
@@ -46,10 +47,11 @@
 
     &--mobile {
       justify-content: flex-start;
-      padding: 34px;
+      padding: 24px;
+      padding-top: 8px;
 
       h1 {
-        font-size: 16px;
+        font-size: 18px;
       }
     }
   }
