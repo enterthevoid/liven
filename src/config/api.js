@@ -1,7 +1,8 @@
 // API Endpoints
 
 const API_URL = () =>
-  process.env.REACT_APP_API_URL || "https://gentle-forest-86099.herokuapp.com";
+  process.env.REACT_APP_API_URL ||
+  "https://liven-backend-mgbuc.ondigitalocean.app";
 
 export const API_LOGIN = `${API_URL()}/user/login`;
 
