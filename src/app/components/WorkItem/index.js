@@ -11,6 +11,7 @@ import { makeSelectWorkById } from "../../../redux/works/selectors";
 
 // Components
 import Button from "../Button";
+import Loader from "../Loader";
 
 // Assets
 import placeholder from "../../../assets/placeholder.jpg";
@@ -125,7 +126,6 @@ const WorkItem = (props) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
                   }}
-                  loading={<h3>Loader</h3>}
                   className={`carousel-image${mobileClass}`}
                   src={photo?.img || ""}
                   alt={"liven_img"}
@@ -147,19 +147,7 @@ const WorkItem = (props) => {
     );
   }
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100%",
-        width: "100%",
-      }}
-    >
-      <h3>No works found or loading</h3>
-    </div>
-  );
+  return <Loader />;
 };
 
 // Props

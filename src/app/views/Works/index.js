@@ -17,6 +17,7 @@ import { loadWorksList } from "../../../redux/works/actions";
 
 // Components
 import WorkItem from "../../components/WorkItem";
+import Loader from "../../components/Loader";
 
 class Works extends Component {
   componentDidMount() {
@@ -42,7 +43,11 @@ class Works extends Component {
   }
 
   render() {
-    const { location, worksLoadedIds } = this.props;
+    const { location, worksLoadedIds, worksLoading } = this.props;
+
+    if (worksLoading) {
+      return <Loader />;
+    }
 
     return (
       <WorkItem

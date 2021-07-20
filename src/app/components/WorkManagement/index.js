@@ -52,8 +52,6 @@ const WorkManagement = (props) => {
   };
 
   const handleSubmit = () => {
-    // onSubmit(updatedWork);
-
     if (validate()) {
       onSubmit(updatedWork);
     }
