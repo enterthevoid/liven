@@ -6,8 +6,11 @@ import SkewLoader from "react-spinners/SkewLoader";
 import "./styles.scss";
 
 const Loader = () => (
-  <div className="loader-wrapper">
-    <SkewLoader size={24} style={{ paddingTop: isDesktop ? 0 : "32%" }} />
+  <div
+    className="loader-wrapper"
+    style={{ marginTop: isDesktop ? "-8%" : "32%" }}
+  >
+    <SkewLoader size={16} />
   </div>
 );
 
