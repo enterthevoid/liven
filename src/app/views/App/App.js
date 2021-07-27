@@ -6,7 +6,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { NavLink, Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
 import { isMobile } from "react-device-detect";
@@ -55,10 +55,6 @@ class App extends React.Component {
     if (location.pathname === "/about" && theme !== themes.DARK) {
       this.setState({ theme: themes.DARK });
     }
-
-    // if (location.pathname === "/about" && theme !== themes.DARK) {
-    //   this.setState({ theme: themes.DARK });
-    // }
 
     if (worksCount === null) {
       onLoadWorksList();
@@ -117,9 +113,15 @@ class App extends React.Component {
         </Helmet>
         <div className={`app ${isDark ? "dark" : ""}`}>
           {!isLogin && (
-            <div className={`app--heading${isMobile ? "--mobile" : ""}`}>
+            <NavLink
+              className={`navbar__item app--heading${
+                isMobile ? "--mobile" : ""
+              }`}
+              to="works"
+              title="Alexandra Liven"
+            >
               <h1>Alexandra Liven</h1>
-            </div>
+            </NavLink>
           )}
           <div className={`app--content${isMobile ? "--mobile" : ""}`}>
             {!isLogin && (

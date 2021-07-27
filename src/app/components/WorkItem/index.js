@@ -26,10 +26,10 @@ const WorkItem = (props) => {
   const { work, location } = props;
 
   useEffect(() => {
-    changeSelectedItem(0);
     setLoadedImage(false);
 
     setTimeout(() => {
+      changeSelectedItem(0);
       setLoadedImage(true);
     }, 600);
   }, [work]);
@@ -134,9 +134,6 @@ const WorkItem = (props) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
                   }}
-                  // onLoadCapture={(e) => {
-                  //   setLoadedImage(true);
-                  // }}
                   className={`carousel-image${mobileClass}`}
                   src={photo?.img || ""}
                   alt={"liven_img"}
@@ -157,6 +154,8 @@ const WorkItem = (props) => {
       </div>
     );
   }
+
+  return <Loader />;
 };
 
 // Props
