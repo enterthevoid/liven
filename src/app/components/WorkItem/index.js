@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
@@ -20,12 +20,31 @@ import placeholder from "../../../assets/placeholder.jpg";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./styles.scss";
 
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+}
+
 const WorkItem = (props) => {
   const [currentSlide, changeSelectedItem] = useState(0);
-  const { work, location } = props;
+  const [loadedImage, setLoadedImage] = useState(false);
+
+  const { work, location, workId } = props;
+
+  const prevWorkId = usePrevious(workId);
+
+  console.log(prevWorkId, workId, loadedImage);
 
   useEffect(() => {
     changeSelectedItem(0);
+    setLoadedImage(false);
+
+    setTimeout(() => {
+      setLoadedImage(true);
+    }, 500);
   }, [work]);
 
   const worksList = useSelector((state) => state.works.worksList);
@@ -86,6 +105,8 @@ const WorkItem = (props) => {
   }
 
   if (!!work?.id) {
+    if (!loadedImage) return <Loader />;
+
     return (
       <div className={`carousel-wrapper${mobileClass}`}>
         <Carousel
@@ -126,6 +147,9 @@ const WorkItem = (props) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
                   }}
+                  // onLoadCapture={(e) => {
+                  //   setLoadedImage(true);
+                  // }}
                   className={`carousel-image${mobileClass}`}
                   src={photo?.img || ""}
                   alt={"liven_img"}
@@ -146,8 +170,6 @@ const WorkItem = (props) => {
       </div>
     );
   }
-
-  return <Loader />;
 };
 
 // Props
