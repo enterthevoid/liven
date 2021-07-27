@@ -32,23 +32,18 @@ const About = () => {
           className={`about--content--contacts${isMobile ? "--mobile" : ""}`}
         >
           <div>
-            <h1>
+            <h1 className="fl-left">
               <span>Contact</span>
             </h1>
-            <h1>+380994300820</h1>
+            <h1 className="fl-left">+380994300820</h1>
           </div>
           <div>
-            <h1>
+            <h1 className="fl-right">
               <a href="mailto:lexandraliven@gmail.com">
                 lexandraliven@gmail.com
               </a>
             </h1>
-            <h1
-              style={{
-                float: "right",
-                margin: "auto",
-              }}
-            >
+            <h1 className="fl-right">
               <a
                 href="https://www.instagram.com/alexandraliven/"
                 target="_blank"
