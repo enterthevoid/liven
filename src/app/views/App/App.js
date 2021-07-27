@@ -113,13 +113,9 @@ class App extends React.Component {
         </Helmet>
         <div className={`app ${isDark ? "dark" : ""}`}>
           {!isLogin && (
-            <NavLink
-              className={`app--heading${isMobile ? "--mobile" : ""}`}
-              to="works"
-              title="Alexandra Liven"
-            >
+            <div className={`app--heading${isMobile ? "--mobile" : ""}`}>
               <h1>Alexandra Liven</h1>
-            </NavLink>
+            </div>
           )}
           <div className={`app--content${isMobile ? "--mobile" : ""}`}>
             {!isLogin && (

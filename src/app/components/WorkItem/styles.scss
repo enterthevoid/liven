@@ -9,6 +9,8 @@
 }
 
 .carousel {
+  user-select: none;
+
   &--desktop {
     padding-right: 42px;
     height: calc(100vh - 202px) !important;
