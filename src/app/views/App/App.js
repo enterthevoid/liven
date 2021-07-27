@@ -114,9 +114,7 @@ class App extends React.Component {
         <div className={`app ${isDark ? "dark" : ""}`}>
           {!isLogin && (
             <NavLink
-              className={`navbar__item app--heading${
-                isMobile ? "--mobile" : ""
-              }`}
+              className={`app--heading${isMobile ? "--mobile" : ""}`}
               to="works"
               title="Alexandra Liven"
             >
