@@ -15,6 +15,7 @@ import {
 import Button from "../../components/Button";
 import WorkManagement from "../../components/WorkManagement";
 import SmallModal from "../../components/Modal";
+import Loader from "../../components/Loader";
 
 // Styles
 import "./styles.scss";
@@ -23,8 +24,12 @@ const ManagementPage = () => {
   const dispatch = useDispatch();
 
   const worksCount = useSelector((state) => state.works.worksCount);
-  const worksLoading = useSelector((state) => state.works.worksCount);
+  const worksLoading = useSelector((state) => state.works.worksLoading);
   const worksList = useSelector((state) => state.works.worksList);
+
+  const workDeleting = useSelector((state) => state.works.workDeleting);
+  const workCreating = useSelector((state) => state.works.workCreating);
+  const workUpdating = useSelector((state) => state.works.workUpdating);
 
   useEffect(() => {
     dispatch(loadWorksList());
@@ -52,6 +57,8 @@ const ManagementPage = () => {
   };
 
   if (isMobile) return <h3>Sorry but this page available only for desctop</h3>;
+
+  if (workDeleting || workCreating || workUpdating) return <Loader />;
 
   return (
     <div className="management">

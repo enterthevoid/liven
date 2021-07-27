@@ -31,31 +31,24 @@ const About = () => {
         <div
           className={`about--content--contacts${isMobile ? "--mobile" : ""}`}
         >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-start",
-            }}
-          >
+          <div>
             <h1>
               <span>Contact</span>
             </h1>
             <h1>+380994300820</h1>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "flex-end",
-            }}
-          >
+          <div>
             <h1>
               <a href="mailto:lexandraliven@gmail.com">
                 lexandraliven@gmail.com
               </a>
             </h1>
-            <h1>
+            <h1
+              style={{
+                float: "right",
+                margin: "auto",
+              }}
+            >
               <a
                 href="https://www.instagram.com/alexandraliven/"
                 target="_blank"

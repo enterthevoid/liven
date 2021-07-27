@@ -1,7 +1,15 @@
 .loader-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
   height: 100%;
   width: 100%;
+}
+
+.desktop {
+  top: calc(100% - (124px + 42%));
+  left: calc(100% - (250px + 42%));
+}
+
+.mobile {
+  left: 46%;
+  margin-top: 45%;
 }

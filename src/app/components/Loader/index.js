@@ -6,10 +6,7 @@ import SkewLoader from "react-spinners/SkewLoader";
 import "./styles.scss";
 
 const Loader = () => (
-  <div
-    className="loader-wrapper"
-    style={{ marginTop: isDesktop ? "-8%" : "32%" }}
-  >
+  <div className={`loader-wrapper ${isDesktop ? "desktop" : "mobile"}`}>
     <SkewLoader size={16} />
   </div>
 );
