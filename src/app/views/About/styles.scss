@@ -1,3 +1,22 @@
+.fl-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+
+  h1 {
+    margin: 4px 0px;
+  }
+}
+
+.fl-left {
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin: 4px 0px;
+  }
+}
+
 .about {
   display: flex;
   justify-content: center;
@@ -6,23 +25,15 @@
 
   h1 {
     font-size: 18px;
-    font-weight: lighter;
+    font-weight: 300;
     text-align: justify;
     line-height: 1.4;
     color: #bdbdbd;
   }
 
-  .fl-right {
-    float: right;
-  }
-
-  .fl-left {
-    float: left;
-  }
-
   span {
     font-style: italic;
-    font-weight: normal;
+    font-weight: 500;
     color: #ffff !important;
   }
 
