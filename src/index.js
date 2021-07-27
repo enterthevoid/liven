@@ -10,9 +10,6 @@ import history from "./utils/history";
 // Containers
 import App from "./app/views/App/App";
 
-// Styles
-import "./index.scss";
-
 // Create redux store with history
 const store = configureStore({}, history);
 const MOUNT_NODE = document.getElementById("root");
