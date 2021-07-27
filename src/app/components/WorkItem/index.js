@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
@@ -20,23 +20,10 @@ import placeholder from "../../../assets/placeholder.jpg";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./styles.scss";
 
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 const WorkItem = (props) => {
   const [currentSlide, changeSelectedItem] = useState(0);
   const [loadedImage, setLoadedImage] = useState(false);
-
-  const { work, location, workId } = props;
-
-  const prevWorkId = usePrevious(workId);
-
-  console.log(prevWorkId, workId, loadedImage);
+  const { work, location } = props;
 
   useEffect(() => {
     changeSelectedItem(0);
@@ -44,7 +31,7 @@ const WorkItem = (props) => {
 
     setTimeout(() => {
       setLoadedImage(true);
-    }, 500);
+    }, 600);
   }, [work]);
 
   const worksList = useSelector((state) => state.works.worksList);
