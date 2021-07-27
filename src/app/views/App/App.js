@@ -27,6 +27,7 @@ import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
 import Navigation from "../../components/Navigation";
+import NotFound from "../../components/NotFound";
 
 // Containers
 import Works from "../Works";
@@ -55,6 +56,10 @@ class App extends React.Component {
       this.setState({ theme: themes.DARK });
     }
 
+    // if (location.pathname === "/about" && theme !== themes.DARK) {
+    //   this.setState({ theme: themes.DARK });
+    // }
+
     if (worksCount === null) {
       onLoadWorksList();
     }
@@ -79,15 +84,17 @@ class App extends React.Component {
       <Route exact path="/works" component={Works} key="101" />,
       <Route exact path="/about" component={About} key="102" />,
       <Redirect exact path="/" to="/works" key="103" />,
+      <Route component={NotFound} key="104" />,
+
       !authChecked ? (
-        <Redirect exact path="/management" to="/works" key="104" />
+        <Redirect exact path="/management" to="/works" key="105" />
       ) : undefined
     );
 
     if (authChecked) {
       routes.push(
-        <Redirect exact path="/login" to="/management" key="104" />,
-        <Route exact path="/management" component={Management} key="104" />
+        <Redirect exact path="/login" to="/management" key="106" />,
+        <Route exact path="/management" component={Management} key="107" />
       );
     }
 
