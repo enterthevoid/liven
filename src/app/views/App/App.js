@@ -80,7 +80,7 @@ class App extends React.Component {
       <Route exact path="/works" component={Works} key="101" />,
       <Route exact path="/about" component={About} key="102" />,
       <Redirect exact path="/" to="/works" key="103" />,
-      <Route component={NotFound} key="104" />,
+      // <Route component={NotFound} key="104" />,
 
       !authChecked ? (
         <Redirect exact path="/management" to="/works" key="105" />
