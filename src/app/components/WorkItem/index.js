@@ -6,11 +6,15 @@ import { connect } from "react-redux";
 import { isMobile, isDesktop } from "react-device-detect";
 import { NavLink, withRouter } from "react-router-dom";
 
+// Material
+import IconButton from "@material-ui/core/IconButton";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigatePrevIcon from "@material-ui/icons/NavigateBefore";
+
 // Selectors
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 
 // Components
-import Button from "../Button";
 import Loader from "../Loader";
 
 // Assets
@@ -42,26 +46,14 @@ const WorkItem = (props) => {
     }
   };
 
-  const icon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="32"
-      viewBox="0 0 24 24"
-      width="32"
-    >
-      <path d="M0 0h24v24H0z" fill="none" />
-      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-    </svg>
-  );
-
   const mobileClass = isMobile ? "--mobile" : "--desktop";
 
   const buttonStyles = {
     prev: {
       left: 4,
-      transform: "rotate(180deg)",
       position: "absolute",
       top: "46%",
+      zIndex: 1,
     },
     next: { position: "absolute", top: "47%", right: 4 },
   };
@@ -143,25 +135,27 @@ const WorkItem = (props) => {
           onChange={onChangeSelectedItem}
           renderArrowPrev={(onClickHandler, hasPrev) =>
             hasPrev && (
-              <Button
+              <IconButton
+                style={buttonStyles.prev}
+                aria-label="prev"
                 onClick={onClickHandler}
-                icon={icon}
-                styles={buttonStyles.prev}
-              />
+              >
+                <NavigatePrevIcon />
+              </IconButton>
             )
           }
           renderArrowNext={(onClickHandler, hasNext) =>
             hasNext && (
-              <Button
+              <IconButton
+                style={buttonStyles.next}
+                aria-label="next"
                 onClick={onClickHandler}
-                styles={buttonStyles.next}
-                icon={icon}
-              />
+              >
+                <NavigateNextIcon />
+              </IconButton>
             )
           }
         >
-
-          
           {Object.values(work?.photos)?.map((photo, index) => {
             return (
               <div key={index} className={`slide-item${mobileClass}`}>
