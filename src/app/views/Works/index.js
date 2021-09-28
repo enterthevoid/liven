@@ -68,6 +68,8 @@ Works.propTypes = {
   worksLoading: PropTypes.bool,
   worksLoadedIds: PropTypes.array,
   onLoadWorksList: PropTypes.func,
+  location: PropTypes.object,
+  history: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

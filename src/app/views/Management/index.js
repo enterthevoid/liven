@@ -1,7 +1,20 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/jsx-key */
+import React, { useState, useEffect, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+
+// Material
+import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import AddIcon from "@material-ui/icons/Add";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 
 // Actions
 import {
@@ -12,7 +25,6 @@ import {
 } from "../../../redux/works/actions";
 
 // Components
-import Button from "../../components/Button";
 import WorkManagement from "../../components/WorkManagement";
 import SmallModal from "../../components/Modal";
 import Loader from "../../components/Loader";
@@ -33,7 +45,6 @@ const ManagementPage = () => {
 
   useEffect(() => {
     dispatch(loadWorksList());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [worksCount === null && !worksLoading]);
 
   const [selectedWork, setSelectedWork] = useState(false);
@@ -61,40 +72,59 @@ const ManagementPage = () => {
   if (workDeleting || workCreating || workUpdating) return <Loader />;
 
   return (
-    <div className="management">
+    <Paper elevation={3} className="management">
       <div className="management--work-list">
-        <h3>Works List</h3>
-        <Button
-          styles={{ margin: "24px 0px" }}
-          onClick={() => setCreateWork(true)}
-          label="Create Work"
-        />
-        {Object.values(worksList).map((work) => (
-          <div
-            style={work.id === selectedWork.id ? { background: "#dadada" } : {}}
-            key={work.id}
-            className="management--work-list--item"
-            onClick={() => {
-              setCreateWork(false);
-              setSelectedWork(work);
-            }}
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          padding={"24px"}
+          alignItems="center"
+        >
+          <Typography variant="h5" component="p" style={{ whiteSpace: "pre" }}>
+            Works List
+          </Typography>
+          <Button
+            onClick={() => setCreateWork(true)}
+            variant="contained"
+            color="primary"
+            style={{ whiteSpace: "pre" }}
+            startIcon={<AddIcon />}
           >
-            <div className="management--work-list--item--naming">
-              <h3>{work.name}</h3>
-            </div>
-            <div className="management--work-list--item--count">
-              {work?.photos?.length || 0}
-            </div>
-          </div>
-        ))}
+            Create Work
+          </Button>
+        </Box>
+        <List component="nav" style={{ paddingTop: 0 }}>
+          <Divider />
+          {Object.values(worksList).map((work) => (
+            <Fragment key={work.id}>
+              <ListItem
+                selected={work.id === selectedWork.id}
+                button
+                onClick={() => {
+                  setCreateWork(false);
+                  setSelectedWork(work);
+                }}
+              >
+                <ListItemIcon>{work?.photos?.length || 0}</ListItemIcon>
+                <ListItemText primary={work.name} />
+              </ListItem>
+              <Divider />
+            </Fragment>
+          ))}
+        </List>
       </div>
+
+      <Divider orientation="vertical" />
 
       <SmallModal
         isOpen={isDeleteConfirm}
         onClose={() => setDeleteConfirm(false)}
-        title="Are you sure you want to delete work?"
+        message="Are you sure you want to delete work?"
         submitLabel="delete"
-        onSubmit={() => handleDelete(selectedWork.id)}
+        onSubmit={() => {
+          handleDelete(selectedWork.id);
+          setDeleteConfirm(false);
+        }}
       />
 
       {!!selectedWork || isCreateWork ? (
@@ -117,7 +147,7 @@ const ManagementPage = () => {
           <h3>Select Item</h3>
         </div>
       )}
-    </div>
+    </Paper>
   );
 };
 

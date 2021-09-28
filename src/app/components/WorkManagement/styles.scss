@@ -2,17 +2,14 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-left: 16px;
-
-  h3 {
-    margin-top: 0px;
-  }
 
   &--form {
     display: flex;
     flex-direction: column;
-    width: 34%;
-    margin-right: 16px;
+   
+    padding: 16px;
+
+  
 
     input,
     textarea {
@@ -33,7 +30,7 @@
   }
 
   &--actions {
-    position: relative;
+    // position: relative;
     display: flex;
     justify-content: flex-end;
     width: 100%;
@@ -45,7 +42,7 @@
     width: 100%;
     overflow: auto;
     height: calc(100vh - 280px);
-    margin-top: 48px;
+    padding-top: 16px;
   }
 
   &--image-list {
@@ -58,17 +55,17 @@
 
     button {
       position: absolute;
-      right: -2px;
-      left: 4px;
-      top: -2px;
+      right: -1px;
+      top: -1px;
       border: 1px solid rgb(211 211 211);
+      background-color: #f9f8f6;
     }
 
     img {
       padding: 8px;
       margin: 4px;
-      max-height: 200px;
-      max-width: 200px;
+      height: 120px;
+      width: 120px;
       object-fit: contain;
       background: rgb(211 211 211);
     }

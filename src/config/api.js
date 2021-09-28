@@ -2,7 +2,7 @@
 
 const API_URL = () =>
   process.env.REACT_APP_API_URL ||
-  "https://liven-backend-mgbuc.ondigitalocean.app";
+  "https://liven-backend-3x6qh.ondigitalocean.app";
 
 export const API_LOGIN = `${API_URL()}/user/login`;
 

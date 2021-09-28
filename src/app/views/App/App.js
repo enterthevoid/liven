@@ -6,7 +6,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
-import { NavLink, Redirect, Route, Switch, withRouter } from "react-router-dom";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
 import { isMobile } from "react-device-detect";
@@ -27,7 +27,7 @@ import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
 import Navigation from "../../components/Navigation";
-import NotFound from "../../components/NotFound";
+// import NotFound from "../../components/NotFound";
 
 // Containers
 import Works from "../Works";

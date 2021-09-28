@@ -11,7 +11,9 @@ import { login } from "../../../redux/auth/actions";
 import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
-import TextField from "../../components/TextField";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import Box from "@material-ui/core/Box";
 
 // Helpers
 import { checkEmail } from "../../../utils/helpers";
@@ -22,12 +24,12 @@ import "./styles.scss";
 class LoginPage extends React.Component {
   state = {
     user: {
-      email: "",
-      password: "",
+      // email: "",
+      // password: "",
     },
     errors: {
-      email: "",
-      password: "",
+      // email: "",
+      // password: "",
     },
   };
 
@@ -95,30 +97,43 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { errors } = this.state;
+    const { errors, user } = this.state;
 
     return (
       <div className="login">
-        <div>
+        <Box display="flex" flexDirection="column">
           <TextField
+            id="email"
             label="E-mail address"
+            variant="outlined"
             type="email"
-            onChange={(text) => this.handleChange("email", text)}
-            isError={errors.email}
+            value={user?.email}
+            error={!!errors?.email}
+            onChange={(e) => this.handleChange("email", e.target.value)}
+            helperText={errors.email}
+            style={{ width: 300, marginTop: 16 }}
           />
           <TextField
+            id="password"
             label="Password"
+            variant="outlined"
             type="password"
-            onChange={(text) => this.handleChange("password", text)}
-            isError={errors.password}
+            value={user?.password}
+            error={!!errors?.password}
+            onChange={(e) => this.handleChange("password", e.target.value)}
+            helperText={errors.password}
+            style={{ width: 300, marginTop: 16 }}
           />
-          <button
+          <Button
             className="login--form-submit"
+            variant="contained"
+            color="primary"
+            style={{ marginTop: 24 }}
             onClick={() => this.handleSubmit()}
           >
             Login
-          </button>
-        </div>
+          </Button>
+        </Box>
       </div>
     );
   }
@@ -127,6 +142,8 @@ class LoginPage extends React.Component {
 LoginPage.propTypes = {
   authChecked: PropTypes.bool,
   onLogin: PropTypes.func,
+  history: PropTypes.object,
+  location: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({

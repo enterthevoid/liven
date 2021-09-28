@@ -2,13 +2,18 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 
-// Components
-import TextField from "../TextField";
-import Button from "../Button";
-import ImagePicker from "../ImagePicker";
+// Material
+import Divider from "@material-ui/core/Divider";
+import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import DeleteIcon from "@material-ui/icons/Delete";
+import CloseIcon from "@material-ui/icons/Close";
+import Box from "@material-ui/core/Box";
+import Fab from "@material-ui/core/Fab";
 
-// Assets
-import { ReactComponent as CloseIcon } from "../../../assets/close.svg";
+// Components
+import ImagePicker from "../ImagePicker";
 
 // Styles
 import "./styles.scss";
@@ -71,46 +76,73 @@ const WorkManagement = (props) => {
 
   return (
     <div className="work-management">
-      <h3>Work Details</h3>
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        style={{ padding: 24 }}
+      >
+        <Typography variant="h5" component="p">
+          Work Details
+        </Typography>
+
+        <Box>
+          <ImagePicker onChange={(files) => handleChange("photos", files)} />
+
+          {updatedWork?.id && (
+            <Button
+              variant="contained"
+              color="secondary"
+              style={{ marginLeft: 12 }}
+              startIcon={<DeleteIcon />}
+              onClick={() => handleDelete(updatedWork.id)}
+            >
+              Delete Work
+            </Button>
+          )}
+        </Box>
+      </Box>
+      <Divider />
+
       <div className="work-management--flex">
         <div className="work-management--form">
           <TextField
             id="name"
             label="Name"
-            type="text-area"
+            variant="outlined"
             value={updatedWork?.name}
-            onChange={(value) => handleChange("name", value)}
-            isError={workErrors.name}
+            error={!!workErrors.name}
+            onChange={(e) => handleChange("name", e.target.value)}
+            helperText={workErrors.name}
+            style={{ width: 300 }}
           />
+
           <TextField
+            style={{ marginTop: 16, width: 300 }}
+            s
             id="description"
-            type="textarea"
             label="Description"
+            variant="outlined"
+            multiline
+            rows={6}
             value={updatedWork?.description}
-            onChange={(value) => handleChange("description", value)}
-            isError={workErrors.description}
+            onChange={(e) => handleChange("description", e.target.value)}
+            error={!!workErrors.description}
+            helperText={workErrors.description}
           />
 
           {!isEqual(updatedWork, work) && (
-            <Button onClick={() => handleSubmit()} label="Save" />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit()}
+              style={{ marginTop: 12 }}
+            >
+              Save Work
+            </Button>
           )}
         </div>
+
         <div className="work-management--img-section">
-          <div className="work-management--actions">
-            <ImagePicker
-              style={{ position: "absolute", left: 0 }}
-              onChange={(files) => handleChange("photos", files)}
-            />
-
-            {updatedWork?.id && (
-              <Button
-                className="button--delete"
-                onClick={() => handleDelete(updatedWork.id)}
-                label="Delete Work"
-              />
-            )}
-          </div>
-
           <div className="work-management--image-list-wrapper">
             <div className="work-management--image-list">
               {updatedWork?.photos?.length > 0 &&
@@ -120,10 +152,13 @@ const WorkManagement = (props) => {
                       className="work-management--image-wrapper"
                       key={img.img || `img#${index}`}
                     >
-                      <Button
+                      <Fab
+                        size="small"
+                        aria-label="delete"
                         onClick={() => handleRemoveImage(index)}
-                        icon={<CloseIcon />}
-                      />
+                      >
+                        <CloseIcon fontSize="small" />
+                      </Fab>
                       <img
                         alt={img.id}
                         src={img?.img || window?.URL?.createObjectURL(img)}

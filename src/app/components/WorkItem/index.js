@@ -31,7 +31,7 @@ const WorkItem = (props) => {
     setTimeout(() => {
       changeSelectedItem(0);
       setLoadedImage(true);
-    }, 600);
+    }, 800);
   }, [work]);
 
   const worksList = useSelector((state) => state.works.worksList);
@@ -94,7 +94,41 @@ const WorkItem = (props) => {
   if (!!work?.id) {
     if (!loadedImage) return <Loader />;
 
-    return (
+    return isMobile ? (
+      <div style={{ width: "100vw", overflow: "hidden", paddingBottom: 100 }}>
+        {Object.values(work?.photos)?.map((photo, index) => {
+          return (
+            <div
+              key={index}
+              style={{
+                maxWidth: "100vw",
+                padding: 12,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <img
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = placeholder;
+                }}
+                style={{ maxWidth: "92vw" }}
+                // className={`carousel-image${mobileClass}`}
+                src={photo?.img || ""}
+                alt={"liven_img"}
+              />
+            </div>
+          );
+        })}
+        <p
+          className={`description--${isDesktop ? "desktop" : "mobile"}`}
+          style={{ padding: 16, height: "100%" }}
+        >
+          {work.description}
+        </p>
+      </div>
+    ) : (
       <div className={`carousel-wrapper${mobileClass}`}>
         <Carousel
           autoPlay={false}
@@ -126,6 +160,8 @@ const WorkItem = (props) => {
             )
           }
         >
+
+          
           {Object.values(work?.photos)?.map((photo, index) => {
             return (
               <div key={index} className={`slide-item${mobileClass}`}>
