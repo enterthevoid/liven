@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Carousel } from "react-responsive-carousel";
@@ -26,16 +26,10 @@ import "./styles.scss";
 
 const WorkItem = (props) => {
   const [currentSlide, changeSelectedItem] = useState(0);
-  const [loadedImage, setLoadedImage] = useState(false);
-  const { work, location } = props;
+  const { work } = props;
 
   useEffect(() => {
-    setLoadedImage(false);
-
-    setTimeout(() => {
-      changeSelectedItem(0);
-      setLoadedImage(true);
-    }, 800);
+    changeSelectedItem(0);
   }, [work]);
 
   const worksList = useSelector((state) => state.works.worksList);
@@ -68,10 +62,6 @@ const WorkItem = (props) => {
             <NavLink
               key={id}
               className={`navbar__sub-item navbar__item`}
-              activeClassName={` 
-          ${
-            id === location?.search?.substring(1) ? "navbar__item--active" : ""
-          } `}
               to={`works?${id}`}
               title={name}
             >
@@ -84,44 +74,8 @@ const WorkItem = (props) => {
   }
 
   if (!!work?.id) {
-    if (!loadedImage) return <Loader />;
-
-    return isMobile ? (
-      <div style={{ width: "100vw", overflow: "hidden", paddingBottom: 100 }}>
-        {Object.values(work?.photos)?.map((photo, index) => {
-          return (
-            <div
-              key={index}
-              style={{
-                maxWidth: "100vw",
-                padding: 12,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <img
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = placeholder;
-                }}
-                style={{ maxWidth: "92vw" }}
-                // className={`carousel-image${mobileClass}`}
-                src={photo?.img || ""}
-                alt={"liven_img"}
-              />
-            </div>
-          );
-        })}
-        <p
-          className={`description--${isDesktop ? "desktop" : "mobile"}`}
-          style={{ padding: 16, height: "100%" }}
-        >
-          {work.description}
-        </p>
-      </div>
-    ) : (
-      <div className={`carousel-wrapper${mobileClass}`}>
+    return (
+      <Fragment>
         <Carousel
           autoPlay={false}
           className={`carousel${mobileClass}`}
@@ -158,7 +112,7 @@ const WorkItem = (props) => {
         >
           {Object.values(work?.photos)?.map((photo, index) => {
             return (
-              <div key={index} className={`slide-item${mobileClass}`}>
+              <div key={index} className="slide-item">
                 <img
                   onError={(e) => {
                     e.target.onerror = null;
@@ -177,11 +131,17 @@ const WorkItem = (props) => {
             </p>
           </div>
         </Carousel>
-        <p style={{ textAlign: "right", paddingRight: isMobile ? 24 : 42 }}>
+        <p
+          style={{
+            textAlign: "right",
+            paddingRight: isMobile ? 24 : 42,
+            userSelect: "none",
+          }}
+        >
           {currentSlide + 1} / {Object.values(work?.photos).length + 1}{" "}
           {work.name}
         </p>
-      </div>
+      </Fragment>
     );
   }
 

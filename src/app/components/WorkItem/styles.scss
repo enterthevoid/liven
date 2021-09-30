@@ -32,16 +32,8 @@
 }
 
 .slide-item {
-  &--desktop {
-    display: flex;
-    align-items: center;
-  }
-
-  &--mobile {
-    max-height: 42vh;
-    display: flex;
-    align-items: center;
-  }
+  display: flex;
+  align-items: center;
 }
 
 .carousel .slide {
@@ -86,20 +78,30 @@
     object-fit: contain;
   }
 
-  &--mobile {
-    height: 56vh;
-    object-fit: contain;
+  @media only screen and (min-width: 375px) and (max-width: 766px) {
+    &--mobile {
+      height: 56vh;
+      padding: 12px;
+      object-fit: contain;
+    }
   }
-}
 
-.revert {
-  transform: rotate(180deg);
+  @media only screen and (min-width: 414px) and (max-width: 766px) {
+    &--mobile {
+      height: 60vh;
+      padding: 12px;
+      object-fit: contain;
+    }
+  }
 }
 
 .description {
   display: flex;
   overflow-y: auto;
   align-items: center;
+  user-select: none;
+  padding: 16px;
+  height: 100%;
 
   &--desktop {
     font-family: Source Serif Pro;
