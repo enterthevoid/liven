@@ -6,10 +6,8 @@
   &--form {
     display: flex;
     flex-direction: column;
-   
-    padding: 16px;
 
-  
+    padding: 16px;
 
     input,
     textarea {
@@ -30,7 +28,6 @@
   }
 
   &--actions {
-    // position: relative;
     display: flex;
     justify-content: flex-end;
     width: 100%;

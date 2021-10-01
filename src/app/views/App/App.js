@@ -81,6 +81,7 @@ class App extends React.Component {
       <Route exact path="/about" component={About} key="102" />,
       <Redirect exact path="/" to="/works" key="103" />,
       // <Route component={NotFound} key="104" />,
+      //TODO: Integrate Not Foun Page
 
       !authChecked ? (
         <Redirect exact path="/management" to="/works" key="105" />
@@ -103,6 +104,7 @@ class App extends React.Component {
 
     const isDark = theme === themes?.DARK;
     const isLogin = location.pathname === "/login";
+    const isManagement = location.pathname === "/management";
 
     return (
       <React.Fragment>
@@ -128,7 +130,10 @@ class App extends React.Component {
                 authChecked={authChecked}
               />
             )}
-            <div className="app--content--page">
+            <div
+              className="app--content--page"
+              style={isManagement ? { padding: 16 } : {}} //TODO: Move inline styles to css file
+            >
               <Switch location={location}>{this.generateRoutes()}</Switch>
             </div>
           </div>

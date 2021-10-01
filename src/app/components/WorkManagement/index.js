@@ -92,7 +92,7 @@ const WorkManagement = (props) => {
             <Button
               variant="contained"
               color="secondary"
-              style={{ marginLeft: 12 }}
+              style={{ marginLeft: 12 }} //TODO: Move inline styles to css
               startIcon={<DeleteIcon />}
               onClick={() => handleDelete(updatedWork.id)}
             >
@@ -117,7 +117,7 @@ const WorkManagement = (props) => {
           />
 
           <TextField
-            style={{ marginTop: 16, width: 300 }}
+            style={{ marginTop: 16, width: 300 }} //TODO: Move inline styles to css
             s
             id="description"
             label="Description"
@@ -135,7 +135,7 @@ const WorkManagement = (props) => {
               variant="contained"
               color="primary"
               onClick={() => handleSubmit()}
-              style={{ marginTop: 12 }}
+              style={{ marginTop: 12 }} //TODO: Move inline styles to css
             >
               Save Work
             </Button>

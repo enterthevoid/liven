@@ -90,7 +90,7 @@ const WorkItem = (props) => {
           renderArrowPrev={(onClickHandler, hasPrev) =>
             hasPrev && (
               <IconButton
-                style={buttonStyles.prev}
+                style={buttonStyles.prev} //TODO: Move inline styles to css
                 aria-label="prev"
                 onClick={onClickHandler}
               >
@@ -101,7 +101,7 @@ const WorkItem = (props) => {
           renderArrowNext={(onClickHandler, hasNext) =>
             hasNext && (
               <IconButton
-                style={buttonStyles.next}
+                style={buttonStyles.next} //TODO: Move inline styles to css
                 aria-label="next"
                 onClick={onClickHandler}
               >

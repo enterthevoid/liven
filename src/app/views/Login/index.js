@@ -23,14 +23,8 @@ import "./styles.scss";
 
 class LoginPage extends React.Component {
   state = {
-    user: {
-      // email: "",
-      // password: "",
-    },
-    errors: {
-      // email: "",
-      // password: "",
-    },
+    user: {},
+    errors: {},
   };
 
   componentDidMount() {
@@ -47,6 +41,7 @@ class LoginPage extends React.Component {
       history.push("/management");
     }
   }
+
   onKeyPressed(e) {
     const { location } = this.props;
     const isLogin = location.pathname === "/login";
@@ -111,7 +106,7 @@ class LoginPage extends React.Component {
             error={!!errors?.email}
             onChange={(e) => this.handleChange("email", e.target.value)}
             helperText={errors.email}
-            style={{ width: 300, marginTop: 16 }}
+            style={{ width: 300, marginTop: 16 }} //TODO: Move inline styles to css
           />
           <TextField
             id="password"
@@ -122,13 +117,13 @@ class LoginPage extends React.Component {
             error={!!errors?.password}
             onChange={(e) => this.handleChange("password", e.target.value)}
             helperText={errors.password}
-            style={{ width: 300, marginTop: 16 }}
+            style={{ width: 300, marginTop: 16 }} //TODO: Move inline styles to css
           />
           <Button
             className="login--form-submit"
             variant="contained"
             color="primary"
-            style={{ marginTop: 24 }}
+            style={{ marginTop: 24 }} //TODO: Move inline styles to css
             onClick={() => this.handleSubmit()}
           >
             Login

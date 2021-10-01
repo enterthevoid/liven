@@ -67,7 +67,7 @@ const ManagementPage = () => {
     setSelectedWork(false);
   };
 
-  if (isMobile) return <h3>Sorry but this page available only for desctop</h3>;
+  if (isMobile) return <h3>Sorry but this page available only for desktop</h3>;
 
   if (workDeleting || workCreating || workUpdating) return <Loader />;
 
@@ -81,19 +81,21 @@ const ManagementPage = () => {
           alignItems="center"
         >
           <Typography variant="h5" component="p" style={{ whiteSpace: "pre" }}>
+            {/* TODO: Move inline styles to css */}
             Works List
           </Typography>
           <Button
             onClick={() => setCreateWork(true)}
             variant="contained"
             color="primary"
-            style={{ whiteSpace: "pre" }}
+            style={{ whiteSpace: "pre" }} //TODO: Move inline styles to css
             startIcon={<AddIcon />}
           >
             Create Work
           </Button>
         </Box>
         <List component="nav" style={{ paddingTop: 0 }}>
+          {/* TODO: Move inline styles to css */}
           <Divider />
           {Object.values(worksList).map((work) => (
             <Fragment key={work.id}>
