@@ -2,23 +2,17 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 
-// Drag'n'drop
-import Gallery from "react-photo-gallery";
-import { arrayMoveImmutable } from "array-move";
-import { SortableContainer, SortableElement } from "react-sortable-hoc";
-
 // Material
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CloseIcon from "@material-ui/icons/Close";
 import Box from "@material-ui/core/Box";
-import Fab from "@material-ui/core/Fab";
 
 // Components
 import ImagePicker from "../ImagePicker";
+import ReordableList from "../ReordableList";
 
 // Styles
 import "./styles.scss";
@@ -77,9 +71,9 @@ const WorkManagement = (props) => {
       ...updatedWork,
       photos: updatedWork.photos.filter((elem) => {
         if (elem?.type === "image/jpeg") {
-          return elem.name !== item.photo.file.name;
+          return elem.name !== item.name;
         } else {
-          return elem.img !== item.photo.img;
+          return elem.img !== item.img;
         }
       }),
     };
@@ -87,49 +81,14 @@ const WorkManagement = (props) => {
     setUpdateWork(newWork);
   };
 
-  // Drag and drop
-
-  const galleryPhotos =
-    updatedWork?.photos.map((el) => ({
-      ...el,
-      src: el.img || "",
-      file: !!el.img ? null : el,
-      key: !!el.img ? el.img : `new_image-${el.name}`,
-      width: 1,
-      height: 1,
-    })) || [];
-
-  const onSortEnd = ({ oldIndex, newIndex }) => {
+  const handleSort = (sortedItems) => {
     const sortedWork = {
       ...updatedWork,
-      photos: arrayMoveImmutable(updatedWork.photos, oldIndex, newIndex),
+      photos: sortedItems,
     };
 
     setUpdateWork(sortedWork);
   };
-
-  const SortablePhoto = SortableElement((item) => (
-    <div className="work-management--image-wrapper">
-      <Fab
-        size="small"
-        aria-label="delete"
-        onClick={() => handleRemoveImage(item)}
-      >
-        <CloseIcon fontSize="small" />
-      </Fab>
-      <img
-        alt="image"
-        src={item.photo.img || window.URL.createObjectURL(item.photo.file)}
-      />
-    </div>
-  ));
-
-  const SortableGallery = SortableContainer(({ items }) => (
-    <Gallery
-      photos={items}
-      renderImage={(props) => <SortablePhoto {...props} />}
-    />
-  ));
 
   return (
     <div className="work-management">
@@ -199,14 +158,11 @@ const WorkManagement = (props) => {
         </div>
 
         <div className="work-management--image-list-wrapper">
-          <div className="work-management--image-list">
-            <SortableGallery
-              items={galleryPhotos}
-              onSortEnd={(props) => onSortEnd(props)}
-              distance={1}
-              axis="xy"
-            />
-          </div>
+          <ReordableList
+            items={updatedWork?.photos || []}
+            handleRemoveImage={(item) => handleRemoveImage(item)}
+            handleSort={(sortedItems) => handleSort(sortedItems)}
+          />
         </div>
       </div>
     </div>

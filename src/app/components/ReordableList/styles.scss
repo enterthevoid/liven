@@ -1,0 +1,19 @@
+.image-card {
+  position: relative;
+  margin: 4px;
+  background: rgb(239 239 239) !important;
+
+  button {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+  }
+
+  img {
+    padding: 8px;
+    padding-top: 36px;
+    height: 120px;
+    width: 120px;
+    object-fit: contain;
+  }
+}

@@ -38,33 +38,7 @@
   &--image-list-wrapper {
     width: 100%;
     overflow: auto;
-    height: calc(100vh - 280px);
+    height: calc(100vh - 254px);
     padding-top: 16px;
-  }
-
-  &--image-list {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &--image-wrapper {
-    position: relative;
-
-    button {
-      position: absolute;
-      right: -1px;
-      top: -1px;
-      border: 1px solid rgb(211 211 211);
-      background-color: #f9f8f6;
-    }
-
-    img {
-      padding: 8px;
-      margin: 4px;
-      height: 120px;
-      width: 120px;
-      object-fit: contain;
-      background: rgb(211 211 211);
-    }
   }
 }
