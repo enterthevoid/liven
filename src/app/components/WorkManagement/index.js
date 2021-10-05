@@ -19,12 +19,16 @@ import "./styles.scss";
 
 const WorkManagement = (props) => {
   const { work, onSubmit, onDelete } = props;
-
+  const defaultErr = {
+    description: false,
+    name: false,
+  };
   const [updatedWork, setUpdateWork] = useState(work);
-  const [workErrors, setWorkErrors] = useState({});
+  const [workErrors, setWorkErrors] = useState(defaultErr);
 
   useEffect(() => {
     setUpdateWork(work);
+    setWorkErrors(defaultErr);
   }, [work]);
 
   const validate = () => {
@@ -34,12 +38,12 @@ const WorkManagement = (props) => {
 
     REQUIRED.forEach((prop) => {
       if (isOutOfBounds(updatedWork[prop])) {
-        errors[prop] = "This field is required and cannot be empty.";
+        errors[prop] = true;
       }
     });
 
     setWorkErrors(errors);
-    return Object.keys(errors).length === 0;
+    return !errors.name || !errors.description;
   };
 
   const handleChange = (prop, data) => {
@@ -50,7 +54,11 @@ const WorkManagement = (props) => {
     }
 
     let errors = workErrors;
-    delete workErrors[prop];
+    if (data.length > 0) {
+      errors[prop] = false;
+    } else {
+      errors[prop] = true;
+    }
 
     setWorkErrors(errors);
     setUpdateWork(newWork);
@@ -90,6 +98,9 @@ const WorkManagement = (props) => {
     setUpdateWork(sortedWork);
   };
 
+  const getHelperText = (isErr) =>
+    isErr ? "This field is required and cannot be empty." : " ";
+
   return (
     <div className="work-management">
       <Box
@@ -126,9 +137,9 @@ const WorkManagement = (props) => {
             label="Name"
             variant="outlined"
             value={updatedWork?.name}
-            error={!!workErrors.name}
+            error={workErrors.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            helperText={workErrors.name || ""}
+            helperText={getHelperText(workErrors.name)}
             style={{ width: 300 }} //TODO: Move inline styles to css
           />
 
@@ -141,20 +152,23 @@ const WorkManagement = (props) => {
             rows={6}
             value={updatedWork?.description}
             onChange={(e) => handleChange("description", e.target.value)}
-            error={!!workErrors.description}
-            helperText={workErrors.description || ""}
+            error={workErrors.description}
+            helperText={getHelperText(workErrors.description)}
           />
 
-          {!isEqual(updatedWork, work) && (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleSubmit()}
-              style={{ marginTop: 12 }} //TODO: Move inline styles to css
-            >
-              Save Work
-            </Button>
-          )}
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => handleSubmit()}
+            style={{ marginTop: 12 }} //TODO: Move inline styles to css
+            disabled={
+              isEqual(updatedWork, work) ||
+              workErrors.name ||
+              workErrors.description
+            }
+          >
+            Save Work
+          </Button>
         </div>
 
         <div className="work-management--image-list-wrapper">
