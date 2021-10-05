@@ -11,7 +11,6 @@ import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
 import { isMobile } from "react-device-detect";
 import PropTypes from "prop-types";
-import Modal from "react-modal";
 import "react-toastify/dist/ReactToastify.css";
 
 // Actions
@@ -40,9 +39,6 @@ import { themes } from "../../../utils/constants";
 
 // Styles
 import "./App.scss";
-
-Modal.setAppElement("#root");
-
 class App extends React.Component {
   state = {
     theme: themes.LIGHT,
