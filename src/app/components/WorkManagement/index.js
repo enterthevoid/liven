@@ -2,6 +2,11 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { isEqual } from "lodash";
 
+// Drag'n'drop
+import Gallery from "react-photo-gallery";
+import { arrayMoveImmutable } from "array-move";
+import { SortableContainer, SortableElement } from "react-sortable-hoc";
+
 // Material
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
@@ -31,8 +36,8 @@ const WorkManagement = (props) => {
   const validate = () => {
     const REQUIRED = ["name", "description"];
     const isOutOfBounds = (s) => !s || s.length < 2;
-
     let errors = workErrors;
+
     REQUIRED.forEach((prop) => {
       if (isOutOfBounds(work[prop])) {
         errors[prop] = "This field is required and cannot be empty.";
@@ -49,6 +54,7 @@ const WorkManagement = (props) => {
     if (prop === "photos") {
       newWork = { ...updatedWork, photos: [...updatedWork.photos, ...data] };
     }
+
     let errors = workErrors;
     delete workErrors[prop];
 
@@ -66,13 +72,64 @@ const WorkManagement = (props) => {
     onDelete(workId);
   };
 
-  const handleRemoveImage = (index) => {
+  const handleRemoveImage = (item) => {
     let newWork = {
       ...updatedWork,
-      photos: updatedWork.photos.filter((e, i) => i !== index),
+      photos: updatedWork.photos.filter((elem) => {
+        if (elem?.type === "image/jpeg") {
+          return elem.name !== item.photo.file.name;
+        } else {
+          return elem.img !== item.photo.img;
+        }
+      }),
     };
+
     setUpdateWork(newWork);
   };
+
+  // Drag and drop
+
+  const galleryPhotos =
+    updatedWork?.photos.map((el) => ({
+      ...el,
+      src: el.img || "",
+      file: !!el.img ? null : el,
+      key: !!el.img ? el.img : `new_image-${el.name}`,
+      width: 1,
+      height: 1,
+    })) || [];
+
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const sortedWork = {
+      ...updatedWork,
+      photos: arrayMoveImmutable(updatedWork.photos, oldIndex, newIndex),
+    };
+
+    setUpdateWork(sortedWork);
+  };
+
+  const SortablePhoto = SortableElement((item) => (
+    <div className="work-management--image-wrapper">
+      <Fab
+        size="small"
+        aria-label="delete"
+        onClick={() => handleRemoveImage(item)}
+      >
+        <CloseIcon fontSize="small" />
+      </Fab>
+      <img
+        alt="image"
+        src={item.photo.img || window.URL.createObjectURL(item.photo.file)}
+      />
+    </div>
+  ));
+
+  const SortableGallery = SortableContainer(({ items }) => (
+    <Gallery
+      photos={items}
+      renderImage={(props) => <SortablePhoto {...props} />}
+    />
+  ));
 
   return (
     <div className="work-management">
@@ -112,13 +169,12 @@ const WorkManagement = (props) => {
             value={updatedWork?.name}
             error={!!workErrors.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            helperText={workErrors.name}
-            style={{ width: 300 }}
+            helperText={workErrors.name || ""}
+            style={{ width: 300 }} //TODO: Move inline styles to css
           />
 
           <TextField
             style={{ marginTop: 16, width: 300 }} //TODO: Move inline styles to css
-            s
             id="description"
             label="Description"
             variant="outlined"
@@ -127,7 +183,7 @@ const WorkManagement = (props) => {
             value={updatedWork?.description}
             onChange={(e) => handleChange("description", e.target.value)}
             error={!!workErrors.description}
-            helperText={workErrors.description}
+            helperText={workErrors.description || ""}
           />
 
           {!isEqual(updatedWork, work) && (
@@ -142,31 +198,14 @@ const WorkManagement = (props) => {
           )}
         </div>
 
-        <div className="work-management--img-section">
-          <div className="work-management--image-list-wrapper">
-            <div className="work-management--image-list">
-              {updatedWork?.photos?.length > 0 &&
-                Object.values(updatedWork?.photos)?.map((img, index) => {
-                  return (
-                    <div
-                      className="work-management--image-wrapper"
-                      key={img.img || `img#${index}`}
-                    >
-                      <Fab
-                        size="small"
-                        aria-label="delete"
-                        onClick={() => handleRemoveImage(index)}
-                      >
-                        <CloseIcon fontSize="small" />
-                      </Fab>
-                      <img
-                        alt={img.id}
-                        src={img?.img || window?.URL?.createObjectURL(img)}
-                      />
-                    </div>
-                  );
-                })}
-            </div>
+        <div className="work-management--image-list-wrapper">
+          <div className="work-management--image-list">
+            <SortableGallery
+              items={galleryPhotos}
+              onSortEnd={(props) => onSortEnd(props)}
+              distance={1}
+              axis="xy"
+            />
           </div>
         </div>
       </div>
