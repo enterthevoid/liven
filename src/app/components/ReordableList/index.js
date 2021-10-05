@@ -25,7 +25,7 @@ const SortableItem = sortableElement((props) => {
         aria-label="delete"
         onClick={() => onRemoveImage(value)}
       >
-        <CloseIcon fontSize="small" />
+        <CloseIcon fontSize="medium" />
       </IconButton>
       <img alt="image" src={src} />
     </Paper>
