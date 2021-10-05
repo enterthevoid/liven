@@ -26,7 +26,7 @@ import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
 // Components
 import Navigation from "../../components/Navigation";
-// import NotFound from "../../components/NotFound";
+import NotFound from "../../components/NotFound";
 
 // Containers
 import Works from "../Works";
@@ -72,24 +72,19 @@ class App extends React.Component {
     const routes = [];
 
     routes.push(
-      <Route exact path="/login" component={Login} key="100" />,
-      <Route exact path="/works" component={Works} key="101" />,
-      <Route exact path="/about" component={About} key="102" />,
-      <Redirect exact path="/" to="/works" key="103" />,
-      // <Route component={NotFound} key="104" />,
-      //TODO: Integrate Not Foun Page
+      <Route path="/login" component={Login} key="100" />,
+      <Route path="/works" component={Works} key="101" />,
+      <Route path="/about" component={About} key="102" />,
+      <Route path="*" component={NotFound} key="104" />,
+      <Redirect path="/" to="/works" key="103" />,
 
-      !authChecked ? (
-        <Redirect exact path="/management" to="/works" key="105" />
-      ) : undefined
+      authChecked
+        ? routes.push(
+            <Redirect path="/login" to="/management" key="106" />,
+            <Route path="/management" component={Management} key="107" />
+          )
+        : routes.push(<Redirect path="/management" to="/works" key="105" />)
     );
-
-    if (authChecked) {
-      routes.push(
-        <Redirect exact path="/login" to="/management" key="106" />,
-        <Route exact path="/management" component={Management} key="107" />
-      );
-    }
 
     return routes;
   };
