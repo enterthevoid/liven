@@ -103,6 +103,18 @@
   padding: 16px;
   height: 100%;
 
+  &--wrapper {
+    display: flex;
+
+    @media only screen and (min-width: 375px) and (max-width: 766px) {
+      height: 56vh;
+    }
+
+    @media only screen and (min-width: 414px) and (max-width: 766px) {
+      height: 60vh;
+    }
+  }
+
   &--desktop {
     font-family: Source Serif Pro;
     padding: 24%;
@@ -115,7 +127,7 @@
   &--mobile {
     font-family: Source Serif Pro;
     padding: 24px;
-    align-self: flex-end;
+    align-self: center;
     font-size: 16px;
     text-align: justify;
     line-height: 1.2;

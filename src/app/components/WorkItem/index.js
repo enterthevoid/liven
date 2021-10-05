@@ -125,7 +125,7 @@ const WorkItem = (props) => {
               </div>
             );
           })}
-          <div className={`slide-item${mobileClass}`}>
+          <div className={`slide-item${mobileClass} description--wrapper`}>
             <p className={`description--${isDesktop ? "desktop" : "mobile"}`}>
               {work.description}
             </p>
