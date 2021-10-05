@@ -39,7 +39,7 @@ const WorkManagement = (props) => {
     let errors = workErrors;
 
     REQUIRED.forEach((prop) => {
-      if (isOutOfBounds(work[prop])) {
+      if (isOutOfBounds(updatedWork[prop])) {
         errors[prop] = "This field is required and cannot be empty.";
       }
     });
