@@ -62,33 +62,29 @@ export function* login({ credentials }) {
 
 // Set data to local storage
 
-export function* setAccessToken({ token }) {
-  return global.window.localStorage.setItem("accessToken", token);
+export function setAccessToken({ token }) {
+  return window.localStorage.setItem("accessToken", token);
 }
 
-export function* setAuthUser({ formattedUser }) {
-  return global.window.localStorage.setItem(
-    "authUser",
-    JSON.stringify(formattedUser)
-  );
+export function setAuthUser({ formattedUser }) {
+  return window.localStorage.setItem("authUser", JSON.stringify(formattedUser));
 }
 
 // Remove data from local storage
-
-export function* unsetAccessToken() {
-  return global.window.localStorage.removeItem("accessToken");
+export function unsetAccessToken() {
+  return window.localStorage.removeItem("accessToken");
 }
 
-export function* unsetAuthUser() {
-  return global.window.localStorage.removeItem("authUser");
+export function unsetAuthUser() {
+  return window.localStorage.removeItem("authUser");
 }
 
 // Check authentication
 
 export function* checkAuth() {
   try {
-    const accessToken = global.window.localStorage.getItem("accessToken");
-    const authUser = global.window.localStorage.getItem("authUser");
+    const accessToken = window.localStorage.getItem("accessToken");
+    const authUser = window.localStorage.getItem("authUser");
     let currentTime = new Date().getTime() / 1000;
     let formattedUser;
 

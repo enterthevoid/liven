@@ -14,6 +14,7 @@ import {
   deleteWorkSuccess,
   deleteWorkFailure,
 } from "./actions";
+import { checkAuthFailure } from "../auth/actions";
 
 // Action Types
 import {
@@ -27,7 +28,7 @@ import {
 import { API_WORKS } from "../../config/api";
 
 export function* loadWorksList({ workId }) {
-  const accessToken = global.window.localStorage.getItem("accessToken");
+  const accessToken = window.localStorage.getItem("accessToken");
   const queryParams = [];
   if (!!workId) queryParams.push(`workId=${workId}`);
 
@@ -66,7 +67,7 @@ export function* createWork({ work }) {
     work.photos.forEach((img) => formData.append("photos", img));
   }
 
-  const accessToken = global.window.localStorage.getItem("accessToken");
+  const accessToken = window.localStorage.getItem("accessToken");
   const requestParams = {
     method: "post",
     url: `${API_WORKS}`,
@@ -86,6 +87,10 @@ export function* createWork({ work }) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
+
+      if (error.response.status === 401) {
+        yield put(checkAuthFailure());
+      }
     }
 
     yield put(createWorkFailure());
@@ -117,7 +122,7 @@ export function* updateWork({ work }) {
     formData.append("photos", JSON.stringify(oldImages));
   }
 
-  const accessToken = global.window.localStorage.getItem("accessToken");
+  const accessToken = window.localStorage.getItem("accessToken");
   const requestParams = {
     method: "post",
     url: `${API_WORKS}/${work.id}`,
@@ -135,6 +140,10 @@ export function* updateWork({ work }) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
+
+      if (error.response.status === 401) {
+        yield put(checkAuthFailure());
+      }
     }
 
     yield put(updateWorkFailure());
@@ -147,7 +156,7 @@ export function* updateWork({ work }) {
 // Delete work
 
 export function* deleteWork({ workId }) {
-  const accessToken = global.window.localStorage.getItem("accessToken");
+  const accessToken = window.localStorage.getItem("accessToken");
   const requestParams = {
     method: "delete",
     url: `${API_WORKS}/${workId}`,
@@ -164,6 +173,10 @@ export function* deleteWork({ workId }) {
     let errorMessage = error.message;
     if (error.response) {
       errorMessage = error.response.data.message;
+    }
+
+    if (error.response.status === 401) {
+      yield put(checkAuthFailure());
     }
 
     yield put(deleteWorkFailure());
