@@ -92,7 +92,7 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { errors, user } = this.state;
+    const { errors } = this.state;
 
     return (
       <div className="login">
@@ -102,7 +102,6 @@ class LoginPage extends React.Component {
             label="E-mail address"
             variant="outlined"
             type="email"
-            value={user?.email}
             error={!!errors?.email}
             onChange={(e) => this.handleChange("email", e.target.value)}
             helperText={errors.email}
@@ -113,7 +112,6 @@ class LoginPage extends React.Component {
             label="Password"
             variant="outlined"
             type="password"
-            value={user?.password}
             error={!!errors?.password}
             onChange={(e) => this.handleChange("password", e.target.value)}
             helperText={errors.password}
