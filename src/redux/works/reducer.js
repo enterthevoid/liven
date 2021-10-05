@@ -1,4 +1,4 @@
-import keyBy from "lodash/keyBy";
+import { keyBy } from "lodash";
 
 import {
   LOAD_WORKS_LIST,
