@@ -17,6 +17,11 @@
   }
 }
 
+// TODO: Remove this after About info content will be generated
+.--mobile {
+  height: 60vh !important;
+}
+
 .about {
   display: flex;
   justify-content: center;
@@ -66,7 +71,8 @@
     // }
 
     &--mobile {
-      justify-content: flex-start;
+      display: flex;
+      align-items: flex-end;
       padding: 24px;
       padding-top: 8px;
 

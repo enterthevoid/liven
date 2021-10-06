@@ -7,7 +7,7 @@ import "./styles.scss";
 
 const About = () => {
   return (
-    <div className="about">
+    <div className={`about ${isMobile ? "--mobile" : ""}`}>
       <div className={`about--content${isMobile ? "--mobile" : ""}`}>
         {
           //TODO: Change info
