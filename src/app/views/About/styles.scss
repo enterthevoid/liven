@@ -46,11 +46,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    width: 100%;
 
     &--contacts {
       margin-top: 18%;
       display: flex;
-      justify-content: space-between;
+      justify-content: space-around;
 
       &--mobile {
         margin-top: 24px;
@@ -59,10 +60,10 @@
       }
     }
 
-    &--contacts:first-child {
-      justify-content: flex-start;
-      padding-left: 0px;
-    }
+    // &--contacts:first-child {
+    //   justify-content: flex-start;
+    //   padding-left: 0px;
+    // }
 
     &--mobile {
       justify-content: flex-start;
@@ -88,8 +89,9 @@
   }
 }
 
-@media screen and (min-width: 1280px) and (max-width: 4200px) {
-  .about--content {
-    width: 50%;
-  }
-}
+// TODO: After changing About Info handle sizes
+// @media screen and (min-width: 1280px) and (max-width: 4200px) {
+//   .about--content {
+//     width: 50%;
+//   }
+// }

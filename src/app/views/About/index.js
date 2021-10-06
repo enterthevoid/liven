@@ -9,11 +9,13 @@ const About = () => {
   return (
     <div className="about">
       <div className={`about--content${isMobile ? "--mobile" : ""}`}>
-        <h1>
+        {
+          //TODO: Change info
+          /* <h1>
           Hi, I’m <span>Alexandra Liven (Stets)</span> media artist which mostly
           work with
-          <span> photography and design</span>. <span> Contributor</span> of
-          Stocksy United. <span> Based</span> in Uzhhorod, Ukraine. 14.12.1995
+          <span> photography and design</span>.<span> Contributor</span> of
+          Stocksy United.<span> Based</span> in Uzhhorod, Ukraine. 14.12.1995
           borned in Korosten’, Zhytomir region, Ukraine.{" "}
           <span> Exhibition </span>
           2018 - solo exhibition Offline Gallery. Uzhhorod. UA 2018 -
@@ -26,7 +28,8 @@ const About = () => {
           Dream Doc 2020.
           <span> Published in</span> book by Periscop.ua ‘Alternative
           Archeology’ .
-        </h1>
+        </h1> */
+        }
 
         <div
           className={`about--content--contacts${isMobile ? "--mobile" : ""}`}
