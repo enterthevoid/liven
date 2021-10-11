@@ -34,6 +34,14 @@ const makeSelectWorksLoadedCount = () =>
 const makeSelectWorksLoading = () =>
   createSelector(selectWorksDomain, (state) => state.worksLoading);
 
+// is Creating
+const makeSelectWorksCreating = () =>
+  createSelector(selectWorksDomain, (state) => state.workCreating);
+
+// is Updating
+const makeSelectWorksUpdating = () =>
+  createSelector(selectWorksDomain, (state) => state.workUpdating);
+
 export {
   makeSelectWorkById,
   makeSelectWorksIdList,
@@ -41,4 +49,6 @@ export {
   makeSelectWorksCount,
   makeSelectWorksLoadedCount,
   makeSelectWorksLoading,
+  makeSelectWorksCreating,
+  makeSelectWorksUpdating,
 };
