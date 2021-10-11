@@ -72,18 +72,18 @@ class App extends React.Component {
     const routes = [];
 
     routes.push(
-      <Route path="/login" component={Login} key="100" />,
-      <Route path="/works" component={Works} key="101" />,
-      <Route path="/about" component={About} key="102" />,
-      <Route path="*" component={NotFound} key="104" />,
-      <Redirect path="/" to="/works" key="103" />,
+      <Route path="/login" component={Login} />,
+      <Route path="/works" component={Works} />,
+      <Route path="/about" component={About} />,
+      <Redirect exact path="/" to="/works" />,
+      <Route path="*" component={NotFound} />,
 
       authChecked
         ? routes.push(
-            <Redirect path="/login" to="/management" key="106" />,
-            <Route path="/management" component={Management} key="107" />
+            <Redirect path="/login" to="/management" />,
+            <Route path="/management" component={Management} />
           )
-        : routes.push(<Redirect path="/management" to="/works" key="105" />)
+        : routes.push(<Redirect path="/management" to="/works" />)
     );
 
     return routes;
