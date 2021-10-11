@@ -3,6 +3,11 @@ import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 import { isBrowser, isMobile } from "react-device-detect";
 
+// Material
+import Drawer from "@material-ui/core/Drawer";
+import Button from "@material-ui/core/Button";
+import LogoutIcon from "@material-ui/icons/ExitToApp";
+
 // Constants
 import { themes } from "../../../utils/constants";
 
@@ -10,12 +15,23 @@ import { themes } from "../../../utils/constants";
 import "./styles.scss";
 
 const Navigation = (props) => {
-  const { worksList, triggerSwitchTheme, isDark, location, authChecked } =
-    props;
+  const {
+    worksList,
+    triggerSwitchTheme,
+    isDark,
+    location,
+    authChecked,
+    isDrawerOpen,
+    onCloseDrawer,
+    onLogout,
+  } = props;
   const setDark = isDark ? "dark" : "";
-
-  return (
-    <div className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}>
+  const isManagement = location.pathname === "/management";
+  const content = (
+    <div
+      className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}
+      style={isManagement ? { paddingTop: 42 } : {}}
+    >
       <NavLink
         className={`navbar__item ${setDark}`}
         activeClassName={`navbar__item navbar__item--active ${setDark}`}
@@ -74,6 +90,28 @@ const Navigation = (props) => {
       )}
     </div>
   );
+
+  if (isManagement) {
+    return (
+      <Drawer anchor="left" open={isDrawerOpen} onClose={() => onCloseDrawer()}>
+        {content}
+
+        <Button
+          color="secondary"
+          style={{ margin: 24 }}
+          onClick={() => {
+            onLogout();
+            onCloseDrawer();
+          }}
+          startIcon={<LogoutIcon />}
+        >
+          Logout
+        </Button>
+      </Drawer>
+    );
+  } else {
+    return content;
+  }
 };
 
 // Props
@@ -83,6 +121,9 @@ Navigation.propTypes = {
   isDark: PropTypes.bool,
   location: PropTypes.object,
   authChecked: PropTypes.bool,
+  isDrawerOpen: PropTypes.bool,
+  onCloseDrawer: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 export default withRouter(Navigation);

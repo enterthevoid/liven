@@ -20,11 +20,7 @@ const SortableItem = sortableElement((props) => {
 
   return (
     <Paper className="image-card">
-      <IconButton
-        size="small"
-        aria-label="delete"
-        onClick={() => onRemoveImage(value)}
-      >
+      <IconButton size="small" aria-label="delete" onClick={onRemoveImage}>
         <CloseIcon fontSize="medium" />
       </IconButton>
       <img alt="image" src={src} />
@@ -63,7 +59,7 @@ const ReordableList = (props) => {
           key={`item-${index}_${value.img || value.name}`}
           index={index}
           value={value}
-          onRemoveImage={(value) => handleRemoveImage(value)}
+          onRemoveImage={() => handleRemoveImage(value)}
         />
       ))}
     </SortableContainer>

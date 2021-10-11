@@ -13,9 +13,13 @@ import { isMobile } from "react-device-detect";
 import PropTypes from "prop-types";
 import "react-toastify/dist/ReactToastify.css";
 
+// Material
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+
 // Actions
 import { loadWorksList } from "../../../redux/works/actions";
-import { checkAuth } from "../../../redux/auth/actions";
+import { checkAuth, checkAuthFailure } from "../../../redux/auth/actions";
 
 // Selectors
 import {
@@ -42,6 +46,7 @@ import "./App.scss";
 class App extends React.Component {
   state = {
     theme: themes.LIGHT,
+    isDrawerOpen: false,
   };
 
   componentDidMount() {
@@ -61,6 +66,16 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { location } = this.props;
+    const { isDrawerOpen } = this.state;
+    const isManagement = location.pathname === "/management";
+
+    if (
+      prevProps.location.pathname === "/management" &&
+      !isManagement &&
+      isDrawerOpen
+    ) {
+      this.setState({ isDrawerOpen: false });
+    }
 
     if (location.pathname === "/about" && prevState.theme !== themes.DARK) {
       this.setState({ theme: themes.DARK });
@@ -72,26 +87,26 @@ class App extends React.Component {
     const routes = [];
 
     routes.push(
-      <Route path="/login" component={Login} />,
-      <Route path="/works" component={Works} />,
-      <Route path="/about" component={About} />,
-      <Redirect exact path="/" to="/works" />,
-      <Route path="*" component={NotFound} />,
+      <Route path="/login" component={Login} key="100" />,
+      <Route path="/works" component={Works} key="101" />,
+      <Route path="/about" component={About} key="102" />,
+      <Redirect exact path="/" to="/works" key="103" />,
+      <Route path="*" component={NotFound} key="104" />,
 
       authChecked
         ? routes.push(
-            <Redirect path="/login" to="/management" />,
-            <Route path="/management" component={Management} />
+            <Redirect path="/login" to="/management" key="106" />,
+            <Route path="/management" component={Management} key="107" />
           )
-        : routes.push(<Redirect path="/management" to="/works" />)
+        : routes.push(<Redirect path="/management" to="/works" key="105" />)
     );
 
     return routes;
   };
 
   render() {
-    const { worksList, location, authChecked } = this.props;
-    const { theme } = this.state;
+    const { worksList, location, authChecked, onLogout } = this.props;
+    const { theme, isDrawerOpen } = this.state;
 
     const isDark = theme === themes?.DARK;
     const isLogin = location.pathname === "/login";
@@ -106,13 +121,30 @@ class App extends React.Component {
         </Helmet>
         <div className={`app ${isDark ? "dark" : ""}`}>
           {!isLogin && (
-            <div className={`app--heading${isMobile ? "--mobile" : ""}`}>
+            <div
+              className={`app--heading${isMobile ? "--mobile" : ""}`}
+              style={isManagement ? { justifyContent: "space-between" } : {}}
+            >
+              {isManagement && (
+                <IconButton
+                  style={{ height: 42, width: 42, margin: 24 }}
+                  onClick={() => this.setState({ isDrawerOpen: !isDrawerOpen })}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
               <h1>Alexandra Liven</h1>
             </div>
           )}
-          <div className={`app--content${isMobile ? "--mobile" : ""}`}>
+          <div
+            className={`app--content${isMobile ? "--mobile" : ""}`}
+            style={isManagement ? { height: "inherit" } : {}} //TODO: Move inline styles to css file
+          >
             {!isLogin && (
               <Navigation
+                onLogout={onLogout}
+                isDrawerOpen={isDrawerOpen}
+                onCloseDrawer={() => this.setState({ isDrawerOpen: false })}
                 worksList={Object.values(worksList || [])}
                 triggerSwitchTheme={(themeType) =>
                   this.setState({ theme: themeType })
@@ -152,6 +184,7 @@ App.propTypes = {
   authChecked: PropTypes.bool,
   onLoadWorksList: PropTypes.func,
   onCheckAuth: PropTypes.func,
+  onLogout: PropTypes.func,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -163,6 +196,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = {
   onLoadWorksList: () => loadWorksList(),
   onCheckAuth: () => checkAuth(),
+  onLogout: () => checkAuthFailure(),
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
