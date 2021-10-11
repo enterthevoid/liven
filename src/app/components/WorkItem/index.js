@@ -5,6 +5,7 @@ import { Carousel } from "react-responsive-carousel";
 import { connect } from "react-redux";
 import { isMobile, isDesktop } from "react-device-detect";
 import { NavLink, withRouter } from "react-router-dom";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 // Material
 import IconButton from "@material-ui/core/IconButton";
@@ -18,7 +19,7 @@ import { makeSelectWorkById } from "../../../redux/works/selectors";
 import Loader from "../Loader";
 
 // Assets
-import placeholder from "../../../assets/placeholder.jpg";
+import placeholder from "../../../assets/placeholder.png";
 
 // Styles
 import "react-responsive-carousel/lib/styles/carousel.min.css";
@@ -113,7 +114,7 @@ const WorkItem = (props) => {
           {Object.values(work?.photos)?.map((photo, index) => {
             return (
               <div key={index} className="slide-item">
-                <img
+                <LazyLoadImage
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
