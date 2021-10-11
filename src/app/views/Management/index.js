@@ -58,7 +58,7 @@ const ManagementPage = () => {
       dispatch(updateWork(work, work.id));
     }
 
-    setSelectedWork(false);
+    setSelectedWork(work);
     setCreateWork(false);
   };
 
