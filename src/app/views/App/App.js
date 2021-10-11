@@ -57,9 +57,7 @@ class App extends React.Component {
       this.setState({ theme: themes.DARK });
     }
 
-    if (worksCount === null) {
-      onLoadWorksList();
-    }
+    if (worksCount === null) onLoadWorksList();
 
     onCheckAuth();
   }
@@ -84,6 +82,8 @@ class App extends React.Component {
 
   generateRoutes = () => {
     const { authChecked } = this.props;
+
+    const accessToken = window.localStorage.getItem("accessToken");
     const routes = [];
 
     routes.push(
@@ -93,12 +93,12 @@ class App extends React.Component {
       <Redirect exact path="/" to="/works" key="103" />,
       <Route path="*" component={NotFound} key="104" />,
 
-      authChecked
-        ? routes.push(
+      !accessToken && !authChecked
+        ? routes.push(<Redirect path="/management" to="/works" key="105" />)
+        : routes.push(
             <Redirect path="/login" to="/management" key="106" />,
             <Route path="/management" component={Management} key="107" />
           )
-        : routes.push(<Redirect path="/management" to="/works" key="105" />)
     );
 
     return routes;
@@ -127,7 +127,12 @@ class App extends React.Component {
             >
               {isManagement && (
                 <IconButton
-                  style={{ height: 42, width: 42, margin: 24 }}
+                  style={{
+                    height: 42,
+                    width: 42,
+                    margin: 24,
+                    alignSelf: "center",
+                  }} //TODO: Move inline styles to css file
                   onClick={() => this.setState({ isDrawerOpen: !isDrawerOpen })}
                 >
                   <MenuIcon />
@@ -155,7 +160,7 @@ class App extends React.Component {
             )}
             <div
               className="app--content--page"
-              style={isManagement ? { padding: 16 } : {}} //TODO: Move inline styles to css file
+              style={isManagement ? { padding: 16, paddingTop: 4 } : {}} //TODO: Move inline styles to css file
             >
               <Switch location={location}>{this.generateRoutes()}</Switch>
             </div>
