@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-key */
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { isMobile } from "react-device-detect";
+import PropTypes from "prop-types";
 
 // Material
 import Paper from "@material-ui/core/Paper";
@@ -18,7 +19,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 
 // Actions
 import {
-  loadWorksList,
   updateWork,
   deleteWork,
   createWork,
@@ -35,17 +35,10 @@ import "./styles.scss";
 const ManagementPage = () => {
   const dispatch = useDispatch();
 
-  const worksCount = useSelector((state) => state.works.worksCount);
-  const worksLoading = useSelector((state) => state.works.worksLoading);
   const worksList = useSelector((state) => state.works.worksList);
-
   const workDeleting = useSelector((state) => state.works.workDeleting);
   const workCreating = useSelector((state) => state.works.workCreating);
   const workUpdating = useSelector((state) => state.works.workUpdating);
-
-  useEffect(() => {
-    dispatch(loadWorksList());
-  }, [worksCount === null && !worksLoading]);
 
   const [selectedWork, setSelectedWork] = useState(false);
   const [isCreateWork, setCreateWork] = useState(false);
@@ -69,7 +62,7 @@ const ManagementPage = () => {
 
   if (isMobile) return <h3>Sorry but this page available only for desktop</h3>;
 
-  if (workDeleting || workCreating || !workUpdating) {
+  if (workDeleting || workCreating || workUpdating) {
     return <Loader inputStyles={{ top: "45%", left: "45%" }} />;
   }
 
@@ -153,6 +146,15 @@ const ManagementPage = () => {
       )}
     </Paper>
   );
+};
+
+// Props
+
+ManagementPage.propTypes = {
+  workCreating: PropTypes.bool,
+  workUpdating: PropTypes.bool,
+  workDeleting: PropTypes.bool,
+  worksList: PropTypes.object,
 };
 
 export default withRouter(ManagementPage);

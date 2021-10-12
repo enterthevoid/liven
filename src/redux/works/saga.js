@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from "redux-saga/effects";
+import { call, put, takeLatest } from "redux-saga/effects";
 import axios from "axios";
 
 import { toast } from "react-toastify";
@@ -189,8 +189,8 @@ export function* deleteWork({ workId }) {
 }
 
 export default function* overviewSaga() {
-  yield takeEvery(LOAD_WORKS_LIST, loadWorksList);
-  yield takeEvery(CREATE_WORK, createWork);
-  yield takeEvery(UPDATE_WORK, updateWork);
-  yield takeEvery(DELETE_WORK, deleteWork);
+  yield takeLatest(LOAD_WORKS_LIST, loadWorksList);
+  yield takeLatest(CREATE_WORK, createWork);
+  yield takeLatest(UPDATE_WORK, updateWork);
+  yield takeLatest(DELETE_WORK, deleteWork);
 }
