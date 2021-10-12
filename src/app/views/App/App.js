@@ -25,8 +25,6 @@ import { checkAuth, checkAuthFailure } from "../../../redux/auth/actions";
 import {
   makeSelectWorksList,
   makeSelectWorksCount,
-  makeSelectWorksUpdating,
-  makeSelectWorksCreating,
 } from "../../../redux/works/selectors";
 import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
 
@@ -65,17 +63,9 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { location, isWorkCreating, isWorkUpdating, onLoadWorksList } =
-      this.props;
+    const { location } = this.props;
     const { isDrawerOpen } = this.state;
     const isManagement = location.pathname === "/management";
-
-    if (
-      (prevProps.isWorkUpdating && !isWorkUpdating) ||
-      (prevProps.isWorkCreating && !isWorkCreating)
-    ) {
-      onLoadWorksList();
-    }
 
     if (
       prevProps.location.pathname === "/management" &&
@@ -200,16 +190,12 @@ App.propTypes = {
   onLoadWorksList: PropTypes.func,
   onCheckAuth: PropTypes.func,
   onLogout: PropTypes.func,
-  isWorkCreating: PropTypes.bool,
-  isWorkUpdating: PropTypes.bool,
 };
 
 const mapStateToProps = createStructuredSelector({
   worksList: makeSelectWorksList(),
   worksCount: makeSelectWorksCount(),
   authChecked: makeSelectAuthChecked(),
-  isWorkCreating: makeSelectWorksUpdating(),
-  isWorkUpdating: makeSelectWorksCreating(),
 });
 
 const mapDispatchToProps = {

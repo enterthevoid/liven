@@ -132,7 +132,9 @@ export function* updateWork({ work }) {
     data: formData,
   };
   try {
-    yield call(axios, requestParams);
+    const response = yield call(axios, requestParams);
+    const { work } = response.data;
+
     yield put(updateWorkSuccess(work));
 
     toast.success("Successfully updated!");
