@@ -1,3 +1,4 @@
+import { useRef, useEffect } from "react";
 /* eslint-disable no-useless-escape */
 
 const checkEmail = (value) => {
@@ -6,4 +7,12 @@ const checkEmail = (value) => {
   return re.test(String(value).toLowerCase());
 };
 
-export { checkEmail };
+const usePrevious = (value) => {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  });
+  return ref.current;
+};
+
+export { checkEmail, usePrevious };

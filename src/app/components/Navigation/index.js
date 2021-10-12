@@ -14,18 +14,17 @@ import { themes } from "../../../utils/constants";
 // Styles
 import "./styles.scss";
 
-const Navigation = (props) => {
-  const {
-    worksList,
-    triggerSwitchTheme,
-    isDark,
-    location,
-    authChecked,
-    isDrawerOpen,
-    onCloseDrawer,
-    onLogout,
-  } = props;
-  const setDark = isDark ? "dark" : "";
+const Navigation = ({
+  worksList,
+  triggerSwitchTheme,
+  isDarkTheme,
+  location,
+  authChecked,
+  isDrawerOpen,
+  onCloseDrawer,
+  onLogout,
+}) => {
+  const setDark = isDarkTheme ? "dark" : "";
   const isManagement = location.pathname === "/management";
   const content = (
     <div
@@ -118,7 +117,7 @@ const Navigation = (props) => {
 Navigation.propTypes = {
   worksList: PropTypes.array,
   triggerSwitchTheme: PropTypes.func,
-  isDark: PropTypes.bool,
+  isDarkTheme: PropTypes.bool,
   location: PropTypes.object,
   authChecked: PropTypes.bool,
   isDrawerOpen: PropTypes.bool,
