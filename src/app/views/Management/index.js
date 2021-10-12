@@ -69,7 +69,9 @@ const ManagementPage = () => {
 
   if (isMobile) return <h3>Sorry but this page available only for desktop</h3>;
 
-  if (workDeleting || workCreating || workUpdating) return <Loader />;
+  if (workDeleting || workCreating || !workUpdating) {
+    return <Loader inputStyles={{ top: "45%", left: "45%" }} />;
+  }
 
   return (
     <Paper elevation={3} className="management">
