@@ -186,13 +186,14 @@ const WorkItem = ({ work, workLinks }) => {
               ) : (
                 <LazyLoadImage
                   effect="blur"
-                  placeholderSrc={placeholder}
+                  placeholderSrc={item?.img}
                   className={classes.carouselCardInner}
                   wrapperClassName={classes.LazyLoadWrapper}
                   src={item?.img || ""}
                   alt="liven_img"
                   onError={(e) => {
                     e.target.onerror = null;
+                    e.target.src = placeholder;
                   }}
                 />
               )}
