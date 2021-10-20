@@ -1,17 +1,62 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
-import { isMobile } from "react-device-detect";
+import { makeStyles } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
 
-// Styles
-import "./styles.scss";
+const useStyles = makeStyles((theme) => ({
+  aboutWrapper: () => {
+    const white = theme.palette.grey[50];
+    const whiteLigth = "#bdbdbd";
+
+    return {
+      height: "100%",
+      fontFamily: "Source Serif Pro",
+      "& h1": {
+        fontSize: 18,
+        fontWeight: 300,
+        textAlign: "justify",
+        lineHeight: 1.4,
+        color: whiteLigth,
+        margin: theme.spacing(1),
+      },
+      "& span": {
+        fontStyle: "italic",
+        fontWeight: 500,
+        color: white,
+      },
+      "& a": {
+        color: "inherit",
+      },
+    };
+  },
+  aboutContent: {
+    width: "50%",
+    [theme.breakpoints.down("sm")]: {
+      width: "92%",
+    },
+  },
+  contactsWrapper: {
+    paddingTop: theme.spacing(4),
+    width: "100%",
+  },
+}));
 
 const About = () => {
+  const classes = useStyles();
+
   return (
-    <div className={`about ${isMobile ? "--mobile" : ""}`}>
-      <div className={`about--content${isMobile ? "--mobile" : ""}`}>
-        {
-          //TODO: Change info
-          /* <h1>
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      className={classes.aboutWrapper}
+    >
+      <Box
+        display="flex"
+        flexDirection="column"
+        className={classes.aboutContent}
+      >
+        <h1>
           Hi, I’m <span>Alexandra Liven (Stets)</span> media artist which mostly
           work with
           <span> photography and design</span>.<span> Contributor</span> of
@@ -28,19 +73,19 @@ const About = () => {
           Dream Doc 2020.
           <span> Published in</span> book by Periscop.ua ‘Alternative
           Archeology’ .
-        </h1> */
-        }
-
-        <div
-          className={`about--content--contacts${isMobile ? "--mobile" : ""}`}
+        </h1>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          className={classes.contactsWrapper}
         >
-          <div className="fl-left">
+          <Box display="flex" flexDirection="column">
             <h1>
               <span>Contact</span>
             </h1>
             <h1>+380994300820</h1>
-          </div>
-          <div className="fl-right">
+          </Box>
+          <Box display="flex" flexDirection="column">
             <h1>
               <a href="mailto:lexandraliven@gmail.com">
                 lexandraliven@gmail.com
@@ -54,10 +99,10 @@ const About = () => {
                 @alexandraliven
               </a>
             </h1>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
