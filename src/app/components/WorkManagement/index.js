@@ -28,6 +28,9 @@ const useStyles = makeStyles((theme) => ({
     height: "calc(100vh - 234px)",
     paddingTop: theme.spacing(2),
   },
+  imageListPlaceholderWrapper: {
+    height: "100%",
+  },
   deleteButton: {
     marginLeft: theme.spacing(2),
   },
@@ -182,11 +185,22 @@ const WorkManagement = ({ work, onSubmit, onDelete }) => {
         </Box>
 
         <div className={classes.imageListWrapper}>
-          <ReordableList
-            items={newWork?.photos || []}
-            handleRemoveImage={(item) => handleRemoveImage(item)}
-            handleSort={(sortedItems) => handleSort(sortedItems)}
-          />
+          {newWork?.id ? (
+            <ReordableList
+              items={newWork?.photos || []}
+              handleRemoveImage={(item) => handleRemoveImage(item)}
+              handleSort={(sortedItems) => handleSort(sortedItems)}
+            />
+          ) : (
+            <Box
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              className={classes.imageListPlaceholderWrapper}
+            >
+              <p>Add some photos</p>
+            </Box>
+          )}
         </div>
       </Box>
     </Box>
