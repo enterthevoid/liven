@@ -59,14 +59,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   }),
-
   burgerMenu: {
     height: 42,
     width: 42,
     margin: theme.spacing(3),
     alignSelf: "center",
   },
-
   content: (props) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
@@ -75,10 +73,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     height: props.isManagement ? "inherit" : "100%",
   }),
-
   page: (props) => ({
     height: "100%",
-
     width: "100%",
     padding: props.isManagement ? "4px 16px 16px 16px" : "auto",
   }),
@@ -211,8 +207,6 @@ const App = ({
     </React.Fragment>
   );
 };
-
-// Props
 
 App.propTypes = {
   worksList: PropTypes.object,
