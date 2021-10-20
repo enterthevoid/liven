@@ -9,7 +9,11 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import { login } from "../../../redux/auth/actions";
 import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
-import { checkEmail, usePrevious } from "../../../utils/helpers";
+import {
+  checkEmail,
+  usePrevious,
+  useEventListener,
+} from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   login: { width: "100%", height: "100vh" },
@@ -25,20 +29,11 @@ const LoginPage = ({ authChecked, onLogin, history, location }) => {
   const isLogin = location.pathname === "/login";
   const { errors, user } = loginData;
 
-  const onKeyPressed = (e) => {
-    if (e.keyCode === 13 && isLogin) {
+  useEventListener("keydown", (e) => {
+    if (e.code === "Enter" && isLogin) {
       handleSubmit();
-      document.removeEventListener("keydown", (e) => onKeyPressed(e));
     }
-  };
-
-  useEffect(() => {
-    document.addEventListener("keydown", (e) => onKeyPressed(e));
-
-    return () => {
-      document.removeEventListener("keydown", (e) => onKeyPressed(e));
-    };
-  }, []);
+  });
 
   useEffect(() => {
     if (!prevAuthChecked && authChecked) {
