@@ -86,7 +86,7 @@ export function* createWork({ work }) {
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
-      errorMessage = error.response.data.message;
+      errorMessage = error.response.data.error.message;
 
       if (error.response.status === 401) {
         yield put(checkAuthFailure());
@@ -141,7 +141,7 @@ export function* updateWork({ work }) {
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
-      errorMessage = error.response.data.message;
+      errorMessage = error.response.data.error.message;
 
       if (error.response.status === 401) {
         yield put(checkAuthFailure());
@@ -174,7 +174,7 @@ export function* deleteWork({ workId }) {
   } catch (error) {
     let errorMessage = error.message;
     if (error.response) {
-      errorMessage = error.response.data.message;
+      errorMessage = error.response.data.error.message;
     }
 
     if (error.response.status === 401) {

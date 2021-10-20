@@ -48,7 +48,7 @@ export function* login({ credentials }) {
   } catch (error) {
     let errorMessage = error;
     if (error?.response) {
-      errorMessage = error.response.data.message;
+      errorMessage = error.response.data.error.message;
     }
     if (error.response.data.statusCode === 401) {
       errorMessage = "Incorrect username or password.";
