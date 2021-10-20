@@ -7,11 +7,18 @@ const useStyles = makeStyles((theme) => ({
   aboutWrapper: () => {
     const white = theme.palette.grey[50];
     const whiteLigth = "#bdbdbd";
-
+    const headerHeightMobile = 152; // Header + Navigation
+    const headerHeight = 108; // Header
     return {
-      height: "100%",
+      [theme.breakpoints.down("sm")]: {
+        height: window.innerHeight - headerHeightMobile,
+      },
+      height: window.innerHeight - headerHeight,
       fontFamily: "Source Serif Pro",
       "& h1": {
+        [theme.breakpoints.down("sm")]: {
+          fontSize: 16,
+        },
         fontSize: 18,
         fontWeight: 300,
         textAlign: "justify",
