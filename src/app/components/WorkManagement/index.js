@@ -1,83 +1,98 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { isEqual } from "lodash";
-
-// Material
+import { makeStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Box from "@material-ui/core/Box";
-
-// Components
 import ImagePicker from "../ImagePicker";
 import ReordableList from "../ReordableList";
 
-// Styles
-import "./styles.scss";
+const useStyles = makeStyles((theme) => ({
+  workManagement: {
+    width: "100%",
+  },
+  form: {
+    padding: theme.spacing(2),
+    "& > *": {
+      width: 300,
+      marginTop: theme.spacing(1),
+    },
+  },
+  imageListWrapper: {
+    width: "100%",
+    overflow: "auto",
+    height: "calc(100vh - 234px)",
+    paddingTop: theme.spacing(2),
+  },
+  deleteButton: {
+    marginLeft: theme.spacing(2),
+  },
+  heading: {
+    padding: theme.spacing(3),
+  },
+}));
 
-const WorkManagement = (props) => {
-  const { work, onSubmit, onDelete } = props;
-  const defaultErr = {
-    description: false,
-    name: false,
-  };
-  const [updatedWork, setUpdateWork] = useState(work);
-  const [workErrors, setWorkErrors] = useState(defaultErr);
+const defaultErr = {
+  description: false,
+  name: false,
+};
 
+const WorkManagement = ({ work, onSubmit, onDelete }) => {
+  const [workManagementData, setWorkManagementData] = useState({
+    newWork: work,
+    errors: defaultErr,
+  });
   useEffect(() => {
-    setUpdateWork(work);
-    setWorkErrors(defaultErr);
+    setWorkManagementData({ newWork: work, errors: defaultErr });
   }, [work]);
+  const { newWork, errors } = workManagementData;
 
   const validate = () => {
     const REQUIRED = ["name", "description"];
     const isOutOfBounds = (s) => !s || s.length < 2;
-    let errors = workErrors;
+    let currErrors = errors;
 
     REQUIRED.forEach((prop) => {
-      if (isOutOfBounds(updatedWork[prop])) {
-        errors[prop] = true;
+      if (isOutOfBounds(newWork[prop])) {
+        currErrors[prop] = true;
       }
     });
 
-    setWorkErrors(errors);
+    setWorkManagementData({ newWork, errors: currErrors });
     return !errors.name || !errors.description;
   };
 
   const handleChange = (prop, data) => {
-    let newWork = { ...updatedWork, [`${prop}`]: data };
-
+    let currWork = { ...newWork, [`${prop}`]: data };
     if (prop === "photos") {
-      newWork = { ...updatedWork, photos: [...updatedWork.photos, ...data] };
+      currWork = { ...newWork, photos: [...newWork.photos, ...data] };
     }
 
-    let errors = workErrors;
+    let currErrors = errors;
     if (data.length > 0) {
-      errors[prop] = false;
+      currErrors[prop] = false;
     } else {
-      errors[prop] = true;
+      currErrors[prop] = true;
     }
 
-    setWorkErrors(errors);
-    setUpdateWork(newWork);
+    setWorkManagementData({ newWork: currWork, errors: currErrors });
   };
-
   const handleSubmit = () => {
     if (validate()) {
-      onSubmit(updatedWork);
+      onSubmit(newWork);
     }
   };
-
   const handleDelete = (workId) => {
     onDelete(workId);
   };
-
   const handleRemoveImage = (item) => {
-    let newWork = {
-      ...updatedWork,
-      photos: updatedWork.photos.filter((elem) => {
+    let currWork = {
+      ...newWork,
+      photos: newWork.photos.filter((elem) => {
         if (elem?.type === "image/jpeg") {
           return elem.name !== item.name;
         } else {
@@ -86,104 +101,97 @@ const WorkManagement = (props) => {
       }),
     };
 
-    setUpdateWork(newWork);
+    setWorkManagementData({ newWork: currWork, errors });
   };
-
   const handleSort = (sortedItems) => {
     const sortedWork = {
-      ...updatedWork,
+      ...newWork,
       photos: sortedItems,
     };
-
-    setUpdateWork(sortedWork);
+    setWorkManagementData({ newWork: sortedWork, errors });
   };
-
   const getHelperText = (isErr) =>
     isErr ? "This field is required and cannot be empty." : " ";
+  const classes = useStyles();
 
   return (
-    <div className="work-management">
+    <Box
+      display="flex"
+      flexDirection="column"
+      className={classes.workManagement}
+    >
       <Box
         display="flex"
         justifyContent="space-between"
-        style={{ padding: 24 }}
+        className={classes.heading}
       >
         <Typography variant="h5" component="p">
           Work Details
         </Typography>
 
-        <Box>
+        <div>
           <ImagePicker onChange={(files) => handleChange("photos", files)} />
 
-          {updatedWork?.id && (
+          {newWork?.id && (
             <Button
               variant="contained"
               color="secondary"
-              style={{ marginLeft: 12 }} //TODO: Move inline styles to css
+              className={classes.deleteButton}
               startIcon={<DeleteIcon />}
-              onClick={() => handleDelete(updatedWork.id)}
+              onClick={() => handleDelete(newWork.id)}
             >
               Delete Work
             </Button>
           )}
-        </Box>
+        </div>
       </Box>
       <Divider />
 
-      <div className="work-management--flex">
-        <div className="work-management--form">
+      <Box display="flex">
+        <Box display="flex" flexDirection="column" className={classes.form}>
           <TextField
             id="name"
             label="Name"
             variant="outlined"
-            value={updatedWork?.name}
-            error={workErrors.name}
+            value={newWork?.name}
+            error={errors.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            helperText={getHelperText(workErrors.name)}
-            style={{ width: 300 }} //TODO: Move inline styles to css
+            helperText={getHelperText(errors.name)}
           />
-
           <TextField
-            style={{ marginTop: 16, width: 300 }} //TODO: Move inline styles to css
             id="description"
             label="Description"
             variant="outlined"
             multiline
-            rows={6}
-            value={updatedWork?.description}
+            rows={8}
+            value={newWork?.description}
             onChange={(e) => handleChange("description", e.target.value)}
-            error={workErrors.description}
-            helperText={getHelperText(workErrors.description)}
+            error={errors.description}
+            helperText={getHelperText(errors.description)}
           />
-
           <Button
             variant="contained"
             color="primary"
             onClick={() => handleSubmit()}
-            style={{ marginTop: 12 }} //TODO: Move inline styles to css
             disabled={
-              isEqual(updatedWork, work) ||
-              workErrors.name ||
-              workErrors.description
+              isEqual(newWork, work) || errors.name || errors.description
             }
           >
             Save Work
           </Button>
-        </div>
+        </Box>
 
-        <div className="work-management--image-list-wrapper">
+        <div className={classes.imageListWrapper}>
           <ReordableList
-            items={updatedWork?.photos || []}
+            items={newWork?.photos || []}
             handleRemoveImage={(item) => handleRemoveImage(item)}
             handleSort={(sortedItems) => handleSort(sortedItems)}
           />
         </div>
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
-
-// Props
 
 WorkManagement.propTypes = {
   work: PropTypes.object,

@@ -1,12 +1,8 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-
-// Material
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
-
-// Styles
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,8 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ImagePicker = (props) => {
-  const { onChange } = props;
+const ImagePicker = ({ onChange }) => {
   const classes = useStyles();
 
   return (
@@ -47,11 +42,8 @@ const ImagePicker = (props) => {
   );
 };
 
-// Props
-
 ImagePicker.propTypes = {
   onChange: PropTypes.func,
-  style: PropTypes.object,
 };
 
 export default ImagePicker;

@@ -1,22 +1,33 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { isDesktop } from "react-device-detect";
+import { withRouter } from "react-router-dom";
+import { makeStyles } from "@material-ui/core/styles";
+import { isMobile } from "react-device-detect";
 import SkewLoader from "react-spinners/SkewLoader";
 
-// Styles
-import "./styles.scss";
+const useStyles = makeStyles({
+  loaderWrapper: ({ isManagement, isMobile }) => ({
+    position: "relative",
+    height: "100%",
+    width: "100%",
+    left: isManagement || isMobile ? "45%" : "calc(100% - (250px + 43%))",
+    top: isManagement || isMobile ? "45%" : "calc(100% - (124px + 43%))",
+  }),
+});
 
-const Loader = ({ inputStyles }) => (
-  <div
-    className={`loader-wrapper ${isDesktop ? "desktop" : "mobile"}`}
-    style={inputStyles}
-  >
-    <SkewLoader size={16} />
-  </div>
-);
+const Loader = ({ location }) => {
+  const isManagement = location.pathname === "/management";
+  const classes = useStyles({ isManagement, isMobile });
 
-Loader.propTypes = {
-  inputStyles: PropTypes.object,
+  return (
+    <div className={classes.loaderWrapper}>
+      <SkewLoader size={16} />
+    </div>
+  );
 };
 
-export default Loader;
+Loader.propTypes = {
+  location: PropTypes.object,
+};
+
+export default withRouter(Loader);

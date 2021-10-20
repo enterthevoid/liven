@@ -1,51 +1,88 @@
-/**
- *
- * App
- *
- */
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
 import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
-import { isMobile } from "react-device-detect";
-import PropTypes from "prop-types";
+import { makeStyles } from "@material-ui/core/styles";
 import "react-toastify/dist/ReactToastify.css";
-
-// Material
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-
-// Actions
+import Box from "@material-ui/core/Box";
 import { loadWorksList } from "../../../redux/works/actions";
 import { checkAuth, checkAuthFailure } from "../../../redux/auth/actions";
-
-// Selectors
 import {
   makeSelectWorksList,
   makeSelectWorksCount,
 } from "../../../redux/works/selectors";
 import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
-
-// Components
 import Navigation from "../../components/Navigation";
 import NotFound from "../../components/NotFound";
-
-// Containers
 import Works from "../Works";
 import About from "../About";
 import Login from "../Login";
 import Management from "../Management";
-
-// Constants
 import { themes } from "../../../utils/constants";
-
-// Helpers
 import { usePrevious } from "../../../utils/helpers";
 
-// Styles
-import "./App.scss";
+const useStyles = makeStyles((theme) => ({
+  app: (props) => {
+    const { isDarkTheme } = props;
+    const white = theme.palette.grey[50];
+    const black = theme.palette.grey[900];
+
+    return {
+      height: "100vh",
+      overflow: "hidden",
+      userSelect: "none",
+      backgroundColor: isDarkTheme ? black : white,
+      color: isDarkTheme ? white : black,
+    };
+  },
+  heading: (props) => ({
+    height: 124,
+    userSelect: "none",
+    justifyContent: props.isManagement ? "space-between" : "flex-end",
+    "& h1": {
+      fontSize: 24,
+      padding: theme.spacing(5),
+      margin: 0,
+    },
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+      padding: "theme.spacing(3) !important",
+      height: "auto !important",
+      "& h1": {
+        textAlign: "center",
+        fontSize: "14px !important",
+      },
+    },
+  }),
+
+  burgerMenu: {
+    height: 42,
+    width: 42,
+    margin: theme.spacing(3),
+    alignSelf: "center",
+  },
+
+  content: (props) => ({
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+    },
+    width: "100%",
+    overflow: "hidden",
+    height: props.isManagement ? "inherit" : "100%",
+  }),
+
+  page: (props) => ({
+    height: "100%",
+
+    width: "100%",
+    padding: props.isManagement ? "4px 16px 16px 16px" : "auto",
+  }),
+}));
 
 const App = ({
   worksList,
@@ -63,8 +100,8 @@ const App = ({
   const isLogin = location.pathname === "/login";
   const isDarkTheme = theme === themes?.DARK;
 
+  const classes = useStyles({ isDarkTheme, isManagement });
   const prevLocation = usePrevious(location);
-  const prevTheme = usePrevious(theme);
 
   useEffect(() => {
     if (location.pathname === "/about" && theme !== themes.DARK) {
@@ -87,15 +124,17 @@ const App = ({
     ) {
       setToogleDrawer(false);
     }
-
-    if (
-      !!prevTheme &&
-      prevTheme !== themes.DARK &&
-      location.pathname === "/about"
-    ) {
-      setToogleAppTheme(themes.DARK);
-    }
   });
+
+  const onSwitchTheme = (themeType) => {
+    if (!isDarkTheme && themeType === themes.LIGHT) {
+      return null;
+    } else if (isDarkTheme && themeType === themes.DARK) {
+      return null;
+    } else {
+      setToogleAppTheme(themeType);
+    }
+  };
 
   const generateRoutes = () => {
     const accessToken = window.localStorage.getItem("accessToken");
@@ -126,50 +165,40 @@ const App = ({
         <title>Alexandra Liven</title>
         <meta name="description" content="Liven" />
       </Helmet>
-      <div className={`app ${isDarkTheme ? "dark" : ""}`}>
+      <Box className={classes.app} display="flex" flexDirection="column">
         {!isLogin && (
-          <div
-            className={`app--heading${isMobile ? "--mobile" : ""}`}
-            style={isManagement ? { justifyContent: "space-between" } : {}}
+          <Box
+            display="flex"
+            justifyContent="flex-end"
+            className={classes.heading}
           >
             {isManagement && (
               <IconButton
-                style={{
-                  height: 42,
-                  width: 42,
-                  margin: 24,
-                  alignSelf: "center",
-                }} //TODO: Move inline styles to css file
+                className={classes.burgerMenu}
                 onClick={() => setToogleDrawer(!isDrawerOpen)}
               >
                 <MenuIcon />
               </IconButton>
             )}
             <h1>Alexandra Liven</h1>
-          </div>
+          </Box>
         )}
-        <div
-          className={`app--content${isMobile ? "--mobile" : ""}`}
-          style={isManagement ? { height: "inherit" } : {}} //TODO: Move inline styles to css file
-        >
+        <Box display="flex" className={classes.content}>
           {!isLogin && (
             <Navigation
               onLogout={onLogout}
               isDrawerOpen={isDrawerOpen}
               onCloseDrawer={() => setToogleDrawer(false)}
               worksList={Object.values(worksList || [])}
-              triggerSwitchTheme={(themeType) => setToogleAppTheme(themeType)}
+              triggerSwitchTheme={(themeType) => onSwitchTheme(themeType)}
               isDarkTheme={isDarkTheme}
               authChecked={authChecked}
             />
           )}
-          <div
-            className="app--content--page"
-            style={isManagement ? { padding: 16, paddingTop: 4 } : {}} //TODO: Move inline styles to css file
-          >
+          <div className={classes.page}>
             <Switch location={location}>{generateRoutes()}</Switch>
           </div>
-        </div>
+        </Box>
         <ToastContainer
           position="top-center"
           autoClose={3000}
@@ -178,7 +207,7 @@ const App = ({
           rtl={false}
           draggable
         />
-      </div>
+      </Box>
     </React.Fragment>
   );
 };

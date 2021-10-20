@@ -1,11 +1,10 @@
-/* eslint-disable react/jsx-key */
 import React, { useState, Fragment } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
 import { isMobile } from "react-device-detect";
-import PropTypes from "prop-types";
-
-// Material
+import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -16,29 +15,54 @@ import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-
-// Actions
 import {
   updateWork,
   deleteWork,
   createWork,
 } from "../../../redux/works/actions";
-
-// Components
+import {
+  makeSelectWorksList,
+  makeSelectWorkCreating,
+  makeSelectWorkUpdating,
+  makeSelectWorkDeleting,
+} from "../../../redux/works/selectors";
 import WorkManagement from "../../components/WorkManagement";
 import SmallModal from "../../components/Modal";
 import Loader from "../../components/Loader";
 
-// Styles
-import "./styles.scss";
+const useStyles = makeStyles((theme) => ({
+  management: {
+    width: "100%",
+    height: window.innerHeight - 128,
+    display: "flex",
+  },
+  worksList: {
+    minWidth: 350,
+  },
+  placeholder: {
+    width: "100%",
+  },
+  whiteSpace: {
+    whiteSpace: "pre",
+  },
+  list: {
+    padding: 0,
+  },
+  listHeading: {
+    padding: theme.spacing(2),
+  },
+}));
 
-const ManagementPage = () => {
-  const dispatch = useDispatch();
-
-  const worksList = useSelector((state) => state.works.worksList);
-  const workDeleting = useSelector((state) => state.works.workDeleting);
-  const workCreating = useSelector((state) => state.works.workCreating);
-  const workUpdating = useSelector((state) => state.works.workUpdating);
+const ManagementPage = ({
+  onUpdateWork,
+  onCreateWork,
+  onDeleteWork,
+  workCreating,
+  workUpdating,
+  workDeleting,
+  worksList,
+}) => {
+  const classes = useStyles();
 
   const [selectedWork, setSelectedWork] = useState(false);
   const [isCreateWork, setCreateWork] = useState(false);
@@ -46,9 +70,9 @@ const ManagementPage = () => {
 
   const handleSubmit = (work) => {
     if (isCreateWork) {
-      dispatch(createWork(work));
+      onCreateWork(work);
     } else {
-      dispatch(updateWork(work, work.id));
+      onUpdateWork(work, work.id);
     }
 
     setSelectedWork(work);
@@ -56,41 +80,39 @@ const ManagementPage = () => {
   };
 
   const handleDelete = (workId) => {
-    dispatch(deleteWork(workId));
+    onDeleteWork(workId);
     setSelectedWork(false);
   };
 
   if (isMobile) return <h3>Sorry but this page available only for desktop</h3>;
 
   if (workDeleting || workCreating || workUpdating) {
-    return <Loader inputStyles={{ top: "45%", left: "45%" }} />;
+    return <Loader />;
   }
 
   return (
-    <Paper elevation={3} className="management">
-      <div className="management--work-list">
+    <Paper elevation={3} className={classes.management}>
+      <div className={classes.worksList}>
         <Box
           display="flex"
           justifyContent="space-between"
-          padding={"24px"}
+          className={classes.listHeading}
           alignItems="center"
         >
-          <Typography variant="h5" component="p" style={{ whiteSpace: "pre" }}>
-            {/* TODO: Move inline styles to css */}
+          <Typography className={classes.whiteSpace} variant="h5" component="p">
             Works List
           </Typography>
           <Button
             onClick={() => setCreateWork(true)}
             variant="contained"
             color="primary"
-            style={{ whiteSpace: "pre" }} //TODO: Move inline styles to css
+            className={classes.whiteSpace}
             startIcon={<AddIcon />}
           >
             Create Work
           </Button>
         </Box>
-        <List component="nav" style={{ paddingTop: 0 }}>
-          {/* TODO: Move inline styles to css */}
+        <List component="nav" className={classes.list}>
           <Divider />
           {Object.values(worksList).map((work) => (
             <Fragment key={work.id}>
@@ -140,21 +162,42 @@ const ManagementPage = () => {
           onDelete={() => setDeleteConfirm(true)}
         />
       ) : (
-        <div className="management--placeholder">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          className={classes.placeholder}
+        >
           <h3>Select Item</h3>
-        </div>
+        </Box>
       )}
     </Paper>
   );
 };
 
-// Props
-
 ManagementPage.propTypes = {
+  onUpdateWork: PropTypes.func,
+  onCreateWork: PropTypes.func,
+  onDeleteWork: PropTypes.func,
   workCreating: PropTypes.bool,
   workUpdating: PropTypes.bool,
   workDeleting: PropTypes.bool,
   worksList: PropTypes.object,
 };
 
-export default withRouter(ManagementPage);
+const mapStateToProps = createStructuredSelector({
+  worksList: makeSelectWorksList(),
+  workDeleting: makeSelectWorkDeleting(),
+  workCreating: makeSelectWorkCreating(),
+  workUpdating: makeSelectWorkUpdating(),
+});
+
+const mapDispatchToProps = {
+  onUpdateWork: (work) => updateWork(work, work.id),
+  onCreateWork: (work) => createWork(work),
+  onDeleteWork: (work) => deleteWork(work, work.id),
+};
+
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ManagementPage)
+);

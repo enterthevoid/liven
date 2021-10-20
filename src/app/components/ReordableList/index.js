@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { sortableContainer, sortableElement } from "react-sortable-hoc";
 import { arrayMoveImmutable } from "array-move";
-
-// Material
 import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
@@ -24,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     },
     "& img": {
       padding: theme.spacing(1),
-      paddingTop: 38,
+      paddingTop: theme.spacing(5),
       height: 124,
       width: 124,
       objectFit: "contain",
@@ -79,8 +77,6 @@ const ReordableList = ({ items, handleRemoveImage, handleSort }) => {
     </SortableContainer>
   );
 };
-
-// Props
 
 ReordableList.propTypes = {
   items: PropTypes.array,

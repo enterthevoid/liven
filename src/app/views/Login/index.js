@@ -3,20 +3,12 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
-
-// Material
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
-
-// Actions
 import { login } from "../../../redux/auth/actions";
-
-// Selectors
 import { makeSelectAuthChecked } from "../../../redux/auth/selectors";
-
-// Helpers
 import { checkEmail, usePrevious } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({

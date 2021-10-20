@@ -1,18 +1,58 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
-import { isBrowser, isMobile } from "react-device-detect";
-
-// Material
+import { isBrowser } from "react-device-detect";
+import clsx from "clsx";
+import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
-
-// Constants
+import Box from "@material-ui/core/Box";
 import { themes } from "../../../utils/constants";
 
-// Styles
-import "./styles.scss";
+const useStyles = makeStyles((theme) => ({
+  navbar: (props) => ({
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "row",
+      justifyContent: "space-evenly",
+      marginBottom: theme.spacing(2),
+      paddingLeft: theme.spacing(3),
+      height: "auto",
+      width: "auto",
+    },
+    paddingTop: props.isManagement ? theme.spacing(5) : 0,
+    marginBottom: theme.spacing(3),
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(3),
+    width: 250,
+    height: window.innerHeight - 124,
+    overflowY: "auto",
+  }),
+  navbarItem: ({ isDarkTheme }) => ({
+    fontSize: 16,
+    fontWeight: 700,
+    textDecoration: "none",
+    padding: theme.spacing(1.5),
+    margin: 0,
+    color: isDarkTheme ? theme.palette.grey[50] : theme.palette.grey[900],
+    borderRadius: 4,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    height: 18,
+  }),
+  navbarSubItem: {
+    fontWeight: "500 !important",
+    marginBottom: `${theme.spacing(0.5)}px !important`,
+  },
+  activeItem: {
+    textDecoration: "line-through !important",
+    fontStyle: "italic",
+  },
+  button: {
+    margin: theme.spacing(2),
+  },
+}));
 
 const Navigation = ({
   worksList,
@@ -24,70 +64,51 @@ const Navigation = ({
   onCloseDrawer,
   onLogout,
 }) => {
-  const setDark = isDarkTheme ? "dark" : "";
   const isManagement = location.pathname === "/management";
-  const content = (
-    <div
-      className={`navbar-wrapper${isMobile ? "--mobile" : ""} ${setDark}`}
-      style={isManagement ? { paddingTop: 42 } : {}}
-    >
-      <NavLink
-        className={`navbar__item ${setDark}`}
-        activeClassName={`navbar__item navbar__item--active ${setDark}`}
-        to="works"
-        title="Works"
-        onClick={() => triggerSwitchTheme(themes.LIGHT)}
-      >
-        Works
-      </NavLink>
+  const classes = useStyles({ isDarkTheme, isManagement });
 
-      {!!worksList &&
-        isBrowser &&
+  const renderNavItem = (title, themeType, pathTo, isActive) => {
+    const getActiveClassName = () => {
+      if (isActive !== undefined) {
+        return isActive ? classes.activeItem : "";
+      } else {
+        return classes.activeItem;
+      }
+    };
+    const className =
+      pathTo !== undefined
+        ? clsx(classes.navbarSubItem, classes.navbarItem)
+        : classes.navbarItem;
+    const to = pathTo || title.toLowerCase();
+
+    return (
+      <NavLink
+        key={to}
+        className={className}
+        activeClassName={getActiveClassName()}
+        to={to}
+        title={title}
+        onClick={() => triggerSwitchTheme(themeType)}
+      >
+        {title}
+      </NavLink>
+    );
+  };
+
+  const content = (
+    <Box display="flex" flexDirection="column" className={classes.navbar}>
+      {renderNavItem("Works", themes.LIGHT)}
+      {isBrowser &&
+        !!worksList &&
         worksList.map((navItem) => {
           const { name, id } = navItem;
+          const isSelected = id === location?.search?.substring(1);
 
-          return (
-            <NavLink
-              key={id}
-              className={`navbar__sub-item navbar__item ${setDark} ${
-                isMobile ? "mobile" : ""
-              }`}
-              activeClassName={` 
-                ${
-                  id === location?.search?.substring(1)
-                    ? "navbar__item--active"
-                    : ""
-                } ${setDark}`}
-              to={`works?${id}`}
-              title={name}
-              onClick={() => triggerSwitchTheme(themes.LIGHT)}
-            >
-              {name}
-            </NavLink>
-          );
+          return renderNavItem(name, themes.LIGHT, `works?${id}`, isSelected);
         })}
-
-      <NavLink
-        className={`navbar__item ${setDark}`}
-        activeClassName={`navbar__item navbar__item--active ${setDark}`}
-        to="about"
-        title="About"
-        onClick={() => triggerSwitchTheme(themes.DARK)}
-      >
-        About
-      </NavLink>
-      {authChecked && !isMobile && (
-        <NavLink
-          className={`navbar__item ${setDark}`}
-          activeClassName={`navbar__item navbar__item--active ${setDark}`}
-          to="management"
-          title="Management"
-          onClick={() => triggerSwitchTheme(themes.LIGHT)}
-        >
-          Management
-        </NavLink>
-      )}
-    </div>
+      {renderNavItem("About", themes.DARK)}
+      {isBrowser && authChecked && renderNavItem("Management", themes.LIGHT)}
+    </Box>
   );
 
   if (isManagement) {
@@ -96,13 +117,13 @@ const Navigation = ({
         {content}
 
         <Button
+          startIcon={<LogoutIcon />}
+          className={classes.button}
           color="secondary"
-          style={{ margin: 24 }}
           onClick={() => {
             onLogout();
             onCloseDrawer();
           }}
-          startIcon={<LogoutIcon />}
         >
           Logout
         </Button>
@@ -113,7 +134,6 @@ const Navigation = ({
   }
 };
 
-// Props
 Navigation.propTypes = {
   worksList: PropTypes.array,
   triggerSwitchTheme: PropTypes.func,
