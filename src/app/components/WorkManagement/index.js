@@ -185,7 +185,7 @@ const WorkManagement = ({ work, onSubmit, onDelete }) => {
         </Box>
 
         <div className={classes.imageListWrapper}>
-          {newWork?.id ? (
+          {newWork?.photos.length > 0 ? (
             <ReordableList
               items={newWork?.photos || []}
               handleRemoveImage={(item) => handleRemoveImage(item)}
