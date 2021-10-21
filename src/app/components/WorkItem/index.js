@@ -111,12 +111,12 @@ const WorkItem = ({ work, workLinks }) => {
         onClickPrev={() => carousel && carousel.current.prev()}
         onClickNext={() => carousel && carousel.current.next()}
         loop
-        renderCard={(index) => {
-          const item = work?.photos[index];
+        renderCard={(index, modIndex) => {
+          const item = work?.photos[modIndex];
 
           return (
             <Box
-              key={index}
+              key={modIndex}
               display="flex"
               justifyContent="center"
               alignitems="center"
@@ -130,7 +130,7 @@ const WorkItem = ({ work, workLinks }) => {
                   className={classes.carouselCardInner}
                   wrapperClassName={classes.LazyLoadWrapper}
                   src={item?.img || ""}
-                  alt="liven_img"
+                  alt={`liven_img${modIndex}`}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
