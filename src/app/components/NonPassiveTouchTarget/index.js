@@ -9,7 +9,6 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const OPTIONS = { passive: false };
-
 class NonPassiveTouchTarget extends React.Component {
   componentDidMount() {
     this.node.addEventListener("touchmove", this.props.onTouchMove, OPTIONS);
@@ -35,19 +34,28 @@ class NonPassiveTouchTarget extends React.Component {
   };
 
   render() {
-    const { component: Component, onTouchMove, ...rest } = this.props;
-    return <Component ref={this.ref} onTouchMove={onTouchMove} {...rest} />;
+    const { component: Component, onTouchMove, work, ...rest } = this.props;
+    return (
+      <Component
+        ref={this.ref}
+        onTouchMove={onTouchMove}
+        work={work}
+        {...rest}
+      />
+    );
   }
 }
 
 NonPassiveTouchTarget.propTypes = {
   component: PropTypes.string,
   onTouchMove: PropTypes.func,
+  work: PropTypes.object,
 };
 
 NonPassiveTouchTarget.defaultProps = {
   component: "div",
   onTouchMove() {},
+  work: {},
 };
 
 export default NonPassiveTouchTarget;
