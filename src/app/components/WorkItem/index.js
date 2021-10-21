@@ -122,7 +122,7 @@ const WorkItem = ({ work, workLinks }) => {
               alignitems="center"
               className={classes.carouselCard}
             >
-              {photosCount === index + 1 ? (
+              {photosCount === modIndex + 1 ? (
                 <p>{work?.description}</p>
               ) : (
                 <LazyLoadImage
