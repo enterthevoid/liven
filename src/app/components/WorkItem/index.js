@@ -6,8 +6,7 @@ import { NavLink, withRouter } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import TouchCarousel from "react-touch-carousel";
 import touchWithMouseHOC from "react-touch-carousel/lib/touchWithMouseHOC";
-import ScrollShadow from "react-scroll-shadow";
-import { makeStyles, withTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 import Loader from "../Loader";
@@ -40,14 +39,19 @@ const useStyles = makeStyles((theme) => {
     },
     carouselCard: {
       flex: `0 0 ${isMobile ? windowWidth : windowWidth - 252}px`,
-      maxHeight: carouselHeight,
-      overflow: "hidden",
+      height: carouselHeight,
+      overflowY: "auto",
       userSelect: "none",
+    },
+    descriptionWrapper: {
+      display: "table",
+      tableLayout: "fixed",
+      width: isMobile ? "80%" : "60%",
       "&  p": {
-        padding: `${theme.spacing(4)}px  ${theme.spacing(2)}px`,
-        alignSelf: "center",
-        width: isMobile ? "80%" : "60%",
-        verticalAlign: "center",
+        padding: `${theme.spacing(4)}px ${theme.spacing(2)}px`,
+        alignSelf: isMobile ? "auto" : "center",
+        display: "table-cell",
+        verticalAlign: "middle",
       },
     },
     LazyLoadWrapper: {
@@ -61,14 +65,8 @@ const useStyles = makeStyles((theme) => {
   };
 });
 
-const WorkItem = ({ work, workLinks, theme }) => {
+const WorkItem = ({ work, workLinks }) => {
   const classes = useStyles();
-  const ligthBG = theme.palette.grey[50];
-  const darkBG = theme.palette.grey[900];
-  const shadowBoxSettings = {
-    active: `radial-gradient(at top, ${darkBG}, transparent 70%)`,
-    inactive: ligthBG,
-  };
   const cardSize = isMobile ? windowWidth : windowWidth - 250;
   const photosCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
@@ -137,18 +135,9 @@ const WorkItem = ({ work, workLinks, theme }) => {
               className={classes.carouselCard}
             >
               {photosCount === modIndex + 1 ? (
-                isMobile ? (
-                  <ScrollShadow
-                    bottomShadowColors={shadowBoxSettings}
-                    topShadowColors={shadowBoxSettings}
-                    shadowSize={2}
-                    className={classes.description}
-                  >
-                    <p>{work?.description}</p>
-                  </ScrollShadow>
-                ) : (
+                <div className={classes.descriptionWrapper}>
                   <p>{work?.description}</p>
-                )
+                </div>
               ) : (
                 <LazyLoadImage
                   effect="blur"
@@ -187,4 +176,4 @@ const mapStateToProps = () => {
   });
 };
 
-export default withTheme(withRouter(connect(mapStateToProps, null)(WorkItem)));
+export default withRouter(connect(mapStateToProps, null)(WorkItem));
