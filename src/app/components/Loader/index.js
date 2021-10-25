@@ -6,7 +6,7 @@ import { isMobile } from "react-device-detect";
 import SkewLoader from "react-spinners/SkewLoader";
 
 const useStyles = makeStyles({
-  loaderWrapper: ({ isManagement, isMobile }) => ({
+  loaderWrapper: ({ isManagement }) => ({
     position: "relative",
     height: "100%",
     width: "100%",
@@ -17,7 +17,7 @@ const useStyles = makeStyles({
 
 const Loader = ({ location }) => {
   const isManagement = location.pathname === "/management";
-  const classes = useStyles({ isManagement, isMobile });
+  const classes = useStyles({ isManagement });
 
   return (
     <div className={classes.loaderWrapper}>

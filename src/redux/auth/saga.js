@@ -1,4 +1,3 @@
-/* eslint-disable require-yield */
 import { call, put, takeLatest } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import axios from "axios";

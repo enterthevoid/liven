@@ -1,5 +1,4 @@
 import React from "react";
-import { isMobile } from "react-device-detect";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import NotFoundImage from "../../../assets/404.png";
@@ -20,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NotFound = () => {
-  const classes = useStyles({ isMobile });
+  const classes = useStyles();
 
   return (
     <Box
