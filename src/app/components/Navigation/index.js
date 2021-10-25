@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(3),
     width: 250,
-    height: window.innerHeight - 124,
+    height: "100%",
     overflowY: "auto",
   }),
   navbarItem: ({ isDarkTheme }) => ({

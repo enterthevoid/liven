@@ -7,13 +7,13 @@ import IconButton from "@material-ui/core/IconButton";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigatePrevIcon from "@material-ui/icons/NavigateBefore";
 import NonPassiveTouchTarget from "../NonPassiveTouchTarget";
+import { useWindowDimensions } from "../../../utils/helpers";
 
 const bdefStyle = {
   position: "absolute",
   top: "40%",
   zIndex: 1,
 };
-const windowWidth = window.innerWidth;
 const useStyles = makeStyles((theme) => ({
   workItemWrapper: {
     height: "inherit",
@@ -50,7 +50,9 @@ const CarouselContainer = ({
   ...rest
 }) => {
   const classes = useStyles();
-  const cardSize = isMobile ? windowWidth : windowWidth - 250;
+  const { innerWidth } = useWindowDimensions();
+  const navBarWidth = 250;
+  const cardSize = isMobile ? innerWidth : innerWidth - navBarWidth;
   const cardPadCount = 1;
   const currImgCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;

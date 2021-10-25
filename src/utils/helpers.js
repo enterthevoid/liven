@@ -16,10 +16,10 @@ const usePrevious = (value) => {
 };
 
 const getWindowDimensions = () => {
-  const { innerWidth: width, innerHeight: height } = window;
+  const { innerWidth, innerHeight } = window;
   return {
-    width,
-    height,
+    innerWidth,
+    innerHeight,
   };
 };
 

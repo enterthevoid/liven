@@ -29,11 +29,11 @@ import {
 import WorkManagement from "../../components/WorkManagement";
 import SmallModal from "../../components/Modal";
 import Loader from "../../components/Loader";
+import { useWindowDimensions } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   management: {
     width: "100%",
-    height: window.innerHeight - 128,
     display: "flex",
   },
   worksList: {
@@ -68,6 +68,9 @@ const ManagementPage = ({
   const [isCreateWork, setCreateWork] = useState(false);
   const [isDeleteConfirm, setDeleteConfirm] = useState(false);
 
+  const headerHeight = 108 + 22; // Header
+  const { innerHeight } = useWindowDimensions();
+
   const handleSubmit = (work) => {
     if (isCreateWork) {
       onCreateWork(work);
@@ -91,7 +94,11 @@ const ManagementPage = ({
   }
 
   return (
-    <Paper elevation={3} className={classes.management}>
+    <Paper
+      elevation={3}
+      className={classes.management}
+      style={{ height: innerHeight - headerHeight }}
+    >
       <div className={classes.worksList}>
         <Box
           display="flex"

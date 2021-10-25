@@ -1,19 +1,15 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { isMobile } from "react-device-detect";
 import Box from "@material-ui/core/Box";
+import { useWindowDimensions } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   aboutWrapper: () => {
     const white = theme.palette.grey[50];
     const whiteLigth = "#bdbdbd";
-    const headerHeightMobile = 152; // Header + Navigation
-    const headerHeight = 108; // Header
     return {
-      [theme.breakpoints.down("sm")]: {
-        height: window.innerHeight - headerHeightMobile,
-      },
-      height: window.innerHeight - headerHeight,
       fontFamily: "Source Serif Pro",
       "& h1": {
         [theme.breakpoints.down("sm")]: {
@@ -53,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
 
 const About = () => {
   const classes = useStyles();
+  const headerHeightMobile = 152; // Header + Navigation
+  const headerHeight = 108; // Header
+  const { innerHeight } = useWindowDimensions();
 
   return (
     <Box
@@ -60,6 +59,11 @@ const About = () => {
       justifyContent="center"
       alignItems="center"
       className={classes.aboutWrapper}
+      style={
+        isMobile
+          ? { height: innerHeight - headerHeightMobile }
+          : { height: innerHeight - headerHeight }
+      }
     >
       <Box
         display="flex"
