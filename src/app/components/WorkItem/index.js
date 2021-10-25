@@ -6,7 +6,8 @@ import { NavLink, withRouter } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import TouchCarousel from "react-touch-carousel";
 import touchWithMouseHOC from "react-touch-carousel/lib/touchWithMouseHOC";
-import { makeStyles } from "@material-ui/core/styles";
+import ScrollShadow from "react-scroll-shadow";
+import { makeStyles, withTheme } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 import Loader from "../Loader";
@@ -17,44 +18,57 @@ import "react-lazy-load-image-component/src/effects/blur.css";
 
 const windowWidth = window.innerWidth;
 
-const useStyles = makeStyles((theme) => ({
-  workLinksWrapper: {
-    padding: theme.spacing(2),
-    width: "100%",
-    height: "100%",
-    overflowY: "auto",
-  },
-  workLinkItem: {
-    fontSize: 16,
-    fontWeight: 500,
-    textDecoration: "none",
-    padding: theme.spacing(1),
-    color: theme.palette.grey[900],
-    margin: 0,
-    marginBottom: theme.spacing(1),
-    borderRadius: 4,
-  },
-  carouselCard: {
-    flex: `0 0 ${isMobile ? windowWidth : windowWidth - 252}px`,
-    overflow: "hidden",
-    userSelect: "none",
-    "&  p": {
-      alignSelf: "center",
-      width: "60%",
-    },
-  },
-  LazyLoadWrapper: {
-    textAlign: "center",
-  },
-  carouselCardInner: {
-    height: window.innerHeight - (isMobile ? 224 : 168),
-    width: "92%",
-    objectFit: "contain",
-  },
-}));
+const useStyles = makeStyles((theme) => {
+  const carouselHeight = window.innerHeight - (isMobile ? 224 : 168);
 
-const WorkItem = ({ work, workLinks }) => {
+  return {
+    workLinksWrapper: {
+      padding: theme.spacing(2),
+      width: "100%",
+      height: "100%",
+      overflowY: "auto",
+    },
+    workLinkItem: {
+      fontSize: 16,
+      fontWeight: 500,
+      textDecoration: "none",
+      padding: theme.spacing(1),
+      color: theme.palette.grey[900],
+      margin: 0,
+      marginBottom: theme.spacing(1),
+      borderRadius: 4,
+    },
+    carouselCard: {
+      flex: `0 0 ${isMobile ? windowWidth : windowWidth - 252}px`,
+      maxHeight: carouselHeight,
+      overflow: "hidden",
+      userSelect: "none",
+      "&  p": {
+        padding: `${theme.spacing(4)}px  ${theme.spacing(2)}px`,
+        alignSelf: "center",
+        width: isMobile ? "80%" : "60%",
+        verticalAlign: "center",
+      },
+    },
+    LazyLoadWrapper: {
+      textAlign: "center",
+    },
+    carouselCardInner: {
+      height: carouselHeight,
+      width: "92%",
+      objectFit: "contain",
+    },
+  };
+});
+
+const WorkItem = ({ work, workLinks, theme }) => {
   const classes = useStyles();
+  const ligthBG = theme.palette.grey[50];
+  const darkBG = theme.palette.grey[900];
+  const shadowBoxSettings = {
+    active: `radial-gradient(at top, ${darkBG}, transparent 70%)`,
+    inactive: ligthBG,
+  };
   const cardSize = isMobile ? windowWidth : windowWidth - 250;
   const photosCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
@@ -123,14 +137,25 @@ const WorkItem = ({ work, workLinks }) => {
               className={classes.carouselCard}
             >
               {photosCount === modIndex + 1 ? (
-                <p>{work?.description}</p>
+                isMobile ? (
+                  <ScrollShadow
+                    bottomShadowColors={shadowBoxSettings}
+                    topShadowColors={shadowBoxSettings}
+                    shadowSize={2}
+                    className={classes.description}
+                  >
+                    <p>{work?.description}</p>
+                  </ScrollShadow>
+                ) : (
+                  <p>{work?.description}</p>
+                )
               ) : (
                 <LazyLoadImage
                   effect="blur"
                   className={classes.carouselCardInner}
                   wrapperClassName={classes.LazyLoadWrapper}
                   src={item?.img || ""}
-                  alt={`liven_img${modIndex}`}
+                  alt={`liven_img_${modIndex}`}
                   onError={(e) => {
                     e.target.onerror = null;
                     e.target.src = placeholder;
@@ -151,6 +176,7 @@ WorkItem.propTypes = {
   work: PropTypes.object,
   workId: PropTypes.string,
   workLinks: PropTypes.array,
+  theme: PropTypes.object,
 };
 
 const mapStateToProps = () => {
@@ -161,4 +187,4 @@ const mapStateToProps = () => {
   });
 };
 
-export default withRouter(connect(mapStateToProps, null)(WorkItem));
+export default withTheme(withRouter(connect(mapStateToProps, null)(WorkItem)));
