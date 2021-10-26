@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState } from "react";
+import TextField from "@material-ui/core/TextField";
 /* eslint-disable no-useless-escape */
 
 const checkEmail = (value) => {
@@ -59,10 +60,56 @@ const useEventListener = (eventName, handler, element = window) => {
   }, [eventName, element]);
 };
 
+const validateFormik = (values) => {
+  const REQUIRED = Object.keys(values);
+  const isOutOfBounds = (s) => !s || s.length < 2;
+  const currErrors = {};
+
+  REQUIRED.forEach((prop) => {
+    if (
+      prop === "email" &&
+      !checkEmail(values[prop]) &&
+      !isOutOfBounds(values[prop])
+    ) {
+      currErrors[prop] = "This email is not valid.";
+    }
+    if (isOutOfBounds(values[prop])) {
+      currErrors[prop] = "This field is required.";
+    }
+  });
+
+  return currErrors;
+};
+
+const renderFormikTextField = (name, formik) => {
+  const { values, errors, handleChange } = formik;
+  const field = name.toLowerCase();
+  const isMultiline = name === "Description";
+  const styles = { width: 300, marginTop: 16 };
+
+  return (
+    <TextField
+      id={field}
+      label={name}
+      style={styles}
+      type={field || "text"}
+      variant="outlined"
+      value={values[`${field}`]}
+      multiline={isMultiline}
+      rows={isMultiline ? 8 : 1}
+      error={!!errors[`${field}`]}
+      onChange={handleChange}
+      helperText={errors[`${field}`] || " "}
+    />
+  );
+};
+
 export {
   checkEmail,
   usePrevious,
   useWindowDimensions,
   getWindowDimensions,
   useEventListener,
+  validateFormik,
+  renderFormikTextField,
 };
