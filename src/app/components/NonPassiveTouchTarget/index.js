@@ -5,57 +5,30 @@
  * So here is a component to workaround.
  */
 
-import React from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
+import { useEventListener } from "../../../utils/helpers";
 
-const OPTIONS = { passive: false };
-class NonPassiveTouchTarget extends React.Component {
-  componentDidMount() {
-    this.node.addEventListener("touchmove", this.props.onTouchMove, OPTIONS);
-  }
+const NonPassiveTouchTarget = ({
+  component: Component,
+  onTouchMove,
+  ...rest
+}) => {
+  const componentRef = useRef();
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.onTouchMove !== this.props.onTouchMove) {
-      this.node.removeEventListener(
-        "touchmove",
-        prevProps.onTouchMove,
-        OPTIONS
-      );
-      this.node.addEventListener("touchmove", this.props.onTouchMove, OPTIONS);
-    }
-  }
+  useEventListener("touchmove", onTouchMove, componentRef);
 
-  componentWillUnmount() {
-    this.node.removeEventListener("touchmove", this.props.onTouchMove, OPTIONS);
-  }
-
-  ref = (node) => {
-    this.node = node;
-  };
-
-  render() {
-    const { component: Component, onTouchMove, work, ...rest } = this.props;
-    return (
-      <Component
-        ref={this.ref}
-        onTouchMove={onTouchMove}
-        work={work}
-        {...rest}
-      />
-    );
-  }
-}
+  return <Component ref={componentRef} onTouchMove={onTouchMove} {...rest} />;
+};
 
 NonPassiveTouchTarget.propTypes = {
   component: PropTypes.string,
   onTouchMove: PropTypes.func,
-  work: PropTypes.object,
 };
 
 NonPassiveTouchTarget.defaultProps = {
   component: "div",
-  onTouchMove() {},
-  work: {},
+  onTouchMove: () => {},
 };
 
 export default NonPassiveTouchTarget;
