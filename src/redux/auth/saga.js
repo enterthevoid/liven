@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from "redux-saga/effects";
+import { call, put, takeLatest, takeEvery } from "redux-saga/effects";
 import { toast } from "react-toastify";
 import axios from "axios";
 import jwt from "jwt-decode";
@@ -47,14 +47,10 @@ export function* login({ credentials }) {
   } catch (error) {
     let errorMessage = error;
     if (error?.response) {
-      errorMessage = error.response.data.error.message;
-    }
-    if (error.response.data.statusCode === 401) {
-      errorMessage = "Incorrect username or password.";
-
-      toast.error(errorMessage);
+      errorMessage = error.response.data.message;
     }
 
+    toast.error(errorMessage);
     yield put(loginFailure(errorMessage));
   }
 }
@@ -117,7 +113,7 @@ export function* checkAuth() {
 }
 
 export default function* loginSaga() {
-  yield takeLatest(LOGIN, login);
+  yield takeEvery(LOGIN, login);
   yield takeLatest(LOGIN_FAILURE, unsetAccessToken);
 
   yield takeLatest(CHECK_AUTH, checkAuth);
