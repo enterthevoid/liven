@@ -28,6 +28,7 @@ import {
 import WorkManagement from "../../components/WorkManagement";
 import SmallModal from "../../components/Modal";
 import Loader from "../../components/Loader";
+import Placeholder from "../../components/Placeholder";
 import { useWindowDimensions } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
@@ -37,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
   worksList: {
     minWidth: 350,
-  },
-  placeholder: {
-    width: "100%",
   },
   whiteSpace: {
     whiteSpace: "pre",
@@ -170,14 +168,7 @@ const ManagementPage = ({
           onDelete={() => setDeleteConfirm(true)}
         />
       ) : (
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          className={classes.placeholder}
-        >
-          <h3>Select Item</h3>
-        </Box>
+        <Placeholder palceholderText="Select Item" />
       )}
     </Paper>
   );

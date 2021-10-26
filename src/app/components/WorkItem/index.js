@@ -10,7 +10,7 @@ import Box from "@material-ui/core/Box";
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 import Loader from "../Loader";
 import CarouselContainer from "../CarouselContainer";
-import placeholder from "../../../assets/placeholder.png";
+import placeholderImage from "../../../assets/placeholder.png";
 import { useEventListener, useWindowDimensions } from "../../../utils/helpers";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -147,7 +147,7 @@ const WorkItem = ({ work, workLinks }) => {
                   alt={`liven_img_${modIndex}`}
                   onError={(e) => {
                     e.target.onerror = null;
-                    e.target.src = placeholder;
+                    e.target.src = placeholderImage;
                   }}
                 />
               )}
@@ -165,7 +165,6 @@ WorkItem.propTypes = {
   work: PropTypes.object,
   workId: PropTypes.string,
   workLinks: PropTypes.array,
-  theme: PropTypes.object,
 };
 
 const mapStateToProps = () => {

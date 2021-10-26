@@ -34,8 +34,6 @@ const SmallModal = ({
   </Dialog>
 );
 
-// Props
-
 SmallModal.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,
