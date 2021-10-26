@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { isMobile } from "react-device-detect";
 import { NavLink, withRouter } from "react-router-dom";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import TouchCarousel from "react-touch-carousel";
@@ -36,17 +35,17 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
     userSelect: "none",
   },
-  descriptionWrapper: {
+  descriptionWrapper: ({ downMediumScreen }) => ({
     display: "table",
     tableLayout: "fixed",
-    width: isMobile ? "80%" : "60%",
+    width: downMediumScreen ? "80%" : "60%",
     "&  p": {
       padding: `${theme.spacing(4)}px ${theme.spacing(2)}px`,
-      alignSelf: isMobile ? "auto" : "center",
+      alignSelf: downMediumScreen ? "auto" : "center",
       display: "table-cell",
       verticalAlign: "middle",
     },
-  },
+  }),
   LazyLoadWrapper: {
     textAlign: "center",
   },
@@ -57,10 +56,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WorkItem = ({ work, workLinks }) => {
-  const classes = useStyles();
   const { innerWidth, innerHeight } = useWindowDimensions();
-  const carouselHeight = innerHeight - (isMobile ? 224 : 168);
-  const cardSize = isMobile ? innerWidth : innerWidth - 250;
+  const downMediumScreen = innerWidth < 900;
+  const classes = useStyles({ downMediumScreen });
+  const carouselHeight = innerHeight - (downMediumScreen ? 224 : 168);
+  const cardSize = downMediumScreen ? innerWidth : innerWidth - 250;
   const photosCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
   const carousel = useRef({
@@ -77,7 +77,7 @@ const WorkItem = ({ work, workLinks }) => {
     }
   });
 
-  if (isMobile && !work?.id) {
+  if (downMediumScreen && !work?.id) {
     return (
       <Box
         display="flex"
@@ -128,7 +128,9 @@ const WorkItem = ({ work, workLinks }) => {
               className={classes.carouselCard}
               style={{
                 height: carouselHeight,
-                flex: `0 0 ${isMobile ? innerWidth : innerWidth - 252}px`,
+                flex: `0 0 ${
+                  downMediumScreen ? innerWidth : innerWidth - 252
+                }px`,
               }}
             >
               {photosCount === modIndex + 1 ? (

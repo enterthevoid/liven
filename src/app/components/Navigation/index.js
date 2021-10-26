@@ -1,17 +1,17 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
-import { isBrowser } from "react-device-detect";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Box from "@material-ui/core/Box";
+import { useWindowDimensions } from "../../../utils/helpers";
 import { themes } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
-  navbar: (props) => ({
+  navbar: ({ isManagement }) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
       justifyContent: "space-evenly",
@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
       height: "auto",
       width: "auto",
     },
-    paddingTop: props.isManagement ? theme.spacing(5) : 0,
+    paddingTop: isManagement ? theme.spacing(5) : 0,
     marginBottom: theme.spacing(3),
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(3),
@@ -65,6 +65,8 @@ const Navigation = ({
   onLogout,
 }) => {
   const isManagement = location.pathname === "/management";
+  const { innerWidth } = useWindowDimensions();
+  const upMediumScreen = innerWidth > 900;
   const classes = useStyles({ isDarkTheme, isManagement });
 
   const renderNavItem = (title, themeType, pathTo, isActive) => {
@@ -98,7 +100,7 @@ const Navigation = ({
   const content = (
     <Box display="flex" flexDirection="column" className={classes.navbar}>
       {renderNavItem("Works", themes.LIGHT)}
-      {isBrowser &&
+      {upMediumScreen &&
         !!worksList &&
         worksList.map((navItem) => {
           const { name, id } = navItem;
@@ -107,7 +109,9 @@ const Navigation = ({
           return renderNavItem(name, themes.LIGHT, `works?${id}`, isSelected);
         })}
       {renderNavItem("About", themes.DARK)}
-      {isBrowser && authChecked && renderNavItem("Management", themes.LIGHT)}
+      {upMediumScreen &&
+        authChecked &&
+        renderNavItem("Management", themes.LIGHT)}
     </Box>
   );
 

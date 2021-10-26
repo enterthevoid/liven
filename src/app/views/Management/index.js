@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
-import { isMobile } from "react-device-detect";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
@@ -68,8 +67,9 @@ const ManagementPage = ({
   const [isCreateWork, setCreateWork] = useState(false);
   const [isDeleteConfirm, setDeleteConfirm] = useState(false);
 
-  const headerHeight = 108 + 22; // Header
-  const { innerHeight } = useWindowDimensions();
+  const { innerWidth, innerHeight } = useWindowDimensions();
+  const downMediumScreen = innerWidth < 900;
+  const headerHeight = 108 + 22;
 
   const handleSubmit = (work) => {
     if (isCreateWork) {
@@ -87,7 +87,8 @@ const ManagementPage = ({
     setSelectedWork(false);
   };
 
-  if (isMobile) return <h3>Sorry but this page available only for desktop</h3>;
+  if (downMediumScreen)
+    return <h3>Sorry but this page available only for desktop</h3>;
 
   if (workDeleting || workCreating || workUpdating) {
     return <Loader />;

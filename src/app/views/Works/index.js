@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import { withRouter } from "react-router-dom";
-import { isBrowser } from "react-device-detect";
 import {
   makeSelectWorksLoading,
   makeSelectWorksIdList,
@@ -11,6 +10,7 @@ import {
 } from "../../../redux/works/selectors";
 import WorkItem from "../../components/WorkItem";
 import Loader from "../../components/Loader";
+import { useWindowDimensions } from "../../../utils/helpers";
 
 const Works = ({
   worksLoading,
@@ -19,8 +19,10 @@ const Works = ({
   location,
   history,
 }) => {
+  const { innerWidth } = useWindowDimensions();
+  const upMediumScreen = innerWidth > 900;
   const isNotSelected =
-    isBrowser && worksLoadedIds?.length > 0 && location.search === "";
+    upMediumScreen && worksLoadedIds?.length > 0 && location.search === "";
 
   useEffect(() => {
     if (isNotSelected) {

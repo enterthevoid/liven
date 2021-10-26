@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { isMobile } from "react-device-detect";
 import Box from "@material-ui/core/Box";
 import { useWindowDimensions } from "../../../utils/helpers";
 
@@ -49,9 +48,10 @@ const useStyles = makeStyles((theme) => ({
 
 const About = () => {
   const classes = useStyles();
+  const { innerHeight, innerWidth } = useWindowDimensions();
+  const downMediumScreen = innerWidth < 900;
   const headerHeightMobile = 152; // Header + Navigation
   const headerHeight = 108; // Header
-  const { innerHeight } = useWindowDimensions();
 
   return (
     <Box
@@ -60,7 +60,7 @@ const About = () => {
       alignItems="center"
       className={classes.aboutWrapper}
       style={
-        isMobile
+        downMediumScreen
           ? { height: innerHeight - headerHeightMobile }
           : { height: innerHeight - headerHeight }
       }

@@ -1,7 +1,6 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
-import { isMobile, isDesktop } from "react-device-detect";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -52,15 +51,18 @@ const CarouselContainer = ({
   const classes = useStyles();
   const { innerWidth } = useWindowDimensions();
   const navBarWidth = 250;
-  const cardSize = isMobile ? innerWidth : innerWidth - navBarWidth;
+  const downMediumScreen = innerWidth < 900;
+  const cardSize = downMediumScreen ? innerWidth : innerWidth - navBarWidth;
   const cardPadCount = 1;
   const currImgCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
 
   let current = -Math.round(cursor) % currImgCount;
+
   while (current < 0) {
     current += currImgCount;
   }
+
   const translateX = (cursor - cardPadCount) * cardSize;
 
   return (
@@ -73,7 +75,7 @@ const CarouselContainer = ({
         className={classes.carouselContainer}
         carouselstate={carouselState}
       >
-        {isDesktop && (
+        {!downMediumScreen && (
           <Fragment>
             <IconButton
               className={classes.prevButton}

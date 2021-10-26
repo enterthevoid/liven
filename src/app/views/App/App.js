@@ -27,8 +27,7 @@ import { themes } from "../../../utils/constants";
 import { usePrevious } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
-  app: (props) => {
-    const { isDarkTheme } = props;
+  app: ({ isDarkTheme }) => {
     const white = theme.palette.grey[50];
     const black = theme.palette.grey[900];
 
@@ -40,15 +39,7 @@ const useStyles = makeStyles((theme) => ({
       color: isDarkTheme ? white : black,
     };
   },
-  heading: (props) => ({
-    height: 124,
-    userSelect: "none",
-    justifyContent: props.isManagement ? "space-between" : "flex-end",
-    "& h1": {
-      fontSize: 24,
-      padding: theme.spacing(5),
-      margin: 0,
-    },
+  heading: ({ isManagement }) => ({
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
       padding: "theme.spacing(3) !important",
@@ -58,6 +49,14 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "14px !important",
       },
     },
+    height: 124,
+    userSelect: "none",
+    justifyContent: isManagement ? "space-between" : "flex-end",
+    "& h1": {
+      fontSize: 24,
+      padding: theme.spacing(5),
+      margin: 0,
+    },
   }),
   burgerMenu: {
     height: 42,
@@ -65,18 +64,18 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3),
     alignSelf: "center",
   },
-  content: (props) => ({
+  content: ({ isManagement }) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "column",
     },
     width: "100%",
     overflow: "hidden",
-    height: props.isManagement ? "inherit" : "100%",
+    height: isManagement ? "inherit" : "100%",
   }),
-  page: (props) => ({
+  page: ({ isManagement }) => ({
     height: "100%",
     width: "100%",
-    padding: props.isManagement ? "4px 16px 16px 16px" : "auto",
+    padding: isManagement ? "4px 16px 16px 16px" : "auto",
   }),
 }));
 
