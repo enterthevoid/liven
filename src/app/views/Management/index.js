@@ -168,7 +168,7 @@ const ManagementPage = ({
           onDelete={() => setDeleteConfirm(true)}
         />
       ) : (
-        <Placeholder palceholderText="Select Item" />
+        <Placeholder placeholderText="Select Item" />
       )}
     </Paper>
   );
