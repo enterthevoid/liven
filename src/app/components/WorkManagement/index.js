@@ -54,7 +54,13 @@ const WorkManagement = ({ work, onSubmit, onDelete }) => {
     validate: (values) => validateFormik(values),
   });
 
-  const { errors, handleChange, handleSubmit } = formik;
+  const handleAddPhoto = (data) => {
+    let newWork = { ...currWork, photos: [...currWork.photos, ...data] };
+
+    setCurrWork(newWork);
+  };
+
+  const { errors, handleSubmit } = formik;
 
   const handleDelete = (workId) => {
     onDelete(workId);
@@ -99,7 +105,7 @@ const WorkManagement = ({ work, onSubmit, onDelete }) => {
         </Typography>
 
         <div>
-          <ImagePicker onChange={(files) => handleChange("photos", files)} />
+          <ImagePicker onChange={(files) => handleAddPhoto(files)} />
 
           {currWork?.id && (
             <Button
