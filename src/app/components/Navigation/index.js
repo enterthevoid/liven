@@ -47,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
   },
   activeItem: {
     textDecoration: "line-through !important",
-    fontStyle: "italic",
   },
   button: {
     margin: theme.spacing(2),

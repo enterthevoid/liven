@@ -12,6 +12,7 @@ const bdefStyle = {
   position: "absolute",
   top: "40%",
   zIndex: 1,
+  color: "black",
 };
 const useStyles = makeStyles((theme) => ({
   workItemWrapper: {
@@ -21,10 +22,10 @@ const useStyles = makeStyles((theme) => ({
   nextButton: { right: 16, ...bdefStyle },
   carouselContainer: {
     position: "relative",
-    width: "100%",
     margin: "0 auto",
     overflow: "hidden",
     touchAction: "pan-y",
+    marginRight: 42,
   },
   carouselTrack: {
     display: "flex",
@@ -36,6 +37,7 @@ const useStyles = makeStyles((theme) => ({
   },
   carouselPagination: {
     padding: theme.spacing(3),
+    paddingRight: 42,
     margin: 0,
   },
 }));

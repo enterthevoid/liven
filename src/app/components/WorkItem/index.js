@@ -48,11 +48,13 @@ const useStyles = makeStyles((theme) => ({
   }),
   LazyLoadWrapper: {
     textAlign: "center",
+    width: "100%",
+    height: "100%",
   },
-  carouselCardInner: {
-    width: "92%",
-    objectFit: "contain",
-  },
+  carouselCardInner: ({ downMediumScreen }) => ({
+    width: downMediumScreen ? "92%" : "100%",
+    objectFit: "cover",
+  }),
 }));
 
 const WorkItem = ({ work, workLinks }) => {
