@@ -2,31 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-// import IconButton from "@material-ui/core/IconButton";
-// import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-// import NavigatePrevIcon from "@material-ui/icons/NavigateBefore";
 import NonPassiveTouchTarget from "../NonPassiveTouchTarget";
 import { useWindowDimensions } from "../../../utils/helpers";
 
-const bdefStyle = {
-  position: "absolute",
-  top: "40%",
-  zIndex: 1,
-  color: "black",
-};
 const useStyles = makeStyles((theme) => ({
   workItemWrapper: {
     height: "inherit",
     marginRight: 40,
   },
-  prevButton: { left: 16, ...bdefStyle },
-  nextButton: { right: 16, ...bdefStyle },
   carouselContainer: {
     position: "relative",
-    // margin: "0 auto",
     overflow: "hidden",
     touchAction: "pan-y",
-    // paddingRight: 40,
   },
   carouselTrack: {
     display: "flex",
@@ -37,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     userSelect: "none",
   },
   carouselPagination: {
-    // padding: 40,
     paddingTop: theme.spacing(2),
     paddingBottom: 40,
     margin: 0,
@@ -48,14 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CarouselContainer = ({
-  // onClickNext,
-  // onClickPrev,
-  cursor,
-  carouselState,
-  work,
-  ...rest
-}) => {
+const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
   const classes = useStyles();
   const { innerWidth } = useWindowDimensions();
   const navBarWidth = 250;
@@ -83,25 +62,6 @@ const CarouselContainer = ({
         className={classes.carouselContainer}
         carouselstate={carouselState}
       >
-        {/* {!downMediumScreen && (
-          <Fragment>
-            <IconButton
-              className={classes.prevButton}
-              aria-label="prev"
-              onClick={() => onClickPrev()}
-            >
-              <NavigatePrevIcon />
-            </IconButton>
-
-            <IconButton
-              className={classes.nextButton}
-              aria-label="next"
-              onClick={() => onClickNext()}
-            >
-              <NavigateNextIcon />
-            </IconButton>
-          </Fragment>
-        )} */}
         <NonPassiveTouchTarget
           className={classes.carouselTrack}
           style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
@@ -125,8 +85,6 @@ CarouselContainer.propTypes = {
   work: PropTypes.object,
   cursor: PropTypes.any,
   carouselState: PropTypes.object,
-  onClickPrev: PropTypes.func,
-  onClickNext: PropTypes.func,
   rest: PropTypes.object,
 };
 
