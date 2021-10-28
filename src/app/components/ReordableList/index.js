@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     "& img": {
       padding: theme.spacing(1),
       paddingTop: theme.spacing(5),
-      height: 124,
-      width: 124,
+      height: 118,
+      width: 118,
       objectFit: "contain",
     },
   },
