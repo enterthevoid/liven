@@ -5,6 +5,7 @@ import { useImage } from "react-image";
 import { makeStyles } from "@material-ui/core/styles";
 import placeholderImage from "../../../assets/placeholder.png";
 import Loader from "../Loader";
+import { useWindowDimensions } from "../../../utils/helpers";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       position: "inherit",
     },
     height: carouselHeight,
-    right: 40,
+    right: 68,
     position: "absolute",
     width: "fit-content",
     objectFit: "contain",
@@ -45,12 +46,11 @@ LazyImage.propTypes = {
 };
 
 const ImageBox = (props) => {
+  const { innerWidth } = useWindowDimensions();
+  const downMediumScreen = innerWidth < 900;
   return (
-    <Suspense fallback={<Loader />}>
-      <LazyImage
-        srcLink={props.srcLink}
-        carouselHeight={props.carouselHeight}
-      />
+    <Suspense fallback={downMediumScreen ? <div /> : <Loader />}>
+      <LazyImage {...props} />
     </Suspense>
   );
 };

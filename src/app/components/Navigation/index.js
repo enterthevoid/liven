@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { NavLink, withRouter } from "react-router-dom";
 import clsx from "clsx";
@@ -7,7 +7,11 @@ import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Box from "@material-ui/core/Box";
-import { useWindowDimensions } from "../../../utils/helpers";
+import {
+  useWindowDimensions,
+  useEventListener,
+  usePrevious,
+} from "../../../utils/helpers";
 import { themes } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -59,6 +63,7 @@ const Navigation = ({
   triggerSwitchTheme,
   isDarkTheme,
   location,
+  history,
   authChecked,
   isDrawerOpen,
   onCloseDrawer,
@@ -68,8 +73,43 @@ const Navigation = ({
   const { innerWidth } = useWindowDimensions();
   const upMediumScreen = innerWidth > 900;
   const classes = useStyles({ isDarkTheme, isManagement });
+  const [cursor, setCursor] = useState(0);
+  const [pushTo, setPushTo] = useState(null);
 
-  const renderNavItem = (title, themeType, pathTo, isActive) => {
+  const NavItemsCount = Object.keys(worksList).length;
+  const showManagement = upMediumScreen && authChecked;
+  const maxCursor = showManagement ? NavItemsCount + 2 : NavItemsCount + 1;
+  const prevLocation = usePrevious(location);
+
+  useEventListener("keydown", (e) => {
+    if (e.code === "ArrowUp" && cursor !== 0) {
+      setCursor(cursor - 1);
+    }
+    if (e.code === "ArrowDown" && cursor !== maxCursor) {
+      setCursor(cursor + 1);
+    }
+
+    if (e.code === "Enter" && !!pushTo) {
+      if (pushTo === "about") {
+        triggerSwitchTheme(themes.DARK);
+      } else if (prevLocation?.pathname === "/about" && pushTo !== "about") {
+        triggerSwitchTheme(themes.LIGHT);
+      }
+      history.push(pushTo);
+    }
+  });
+
+  const allNavItems = [{ name: "Works" }];
+  const workNavItems = worksList.map((navItem) => ({
+    name: navItem.name,
+    id: navItem.id,
+  }));
+  if (upMediumScreen) {
+    allNavItems.push(...workNavItems);
+  }
+  allNavItems.push({ name: "About" }, { name: "Management" });
+
+  const renderNavItem = (hoverIndex, title, pathTo, isActive) => {
     const getActiveClassName = () => {
       if (isActive !== undefined) {
         return isActive ? classes.activeItem : "";
@@ -82,10 +122,23 @@ const Navigation = ({
         ? clsx(classes.navbarSubItem, classes.navbarItem)
         : classes.navbarItem;
     const to = pathTo || title.toLowerCase();
+    const hovered = cursor === hoverIndex && to !== "Works";
+    const themeType = to === "about" ? themes.DARK : themes.LIGHT;
+
+    if (hovered && pushTo !== to) {
+      setPushTo(to);
+    }
+
+    if (to === "management" && !showManagement) {
+      return null;
+    }
 
     return (
       <NavLink
         key={to}
+        style={
+          hovered && upMediumScreen ? { textDecoration: "line-through" } : {}
+        }
         className={className}
         activeClassName={getActiveClassName()}
         to={to}
@@ -99,19 +152,15 @@ const Navigation = ({
 
   const content = (
     <Box display="flex" flexDirection="column" className={classes.navbar}>
-      {renderNavItem("Works", themes.LIGHT)}
-      {upMediumScreen &&
-        !!worksList &&
-        worksList.map((navItem) => {
-          const { name, id } = navItem;
-          const isSelected = id === location?.search?.substring(1);
+      {allNavItems.map((navItem, index) => {
+        const { name, id } = navItem;
+        const isSelected = id === location?.search?.substring(1);
+        const params = [index, name];
 
-          return renderNavItem(name, themes.LIGHT, `works?${id}`, isSelected);
-        })}
-      {renderNavItem("About", themes.DARK)}
-      {upMediumScreen &&
-        authChecked &&
-        renderNavItem("Management", themes.LIGHT)}
+        if (id !== undefined) params.push(`works?${id}`, isSelected);
+
+        return renderNavItem(...params);
+      })}
     </Box>
   );
 
@@ -143,6 +192,7 @@ Navigation.propTypes = {
   triggerSwitchTheme: PropTypes.func,
   isDarkTheme: PropTypes.bool,
   location: PropTypes.object,
+  history: PropTypes.object,
   authChecked: PropTypes.bool,
   isDrawerOpen: PropTypes.bool,
   onCloseDrawer: PropTypes.func,
