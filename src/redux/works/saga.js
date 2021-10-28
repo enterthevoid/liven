@@ -84,9 +84,9 @@ export function* createWork({ work }) {
 
     toast.success("Successfully created!");
   } catch (error) {
-    let errorMessage = error.message;
+    let errorMessage = error?.message;
     if (error.response) {
-      errorMessage = error.response.data.error.message;
+      errorMessage = error.response.data.message;
 
       if (error.response.status === 401) {
         yield put(checkAuthFailure());
@@ -139,9 +139,9 @@ export function* updateWork({ work }) {
 
     toast.success("Successfully updated!");
   } catch (error) {
-    let errorMessage = error.message;
+    let errorMessage = error?.message;
     if (error.response) {
-      errorMessage = error.response.data.error.message;
+      errorMessage = error.response.data.message;
 
       if (error.response.status === 401) {
         yield put(checkAuthFailure());
