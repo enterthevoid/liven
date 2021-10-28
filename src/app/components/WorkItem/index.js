@@ -1,8 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { NavLink, withRouter } from "react-router-dom";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import TouchCarousel from "react-touch-carousel";
 import touchWithMouseHOC from "react-touch-carousel/lib/touchWithMouseHOC";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,9 +9,8 @@ import Box from "@material-ui/core/Box";
 import { makeSelectWorkById } from "../../../redux/works/selectors";
 import Loader from "../Loader";
 import CarouselContainer from "../CarouselContainer";
-import placeholderImage from "../../../assets/placeholder.png";
+import ImageBox from "../ImageBox";
 import { useEventListener, useWindowDimensions } from "../../../utils/helpers";
-import "react-lazy-load-image-component/src/effects/blur.css";
 
 const useStyles = makeStyles((theme) => ({
   workLinksWrapper: {
@@ -32,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 4,
   },
   carouselCard: {
+    [theme.breakpoints.down("sm")]: {
+      justifyContent: "center",
+    },
     overflowY: "auto",
     userSelect: "none",
   },
@@ -41,27 +42,16 @@ const useStyles = makeStyles((theme) => ({
     width: downMediumScreen ? "80%" : "60%",
     "&  p": {
       padding: `${theme.spacing(4)}px ${theme.spacing(2)}px`,
-      alignSelf: downMediumScreen ? "auto" : "center",
+      alignSelf: "center",
       display: "table-cell",
       verticalAlign: "middle",
     },
   }),
-  LazyLoadWrapper: {
-    // textAlign: "right",
-    // width: "100%",
-    // height: "100%",
-  },
-  carouselCardInner: {
-    right: 40,
-    position: "absolute",
-    // overflow: "hidden",
-    width: "fit-content",
-    objectFit: "contain",
-  },
 }));
 
 const WorkItem = ({ work, workLinks }) => {
   const { innerWidth, innerHeight } = useWindowDimensions();
+  const [isLoading, setLoading] = useState(false);
   const downMediumScreen = innerWidth < 900;
   const classes = useStyles({ downMediumScreen });
   const carouselHeight = innerHeight - (downMediumScreen ? 224 : 168);
@@ -73,6 +63,26 @@ const WorkItem = ({ work, workLinks }) => {
     prev: () => null,
   });
 
+  const turnOffLoading = () => {
+    setTimeout(() => setLoading(false), 300);
+  };
+
+  useEffect(() => {
+    if (!downMediumScreen) {
+      setLoading(true);
+
+      if (
+        carousel &&
+        carousel.current?.state?.cursor &&
+        carousel.current.state.cursor !== (0 || 5e-324)
+      ) {
+        carousel.current?.go(0);
+      }
+
+      turnOffLoading();
+    }
+  }, [work]);
+
   useEventListener("keydown", (e) => {
     if (e.code === "ArrowRight") {
       carousel && carousel.current.next();
@@ -81,6 +91,10 @@ const WorkItem = ({ work, workLinks }) => {
       carousel && carousel.current.prev();
     }
   });
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   if (downMediumScreen && !work?.id) {
     return (
@@ -118,8 +132,6 @@ const WorkItem = ({ work, workLinks }) => {
         cardPadCount={1}
         work={work}
         ref={carousel}
-        onClickPrev={() => carousel && carousel.current.prev()}
-        onClickNext={() => carousel && carousel.current.next()}
         loop
         renderCard={(index, modIndex) => {
           const item = work?.photos[modIndex];
@@ -141,18 +153,7 @@ const WorkItem = ({ work, workLinks }) => {
                   <p>{work?.description}</p>
                 </div>
               ) : (
-                <LazyLoadImage
-                  effect="blur"
-                  style={{ height: carouselHeight }}
-                  className={classes.carouselCardInner}
-                  wrapperClassName={classes.LazyLoadWrapper}
-                  src={item?.img || ""}
-                  alt={`liven_img_${modIndex}`}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = placeholderImage;
-                  }}
-                />
+                <ImageBox srcLink={item?.img} carouselHeight={carouselHeight} />
               )}
             </Box>
           );

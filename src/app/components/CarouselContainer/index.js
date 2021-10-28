@@ -7,10 +7,16 @@ import { useWindowDimensions } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   workItemWrapper: {
+    [theme.breakpoints.down("sm")]: {
+      marginRight: 0,
+    },
     height: "inherit",
     marginRight: 40,
   },
   carouselContainer: {
+    [theme.breakpoints.down("sm")]: {
+      textAlign: "center",
+    },
     position: "relative",
     overflow: "hidden",
     touchAction: "pan-y",
@@ -24,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     userSelect: "none",
   },
   carouselPagination: {
+    [theme.breakpoints.down("sm")]: {
+      padding: theme.spacing(3),
+    },
     paddingTop: theme.spacing(2),
     paddingBottom: 40,
     margin: 0,
@@ -50,7 +59,7 @@ const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
     current += currImgCount;
   }
 
-  const translateX = (cursor - cardPadCount) * cardSize - 20;
+  const translateX = (cursor - cardPadCount) * cardSize;
 
   return (
     <Box

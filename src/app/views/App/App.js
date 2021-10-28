@@ -197,7 +197,7 @@ const App = ({
         <ToastContainer
           position="top-center"
           autoClose={3000}
-          hideProgressBar={true}
+          hideProgressBar
           closeOnClick
           rtl={false}
           draggable

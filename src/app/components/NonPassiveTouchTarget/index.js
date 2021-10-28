@@ -3,23 +3,48 @@
  * Since iOS Safari 11.3+, all touchmove listeners are passive by default.
  * Yet it doesn't fully support CSS touch-action like Chrome does.
  * So here is a component to workaround.
+ *
+ * What is more weird is that **sometimes** even a non-passive listener cannot
+ * preventDefault. You have to nest this component inside another instance
+ * of it like:
+ * <NonPassiveTouchTarget>
+ *   <NonPassiveTouchTarget onTouchMove={fnYourListener} />
+ * </NonPassiveTouchTarget>
  */
-
-import React, { useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
-import { useEventListener } from "../../../utils/helpers";
 
-const NonPassiveTouchTarget = ({
-  component: Component,
-  onTouchMove,
-  ...rest
-}) => {
-  const componentRef = useRef();
+const OPTIONS = { passive: false };
 
-  useEventListener("touchmove", onTouchMove, componentRef);
+class NonPassiveTouchTarget extends React.Component {
+  componentDidMount() {
+    this.node.addEventListener("touchmove", this.props.onTouchMove, OPTIONS);
+  }
 
-  return <Component ref={componentRef} onTouchMove={onTouchMove} {...rest} />;
-};
+  componentDidUpdate(prevProps) {
+    if (prevProps.onTouchMove !== this.props.onTouchMove) {
+      this.node.removeEventListener(
+        "touchmove",
+        prevProps.onTouchMove,
+        OPTIONS
+      );
+      this.node.addEventListener("touchmove", this.props.onTouchMove, OPTIONS);
+    }
+  }
+
+  componentWillUnmount() {
+    this.node.removeEventListener("touchmove", this.props.onTouchMove, OPTIONS);
+  }
+
+  ref = (node) => {
+    this.node = node;
+  };
+
+  render() {
+    const { component: Component, onTouchMove, ...rest } = this.props;
+    return <Component ref={this.ref} {...rest} onTouchMove={onTouchMove} />;
+  }
+}
 
 NonPassiveTouchTarget.propTypes = {
   component: PropTypes.string,
@@ -28,7 +53,7 @@ NonPassiveTouchTarget.propTypes = {
 
 NonPassiveTouchTarget.defaultProps = {
   component: "div",
-  onTouchMove: () => {},
+  onTouchMove() {},
 };
 
 export default NonPassiveTouchTarget;
