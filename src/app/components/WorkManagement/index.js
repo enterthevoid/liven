@@ -131,7 +131,11 @@ const WorkManagement = ({ work, onSubmit, onDelete }) => {
             variant="contained"
             color="primary"
             onClick={() => handleSubmit()}
-            disabled={!!errors.name || !!errors.description}
+            disabled={
+              !!errors.name ||
+              !!errors.description ||
+              currWork?.photos.length === 0
+            }
           >
             Save Work
           </Button>
