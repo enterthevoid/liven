@@ -73,7 +73,7 @@ const Navigation = ({
   const { innerWidth } = useWindowDimensions();
   const upMediumScreen = innerWidth > 900;
   const classes = useStyles({ isDarkTheme, isManagement });
-  const [cursor, setCursor] = useState(0);
+  const [cursor, setCursor] = useState(1);
   const [pushTo, setPushTo] = useState(null);
 
   const NavItemsCount = Object.keys(worksList).length;
@@ -82,7 +82,7 @@ const Navigation = ({
   const prevLocation = usePrevious(location);
 
   useEventListener("keydown", (e) => {
-    if (e.code === "ArrowUp" && cursor !== 0) {
+    if (e.code === "ArrowUp" && cursor !== 1) {
       setCursor(cursor - 1);
     }
     if (e.code === "ArrowDown" && cursor !== maxCursor) {
@@ -122,7 +122,7 @@ const Navigation = ({
         ? clsx(classes.navbarSubItem, classes.navbarItem)
         : classes.navbarItem;
     const to = pathTo || title.toLowerCase();
-    const hovered = cursor === hoverIndex && to !== "Works";
+    const hovered = cursor === hoverIndex && hoverIndex !== 0;
     const themeType = to === "about" ? themes.DARK : themes.LIGHT;
 
     if (hovered && pushTo !== to) {
