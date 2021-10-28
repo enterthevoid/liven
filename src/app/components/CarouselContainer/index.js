@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
-import IconButton from "@material-ui/core/IconButton";
-import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import NavigatePrevIcon from "@material-ui/icons/NavigateBefore";
+// import IconButton from "@material-ui/core/IconButton";
+// import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+// import NavigatePrevIcon from "@material-ui/icons/NavigateBefore";
 import NonPassiveTouchTarget from "../NonPassiveTouchTarget";
 import { useWindowDimensions } from "../../../utils/helpers";
 
@@ -17,15 +17,16 @@ const bdefStyle = {
 const useStyles = makeStyles((theme) => ({
   workItemWrapper: {
     height: "inherit",
+    marginRight: 40,
   },
   prevButton: { left: 16, ...bdefStyle },
   nextButton: { right: 16, ...bdefStyle },
   carouselContainer: {
     position: "relative",
-    margin: "0 auto",
+    // margin: "0 auto",
     overflow: "hidden",
     touchAction: "pan-y",
-    marginRight: 42,
+    // paddingRight: 40,
   },
   carouselTrack: {
     display: "flex",
@@ -36,15 +37,20 @@ const useStyles = makeStyles((theme) => ({
     userSelect: "none",
   },
   carouselPagination: {
-    padding: theme.spacing(3),
-    paddingRight: 42,
+    // padding: 40,
+    paddingTop: theme.spacing(2),
+    paddingBottom: 40,
     margin: 0,
+    color: theme.palette.grey[600],
+    fontWeight: 500,
+    fontStyle: "italic",
+    fontSize: 15,
   },
 }));
 
 const CarouselContainer = ({
-  onClickNext,
-  onClickPrev,
+  // onClickNext,
+  // onClickPrev,
   cursor,
   carouselState,
   work,
@@ -65,7 +71,7 @@ const CarouselContainer = ({
     current += currImgCount;
   }
 
-  const translateX = (cursor - cardPadCount) * cardSize;
+  const translateX = (cursor - cardPadCount) * cardSize - 20;
 
   return (
     <Box
@@ -77,7 +83,7 @@ const CarouselContainer = ({
         className={classes.carouselContainer}
         carouselstate={carouselState}
       >
-        {!downMediumScreen && (
+        {/* {!downMediumScreen && (
           <Fragment>
             <IconButton
               className={classes.prevButton}
@@ -95,7 +101,7 @@ const CarouselContainer = ({
               <NavigateNextIcon />
             </IconButton>
           </Fragment>
-        )}
+        )} */}
         <NonPassiveTouchTarget
           className={classes.carouselTrack}
           style={{ transform: `translate3d(${translateX}px, 0, 0)` }}

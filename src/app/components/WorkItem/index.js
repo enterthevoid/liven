@@ -47,14 +47,17 @@ const useStyles = makeStyles((theme) => ({
     },
   }),
   LazyLoadWrapper: {
-    textAlign: "center",
-    width: "100%",
-    height: "100%",
+    // textAlign: "right",
+    // width: "100%",
+    // height: "100%",
   },
-  carouselCardInner: ({ downMediumScreen }) => ({
-    width: downMediumScreen ? "92%" : "100%",
-    objectFit: "cover",
-  }),
+  carouselCardInner: {
+    right: 40,
+    position: "absolute",
+    // overflow: "hidden",
+    width: "fit-content",
+    objectFit: "contain",
+  },
 }));
 
 const WorkItem = ({ work, workLinks }) => {
@@ -125,14 +128,12 @@ const WorkItem = ({ work, workLinks }) => {
             <Box
               key={modIndex}
               display="flex"
-              justifyContent="center"
+              justifyContent="flex-end"
               alignitems="center"
               className={classes.carouselCard}
               style={{
                 height: carouselHeight,
-                flex: `0 0 ${
-                  downMediumScreen ? innerWidth : innerWidth - 252
-                }px`,
+                flex: `0 0 ${cardSize}px`,
               }}
             >
               {photosCount === modIndex + 1 ? (

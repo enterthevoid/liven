@@ -28,26 +28,27 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     overflowY: "auto",
   }),
-  navbarItem: ({ isDarkTheme }) => ({
-    fontSize: 16,
+  navbarItem: {
+    fontSize: 18,
     fontWeight: 700,
     textDecoration: "none",
-    padding: theme.spacing(1.5),
+    padding: theme.spacing(1),
     margin: 0,
-    color: isDarkTheme ? theme.palette.grey[50] : theme.palette.grey[900],
+    marginBottom: theme.spacing(0.5),
+    color: theme.palette.grey[600],
     borderRadius: 4,
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
     height: 18,
-  }),
+  },
   navbarSubItem: {
     fontWeight: "500 !important",
-    marginBottom: `${theme.spacing(0.5)}px !important`,
+    marginBottom: "0px !important",
   },
-  activeItem: {
-    textDecoration: "line-through !important",
-  },
+  activeItem: ({ isDarkTheme }) => ({
+    color: isDarkTheme ? theme.palette.grey[50] : theme.palette.grey[900],
+  }),
   button: {
     margin: theme.spacing(2),
   },
