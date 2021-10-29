@@ -48,6 +48,7 @@ LazyImage.propTypes = {
 const ImageBox = (props) => {
   const { innerWidth } = useWindowDimensions();
   const downMediumScreen = innerWidth < 900;
+
   return (
     <Suspense fallback={downMediumScreen ? <div /> : <Loader />}>
       <LazyImage {...props} />

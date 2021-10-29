@@ -64,6 +64,7 @@ const WorkItem = ({ work, workLinks }) => {
   });
 
   const turnOffLoading = () => {
+    // Temporary solution to avoid scrolling issue after change workItem
     setTimeout(() => setLoading(false), 300);
   };
 
