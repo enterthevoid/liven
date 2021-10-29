@@ -143,7 +143,10 @@ const Navigation = ({
         activeClassName={getActiveClassName()}
         to={to}
         title={title}
-        onClick={() => triggerSwitchTheme(themeType)}
+        onClick={() => {
+          setCursor(hoverIndex);
+          triggerSwitchTheme(themeType);
+        }}
       >
         {title}
       </NavLink>
