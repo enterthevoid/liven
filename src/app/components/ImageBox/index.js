@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
       position: "inherit",
     },
     height: carouselHeight,
-    right: 68,
+    right: 62,
     position: "absolute",
     width: "fit-content",
     objectFit: "contain",
