@@ -45,9 +45,8 @@ const useStyles = makeStyles((theme) => ({
 
 const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
   const classes = useStyles();
-  const { innerWidth } = useWindowDimensions();
+  const { innerWidth, downMediumScreen } = useWindowDimensions();
   const navBarWidth = 250;
-  const downMediumScreen = innerWidth < 900;
   const cardSize = downMediumScreen ? innerWidth : innerWidth - navBarWidth;
   const cardPadCount = 1;
   const currImgCount =

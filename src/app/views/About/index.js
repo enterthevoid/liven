@@ -48,8 +48,7 @@ const useStyles = makeStyles((theme) => ({
 
 const About = () => {
   const classes = useStyles();
-  const { innerHeight, innerWidth } = useWindowDimensions();
-  const downMediumScreen = innerWidth < 900;
+  const { innerHeight, downMediumScreen } = useWindowDimensions();
   const headerHeightMobile = 152; // Header + Navigation
   const headerHeight = 108; // Header
 

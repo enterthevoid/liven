@@ -50,9 +50,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WorkItem = ({ work, workLinks }) => {
-  const { innerWidth, innerHeight } = useWindowDimensions();
+  const { innerWidth, innerHeight, downMediumScreen } = useWindowDimensions();
   const [isLoading, setLoading] = useState(false);
-  const downMediumScreen = innerWidth < 900;
   const classes = useStyles({ downMediumScreen });
   const carouselHeight = innerHeight - (downMediumScreen ? 224 : 168);
   const cardSize = downMediumScreen ? innerWidth : innerWidth - 250;
@@ -65,7 +64,7 @@ const WorkItem = ({ work, workLinks }) => {
 
   const turnOffLoading = () => {
     // Temporary solution to avoid scrolling issue after change workItem
-    setTimeout(() => setLoading(false), 300);
+    // setTimeout(() => setLoading(false), 300);
   };
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const WorkItem = ({ work, workLinks }) => {
     }
   });
 
-  if (isLoading) {
+  if (isLoading === 45) {
     return <Loader />;
   }
 

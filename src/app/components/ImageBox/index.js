@@ -9,22 +9,25 @@ import { useWindowDimensions } from "../../../utils/helpers";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 const useStyles = makeStyles((theme) => ({
-  carouselCardInner: (carouselHeight) => ({
+  carouselCardInner: ({ carouselHeight, innerWidth }) => ({
     [theme.breakpoints.down("sm")]: {
       width: "98%",
+      maxWidth: "100%",
       position: "inherit",
     },
     height: carouselHeight,
     right: 62,
     position: "absolute",
     width: "fit-content",
+    maxWidth: innerWidth - (250 + 40),
     objectFit: "contain",
   }),
 }));
 
 const LazyImage = ({ srcLink, carouselHeight }) => {
-  const classes = useStyles(carouselHeight);
+  const { innerWidth } = useWindowDimensions();
   const { src } = useImage({ srcList: [srcLink] });
+  const classes = useStyles({ carouselHeight, innerWidth });
 
   return (
     <LazyLoadImage
@@ -46,8 +49,7 @@ LazyImage.propTypes = {
 };
 
 const ImageBox = (props) => {
-  const { innerWidth } = useWindowDimensions();
-  const downMediumScreen = innerWidth < 900;
+  const { downMediumScreen } = useWindowDimensions();
 
   return (
     <Suspense fallback={downMediumScreen ? <div /> : <Loader />}>

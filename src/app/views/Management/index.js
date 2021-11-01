@@ -65,8 +65,7 @@ const ManagementPage = ({
   const [isCreateWork, setCreateWork] = useState(false);
   const [isDeleteConfirm, setDeleteConfirm] = useState(false);
 
-  const { innerWidth, innerHeight } = useWindowDimensions();
-  const downMediumScreen = innerWidth < 900;
+  const { downMediumScreen, innerHeight } = useWindowDimensions();
   const headerHeight = 108 + 22;
 
   const handleSubmit = (work) => {
