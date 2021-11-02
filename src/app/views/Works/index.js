@@ -19,14 +19,13 @@ const Works = ({
   location,
   history,
 }) => {
-  const { innerWidth } = useWindowDimensions();
-  const upMediumScreen = innerWidth > 900;
+  const { upMediumScreen } = useWindowDimensions();
   const isNotSelected =
     upMediumScreen && worksLoadedIds?.length > 0 && location.search === "";
 
   useEffect(() => {
     if (isNotSelected) {
-      history.push({ search: `?${worksLoadedIds[0]}` });
+      history.push({ search: worksLoadedIds[0] });
     }
   }, [isNotSelected]);
 

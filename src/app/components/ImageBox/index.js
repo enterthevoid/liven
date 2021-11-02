@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import PropTypes from "prop-types";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { useImage } from "react-image";
 import { makeStyles } from "@material-ui/core/styles";
 import placeholderImage from "../../../assets/placeholder.png";
 import Loader from "../Loader";
@@ -26,14 +25,13 @@ const useStyles = makeStyles((theme) => ({
 
 const LazyImage = ({ srcLink, carouselHeight }) => {
   const { innerWidth } = useWindowDimensions();
-  const { src } = useImage({ srcList: [srcLink] });
   const classes = useStyles({ carouselHeight, innerWidth });
 
   return (
     <LazyLoadImage
       effect="blur"
       className={classes.carouselCardInner}
-      src={src || ""}
+      src={srcLink || ""}
       alt={`liven_img_${srcLink}`}
       onError={(e) => {
         e.target.onerror = null;

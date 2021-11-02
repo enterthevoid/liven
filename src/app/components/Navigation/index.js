@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { NavLink, withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import clsx from "clsx";
 import { makeStyles } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "500 !important",
     marginBottom: "0px !important",
   },
+  hoveredItem: { textDecoration: "line-through" },
   activeItem: ({ isDarkTheme }) => ({
     color: isDarkTheme ? theme.palette.grey[50] : theme.palette.grey[900],
   }),
@@ -63,23 +64,32 @@ const Navigation = ({
   triggerSwitchTheme,
   isDarkTheme,
   location,
-  history,
   authChecked,
   isDrawerOpen,
   onCloseDrawer,
   onLogout,
 }) => {
   const isManagement = location.pathname === "/management";
-  const { innerWidth } = useWindowDimensions();
-  const upMediumScreen = innerWidth > 900;
+  const { upMediumScreen } = useWindowDimensions();
   const classes = useStyles({ isDarkTheme, isManagement });
   const [cursor, setCursor] = useState(1);
   const [pushTo, setPushTo] = useState(null);
+  const prevLocation = usePrevious(location);
+  const regLinkCheck = (elem) =>
+    ["management", "about", "works"].includes((elem || "").toLowerCase());
+  const history = useHistory();
 
   const NavItemsCount = Object.keys(worksList).length;
   const showManagement = upMediumScreen && authChecked;
   const maxCursor = showManagement ? NavItemsCount + 2 : NavItemsCount + 1;
-  const prevLocation = usePrevious(location);
+
+  const onRedirect = (pushTo) => {
+    if (regLinkCheck(pushTo)) {
+      history.push({ pathname: pushTo });
+    } else {
+      history.push({ pathname: "works", search: pushTo });
+    }
+  };
 
   useEventListener("keydown", (e) => {
     if (e.code === "ArrowUp" && cursor !== 1) {
@@ -92,10 +102,11 @@ const Navigation = ({
     if (e.code === "Enter" && !!pushTo) {
       if (pushTo === "about") {
         triggerSwitchTheme(themes.DARK);
-      } else if (prevLocation?.pathname === "/about" && pushTo !== "about") {
+      } else if (prevLocation?.pathname === "/about") {
         triggerSwitchTheme(themes.LIGHT);
       }
-      history.push(pushTo);
+
+      onRedirect(pushTo);
     }
   });
 
@@ -104,24 +115,16 @@ const Navigation = ({
     name: navItem.name,
     id: navItem.id,
   }));
-  if (upMediumScreen) {
-    allNavItems.push(...workNavItems);
-  }
+  if (upMediumScreen) allNavItems.push(...workNavItems);
+
   allNavItems.push({ name: "About" }, { name: "Management" });
 
   const renderNavItem = (hoverIndex, title, pathTo, isActive) => {
-    const getActiveClassName = () => {
-      if (isActive !== undefined) {
-        return isActive ? classes.activeItem : "";
-      } else {
-        return classes.activeItem;
-      }
-    };
     const className =
       pathTo !== undefined
         ? clsx(classes.navbarSubItem, classes.navbarItem)
         : classes.navbarItem;
-    const to = pathTo || title.toLowerCase();
+    const to = regLinkCheck(title) ? title.toLowerCase() : pathTo || "";
     const hovered = cursor === hoverIndex && hoverIndex !== 0;
     const themeType = to === "about" ? themes.DARK : themes.LIGHT;
 
@@ -134,22 +137,23 @@ const Navigation = ({
     }
 
     return (
-      <NavLink
-        key={to}
-        style={
-          hovered && upMediumScreen ? { textDecoration: "line-through" } : {}
-        }
-        className={className}
-        activeClassName={getActiveClassName()}
-        to={to}
-        title={title}
+      <div
+        key={hoverIndex}
+        className={clsx(
+          className,
+          isActive && classes.activeItem,
+          title.toLowerCase() === location.pathname.substring(1) &&
+            classes.activeItem,
+          hovered && upMediumScreen && classes.hoveredItem
+        )}
         onClick={() => {
+          onRedirect(pathTo || title.toLowerCase());
           setCursor(hoverIndex);
           triggerSwitchTheme(themeType);
         }}
       >
         {title}
-      </NavLink>
+      </div>
     );
   };
 
@@ -160,7 +164,7 @@ const Navigation = ({
         const isSelected = id === location?.search?.substring(1);
         const params = [index, name];
 
-        if (id !== undefined) params.push(`works?${id}`, isSelected);
+        if (id !== undefined) params.push(`?${id}`, isSelected);
 
         return renderNavItem(...params);
       })}
@@ -195,7 +199,6 @@ Navigation.propTypes = {
   triggerSwitchTheme: PropTypes.func,
   isDarkTheme: PropTypes.bool,
   location: PropTypes.object,
-  history: PropTypes.object,
   authChecked: PropTypes.bool,
   isDrawerOpen: PropTypes.bool,
   onCloseDrawer: PropTypes.func,

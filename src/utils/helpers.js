@@ -19,11 +19,13 @@ const usePrevious = (value) => {
 const getWindowDimensions = () => {
   const { innerWidth, innerHeight } = window;
   const downMediumScreen = innerWidth < 900;
+  const upMediumScreen = innerWidth > 900;
 
   return {
     innerWidth,
     innerHeight,
     downMediumScreen,
+    upMediumScreen,
   };
 };
 

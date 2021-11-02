@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { NavLink, withRouter } from "react-router-dom";
+import { withRouter, useHistory } from "react-router-dom";
 import TouchCarousel from "react-touch-carousel";
 import touchWithMouseHOC from "react-touch-carousel/lib/touchWithMouseHOC";
 import { makeStyles } from "@material-ui/core/styles";
@@ -55,6 +55,7 @@ const WorkItem = ({ work, workLinks }) => {
   const classes = useStyles({ downMediumScreen });
   const carouselHeight = innerHeight - (downMediumScreen ? 224 : 168);
   const cardSize = downMediumScreen ? innerWidth : innerWidth - 250;
+  const history = useHistory();
   const photosCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
   const carousel = useRef({
@@ -63,7 +64,7 @@ const WorkItem = ({ work, workLinks }) => {
   });
 
   const turnOffLoading = () => {
-    // Temporary solution to avoid scrolling issue after change workItem
+    // TODO Temporary solution to avoid scrolling issue after change workItem on decktop
     // setTimeout(() => setLoading(false), 300);
   };
 
@@ -91,8 +92,8 @@ const WorkItem = ({ work, workLinks }) => {
       carousel && carousel.current.prev();
     }
   });
-
-  if (isLoading === 45) {
+  //TODO temporary disable
+  if (isLoading === 43) {
     return <Loader />;
   }
 
@@ -109,14 +110,15 @@ const WorkItem = ({ work, workLinks }) => {
             const { name, workId } = navItem;
 
             return (
-              <NavLink
+              <div
                 key={workId}
                 className={classes.workLinkItem}
-                to={`works?${workId}`}
-                title={name}
+                onClick={() =>
+                  history.push({ pathname: "works", search: workId })
+                }
               >
                 {name}
-              </NavLink>
+              </div>
             );
           })}
       </Box>
