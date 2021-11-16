@@ -71,9 +71,9 @@ const About = () => {
       >
         <h1>
           Hi, I’m <span>Alexandra Liven (Stets)</span> media artist, working
-          with<span> photography video and design. Live</span> in Uzhhorod,
+          with<span> photography, video and design. Live</span> in Uzhhorod,
           Ukraine. 14.12.1995 borned in Korosten’, Zhytomir region, Ukraine.
-          Childhood has spent in Mukachevo, Ukraine. <span>Exhibition: </span>
+          Childhood has spent in Mukachevo, Ukraine. <span>Exhibitions: </span>
           2018 - solo exhibition Offline Gallery, Uzhhorod, UA; 2018 -
           participant of the exhibition PhotoKyiv “Phragmentation”, Kyiv, UA;
           2019 - participant of the exhibition “Intro” in Ilko Gallery,
@@ -92,7 +92,7 @@ const About = () => {
         >
           <Box display="flex" flexDirection="column">
             <h1>
-              <span>Contact</span>
+              <span>Contacts</span>
             </h1>
             <h1>+380994300820</h1>
           </Box>

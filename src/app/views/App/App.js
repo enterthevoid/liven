@@ -29,7 +29,7 @@ import { usePrevious } from "../../../utils/helpers";
 const useStyles = makeStyles((theme) => ({
   app: ({ isDarkTheme }) => {
     const white = theme.palette.grey[50];
-    const black = theme.palette.grey[900];
+    const black = "#181818";
 
     return {
       height: "100vh",
