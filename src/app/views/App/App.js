@@ -2,7 +2,13 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { Helmet } from "react-helmet";
-import { Redirect, Route, Switch, withRouter } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+  useHistory,
+} from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { ToastContainer } from "react-toastify";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +30,7 @@ import About from "../About";
 import Login from "../Login";
 import Management from "../Management";
 import { themes } from "../../../utils/constants";
-import { usePrevious } from "../../../utils/helpers";
+import { usePrevious, useWindowDimensions } from "../../../utils/helpers";
 
 const useStyles = makeStyles((theme) => ({
   app: ({ isDarkTheme }) => {
@@ -39,22 +45,17 @@ const useStyles = makeStyles((theme) => ({
       color: isDarkTheme ? white : black,
     };
   },
-  heading: ({ isManagement }) => ({
-    [theme.breakpoints.down("sm")]: {
-      justifyContent: "center",
-      padding: "theme.spacing(3) !important",
-      height: "auto !important",
-      "& h1": {
-        textAlign: "center",
-        fontSize: "14px !important",
-      },
-    },
-    height: 124,
+  heading: ({ downMediumScreen }) => ({
     userSelect: "none",
-    justifyContent: isManagement ? "space-between" : "flex-end",
+    alignSelf: "flex-end",
+    width: "100%",
+    justifyContent: "space-between",
     "& h1": {
-      fontSize: 24,
-      padding: theme.spacing(5),
+      cursor: "pointer",
+      alignSelf: downMediumScreen ? "flex-start" : "flex-end",
+      fontSize: downMediumScreen ? 14 : 24,
+      opacity: downMediumScreen ? 0.64 : 1,
+      padding: downMediumScreen ? theme.spacing(3) : theme.spacing(5),
       margin: 0,
     },
   }),
@@ -62,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     height: 42,
     width: 42,
     margin: theme.spacing(3),
-    alignSelf: "center",
+    alignSelf: "flex-start",
   },
   content: ({ isManagement }) => ({
     [theme.breakpoints.down("sm")]: {
@@ -90,12 +91,14 @@ const App = ({
 }) => {
   const [theme, setToogleAppTheme] = useState(themes.LIGHT);
   const [isDrawerOpen, setToogleDrawer] = useState(false);
+  const history = useHistory();
 
   const isManagement = location.pathname === "/management";
   const isLogin = location.pathname === "/login";
   const isDarkTheme = theme === themes?.DARK;
 
-  const classes = useStyles({ isDarkTheme, isManagement });
+  const { downMediumScreen } = useWindowDimensions();
+  const classes = useStyles({ isDarkTheme, isManagement, downMediumScreen });
   const prevLocation = usePrevious(location);
 
   useEffect(() => {
@@ -164,6 +167,7 @@ const App = ({
         {!isLogin && (
           <Box
             display="flex"
+            flexDirection={downMediumScreen || isManagement ? "row" : "column"}
             justifyContent="flex-end"
             className={classes.heading}
           >
@@ -175,11 +179,31 @@ const App = ({
                 <MenuIcon />
               </IconButton>
             )}
-            <h1>Alexandra Liven</h1>
+
+            <h1
+              onClick={() => {
+                setToogleAppTheme(themes.LIGHT);
+                history.push({ pathname: "works" });
+              }}
+            >
+              Alexandra Liven
+            </h1>
+
+            {downMediumScreen && (
+              <Navigation
+                onLogout={onLogout}
+                isDrawerOpen={isDrawerOpen}
+                onCloseDrawer={() => setToogleDrawer(false)}
+                worksList={Object.values(worksList || [])}
+                triggerSwitchTheme={(themeType) => onSwitchTheme(themeType)}
+                isDarkTheme={isDarkTheme}
+                authChecked={authChecked}
+              />
+            )}
           </Box>
         )}
         <Box display="flex" className={classes.content}>
-          {!isLogin && (
+          {!isLogin && !downMediumScreen && (
             <Navigation
               onLogout={onLogout}
               isDrawerOpen={isDrawerOpen}

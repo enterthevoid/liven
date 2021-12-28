@@ -26,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     color: theme.palette.grey[900],
     margin: 0,
-    marginBottom: theme.spacing(1),
     borderRadius: 4,
   },
   carouselCard: {
@@ -50,11 +49,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const WorkItem = ({ work, workLinks }) => {
-  const { innerWidth, innerHeight, downMediumScreen } = useWindowDimensions();
+  const { innerHeight, downMediumScreen } = useWindowDimensions();
   const [isLoading, setLoading] = useState(false);
   const classes = useStyles({ downMediumScreen });
-  const carouselHeight = innerHeight - (downMediumScreen ? 224 : 168);
-  const cardSize = downMediumScreen ? innerWidth : innerWidth - 250;
+  const carouselHeight = innerHeight - 168;
+  const cardSize = downMediumScreen ? innerWidth : innerWidth - 464;
   const history = useHistory();
   const photosCount =
     work !== undefined && Object.values(work?.photos)?.length + 1;
@@ -65,7 +64,7 @@ const WorkItem = ({ work, workLinks }) => {
 
   const turnOffLoading = () => {
     // TODO Temporary solution to avoid scrolling issue after change workItem on decktop
-    // setTimeout(() => setLoading(false), 300);
+    setTimeout(() => setLoading(false), 300);
   };
 
   useEffect(() => {
@@ -92,8 +91,8 @@ const WorkItem = ({ work, workLinks }) => {
       carousel && carousel.current.prev();
     }
   });
-  //TODO temporary disable
-  if (isLoading === 43) {
+
+  if (isLoading) {
     return <Loader />;
   }
 

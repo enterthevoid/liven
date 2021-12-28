@@ -15,7 +15,7 @@ import {
 import { themes } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
-  navbar: ({ isManagement }) => ({
+  navbar: ({ isManagement, upMediumScreen }) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
       justifyContent: "space-evenly",
@@ -28,24 +28,25 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(3),
-    width: 250,
+    minWidth: upMediumScreen ? 400 : "auto",
+    maxWidth: 400,
     height: "100%",
     overflowY: "auto",
   }),
-  navbarItem: {
+  navbarItem: ({ upMediumScreen }) => ({
+    cursor: "pointer",
+    lineHeight: 1.4,
     fontSize: 18,
     fontWeight: 700,
     textDecoration: "none",
-    padding: theme.spacing(1),
+    padding: upMediumScreen
+      ? `${theme.spacing(1)}px 0px`
+      : `${theme.spacing(3)}px ${theme.spacing(1)}px`,
     margin: 0,
     marginBottom: theme.spacing(0.5),
     color: theme.palette.grey[600],
     borderRadius: 4,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    height: 18,
-  },
+  }),
   navbarSubItem: {
     fontWeight: "500 !important",
     marginBottom: "0px !important",
@@ -71,7 +72,7 @@ const Navigation = ({
 }) => {
   const isManagement = location.pathname === "/management";
   const { upMediumScreen } = useWindowDimensions();
-  const classes = useStyles({ isDarkTheme, isManagement });
+  const classes = useStyles({ isDarkTheme, isManagement, upMediumScreen });
   const [cursor, setCursor] = useState(1);
   const [pushTo, setPushTo] = useState(null);
   const prevLocation = usePrevious(location);
