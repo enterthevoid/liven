@@ -80,7 +80,7 @@ const About = () => {
           Gallery.Uzhhorod, UA; 2020 - participant of the exhibition “Tell me
           about silence” in Ilko Gallery UA. Took part in{" "}
           <span> Dream Doc</span> program with the support of the residence
-          "Sorry, room no available" and CCI 2020. <span>Published in</span>{" "}
+          “Sorry, room no available“ and CCI 2020. <span>Published in</span>{" "}
           book by Was published in a book by Periscop.ua ‘Alternative
           Archeology’.
         </h1>
