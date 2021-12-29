@@ -13,26 +13,36 @@ const useStyles = makeStyles((theme) => ({
     },
     height: carouselHeight,
     position: "absolute",
-    width: "fit-content",
-    maxWidth: innerWidth - 400,
+    width: "initial",
+    maxWidth: innerWidth - 464,
     objectFit: "contain",
+    overflow: "hidden",
+  }),
+  imgWrapper: ({ carouselHeight, downMediumScreen }) => ({
+    display: "flex",
+    justifyContent: downMediumScreen ? "center" : "flex-end",
+    width: downMediumScreen ? innerWidth : innerWidth - 464,
+    height: carouselHeight,
+    position: "absolute",
   }),
 }));
 
 const ImageBox = ({ srcLink, carouselHeight }) => {
-  const { innerWidth } = useWindowDimensions();
-  const classes = useStyles({ carouselHeight, innerWidth });
+  const { innerWidth, downMediumScreen } = useWindowDimensions();
+  const classes = useStyles({ carouselHeight, innerWidth, downMediumScreen });
 
   return (
-    <img
-      className={classes.carouselCardInner}
-      src={srcLink}
-      alt={`liven_img_${srcLink}`}
-      onError={(e) => {
-        e.target.onerror = null;
-        e.target.src = placeholderImage;
-      }}
-    />
+    <div className={classes.imgWrapper}>
+      <img
+        className={classes.carouselCardInner}
+        src={srcLink}
+        alt={`liven_img_${srcLink}`}
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = placeholderImage;
+        }}
+      />
+    </div>
   );
 };
 

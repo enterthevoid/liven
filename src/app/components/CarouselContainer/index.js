@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
 const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
   const classes = useStyles();
   const { innerWidth, downMediumScreen } = useWindowDimensions();
-  const navBarWidth = 463;
+  const navBarWidth = 464;
   const cardSize = downMediumScreen ? innerWidth : innerWidth - navBarWidth;
   const cardPadCount = 1;
   const currImgCount =
@@ -58,8 +58,7 @@ const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
     current += currImgCount;
   }
 
-  const translateX =
-    (cursor - cardPadCount) * (downMediumScreen ? cardSize : cardSize - 24);
+  const translateX = (cursor - cardPadCount) * cardSize;
 
   return (
     <Box
@@ -73,7 +72,7 @@ const CarouselContainer = ({ cursor, carouselState, work, ...rest }) => {
       >
         <NonPassiveTouchTarget
           className={classes.carouselTrack}
-          style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
+          style={{ transform: `translate3d(${translateX - 1}px, 0, 0)` }}
           {...rest}
         />
       </NonPassiveTouchTarget>

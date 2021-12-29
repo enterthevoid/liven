@@ -180,15 +180,6 @@ const App = ({
               </IconButton>
             )}
 
-            <h1
-              onClick={() => {
-                setToogleAppTheme(themes.LIGHT);
-                history.push({ pathname: "works" });
-              }}
-            >
-              Alexandra Liven
-            </h1>
-
             {downMediumScreen && (
               <Navigation
                 onLogout={onLogout}
@@ -200,6 +191,15 @@ const App = ({
                 authChecked={authChecked}
               />
             )}
+
+            <h1
+              onClick={() => {
+                setToogleAppTheme(themes.LIGHT);
+                history.push({ pathname: "works" });
+              }}
+            >
+              Alexandra Liven
+            </h1>
           </Box>
         )}
         <Box display="flex" className={classes.content}>

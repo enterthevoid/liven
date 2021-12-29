@@ -41,11 +41,16 @@ const useStyles = makeStyles((theme) => ({
     textDecoration: "none",
     padding: upMediumScreen
       ? `${theme.spacing(1)}px 0px`
-      : `${theme.spacing(3)}px ${theme.spacing(1)}px`,
+      : `${theme.spacing(3)}px ${theme.spacing(2)}px`,
     margin: 0,
     marginBottom: theme.spacing(0.5),
     color: theme.palette.grey[600],
     borderRadius: 4,
+    "&:nth-child(1)": {
+      padding: upMediumScreen
+        ? `${theme.spacing(1)}px 0px`
+        : `${theme.spacing(3)}px ${theme.spacing(0)}px`,
+    },
   }),
   navbarSubItem: {
     fontWeight: "500 !important",

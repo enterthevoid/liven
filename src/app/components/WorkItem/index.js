@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
     },
-    overflowY: "auto",
+    overflowY: "hidden",
     userSelect: "none",
   },
   descriptionWrapper: ({ downMediumScreen }) => ({
@@ -53,6 +53,7 @@ const WorkItem = ({ work, workLinks }) => {
   const [isLoading, setLoading] = useState(false);
   const classes = useStyles({ downMediumScreen });
   const carouselHeight = innerHeight - 168;
+  // TODO Move card size to variables
   const cardSize = downMediumScreen ? innerWidth : innerWidth - 464;
   const history = useHistory();
   const photosCount =

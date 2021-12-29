@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     };
   },
   aboutContent: {
-    width: "42%",
+    width: "52%",
     [theme.breakpoints.down("sm")]: {
       width: "92%",
     },
