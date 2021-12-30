@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => ({
   page: ({ isManagement }) => ({
     height: "100%",
     width: "100%",
-    padding: isManagement ? "4px 16px 16px 16px" : "auto",
+    padding: isManagement ? "4px 16px 16px 16px" : 0,
   }),
 }));
 
