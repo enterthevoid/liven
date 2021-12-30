@@ -9,15 +9,11 @@ const useStyles = makeStyles((theme) => ({
     const white = theme.palette.grey[50];
     const whiteLigth = "#bdbdbd";
     return {
-      height: "100%",
       overflowY: "auto",
       padding: `0px ${theme.spacing(2)}px`,
       fontFamily: "Source Serif Pro",
       lineHeight: 1.4,
       "& h1": {
-        [theme.breakpoints.down("sm")]: {
-          fontSize: 18,
-        },
         fontSize: 18,
         fontWeight: 300,
         color: whiteLigth,
@@ -53,6 +49,7 @@ const About = () => {
   const classes = useStyles();
   const { innerHeight, upMediumScreen } = useWindowDimensions();
   const headerHeight = 108 + 32; // Header
+  const mobileHeaderHeight = 74 + 32; // Header
 
   return (
     <Box
@@ -60,7 +57,11 @@ const About = () => {
       justifyContent="center"
       alignItems={upMediumScreen ? "center" : ""}
       className={classes.aboutWrapper}
-      style={upMediumScreen ? { height: innerHeight - headerHeight } : {}}
+      style={
+        upMediumScreen
+          ? { height: innerHeight - headerHeight }
+          : { height: innerHeight - mobileHeaderHeight }
+      }
     >
       <Box
         display="flex"
@@ -80,7 +81,7 @@ const About = () => {
           Gallery. Uzhhorod, UA; 2020 - participant of the exhibition “Tell me
           about silence” in Ilko Gallery UA. 2020 - took part in{" "}
           <span> Dream Doc</span> program with the support of the residence
-          <span>“Sorry, room no available“</span> and{" "}
+          <span> “Sorry, room no available“</span> and{" "}
           <span>Cultural Capital Introspection</span>. <br /> Was
           <span> published</span> in a book by Periscop.ua ‘Alternative
           Archeology’.

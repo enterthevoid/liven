@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     overflowY: "auto",
   },
   workLinkItem: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 500,
     textDecoration: "none",
     padding: theme.spacing(1),
