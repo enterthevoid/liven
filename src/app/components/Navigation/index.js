@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withRouter, useHistory } from "react-router-dom";
 import clsx from "clsx";
@@ -7,11 +7,7 @@ import Drawer from "@material-ui/core/Drawer";
 import Button from "@material-ui/core/Button";
 import LogoutIcon from "@material-ui/icons/ExitToApp";
 import Box from "@material-ui/core/Box";
-import {
-  useWindowDimensions,
-  useEventListener,
-  usePrevious,
-} from "../../../utils/helpers";
+import { useWindowDimensions } from "../../../utils/helpers";
 import { themes } from "../../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
@@ -19,15 +15,13 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       flexDirection: "row",
       justifyContent: "space-evenly",
-      marginBottom: theme.spacing(2),
-      paddingLeft: theme.spacing(3),
+      padding: 0,
+      margin: 0,
       height: "auto",
       width: "auto",
     },
     paddingTop: isManagement ? theme.spacing(5) : 0,
-    marginBottom: theme.spacing(3),
     paddingLeft: theme.spacing(5),
-    paddingRight: theme.spacing(3),
     minWidth: upMediumScreen ? 400 : "auto",
     maxWidth: 400,
     height: "100%",
@@ -39,17 +33,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 18,
     fontWeight: 700,
     textDecoration: "none",
-    padding: upMediumScreen
-      ? `${theme.spacing(1)}px 0px`
-      : `${theme.spacing(3)}px ${theme.spacing(2)}px`,
-    margin: 0,
-    marginBottom: theme.spacing(0.5),
     color: theme.palette.grey[600],
     borderRadius: 4,
+    padding: theme.spacing(1),
+    margin: upMediumScreen ? 0 : theme.spacing(2),
+
     "&:nth-child(1)": {
-      padding: upMediumScreen
-        ? `${theme.spacing(1)}px 0px`
-        : `${theme.spacing(3)}px ${theme.spacing(0)}px`,
+      marginRight: upMediumScreen ? 0 : theme.spacing(1),
+    },
+
+    "&:nth-child(2)": {
+      marginLeft: upMediumScreen ? 0 : 0,
     },
   }),
   navbarSubItem: {
@@ -78,16 +72,10 @@ const Navigation = ({
   const isManagement = location.pathname === "/management";
   const { upMediumScreen } = useWindowDimensions();
   const classes = useStyles({ isDarkTheme, isManagement, upMediumScreen });
-  const [cursor, setCursor] = useState(1);
-  const [pushTo, setPushTo] = useState(null);
-  const prevLocation = usePrevious(location);
   const regLinkCheck = (elem) =>
     ["management", "about", "works"].includes((elem || "").toLowerCase());
   const history = useHistory();
-
-  const NavItemsCount = Object.keys(worksList).length;
   const showManagement = upMediumScreen && authChecked;
-  const maxCursor = showManagement ? NavItemsCount + 2 : NavItemsCount + 1;
 
   const onRedirect = (pushTo) => {
     if (regLinkCheck(pushTo)) {
@@ -96,25 +84,6 @@ const Navigation = ({
       history.push({ pathname: "works", search: pushTo });
     }
   };
-
-  useEventListener("keydown", (e) => {
-    if (e.code === "ArrowUp" && cursor !== 1) {
-      setCursor(cursor - 1);
-    }
-    if (e.code === "ArrowDown" && cursor !== maxCursor) {
-      setCursor(cursor + 1);
-    }
-
-    if (e.code === "Enter" && !!pushTo) {
-      if (pushTo === "about") {
-        triggerSwitchTheme(themes.DARK);
-      } else if (prevLocation?.pathname === "/about") {
-        triggerSwitchTheme(themes.LIGHT);
-      }
-
-      onRedirect(pushTo);
-    }
-  });
 
   const allNavItems = [{ name: "Works" }];
   const workNavItems = worksList.map((navItem) => ({
@@ -131,12 +100,7 @@ const Navigation = ({
         ? clsx(classes.navbarSubItem, classes.navbarItem)
         : classes.navbarItem;
     const to = regLinkCheck(title) ? title.toLowerCase() : pathTo || "";
-    const hovered = cursor === hoverIndex && hoverIndex !== 0;
     const themeType = to === "about" ? themes.DARK : themes.LIGHT;
-
-    if (hovered && pushTo !== to) {
-      setPushTo(to);
-    }
 
     if (to === "management" && !showManagement) {
       return null;
@@ -150,11 +114,10 @@ const Navigation = ({
           isActive && classes.activeItem,
           title.toLowerCase() === location.pathname.substring(1) &&
             classes.activeItem,
-          hovered && upMediumScreen && classes.hoveredItem
+          upMediumScreen && classes.hoveredItem
         )}
         onClick={() => {
           onRedirect(pathTo || title.toLowerCase());
-          setCursor(hoverIndex);
           triggerSwitchTheme(themeType);
         }}
       >
