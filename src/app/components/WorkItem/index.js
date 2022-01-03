@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import TouchCarousel from "react-touch-carousel";
 import touchWithMouseHOC from "react-touch-carousel/lib/touchWithMouseHOC";
+import Linkify from "react-linkify";
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import { makeSelectWorkById } from "../../../redux/works/selectors";
@@ -40,10 +41,13 @@ const useStyles = makeStyles((theme) => ({
     tableLayout: "fixed",
     width: downMediumScreen ? "80%" : "60%",
     "&  p": {
-      padding: `${theme.spacing(4)}px ${theme.spacing(2)}px`,
       alignSelf: "center",
       display: "table-cell",
       verticalAlign: "middle",
+      "& a": {
+        color: "black",
+        fontStyle: "italic",
+      },
     },
   }),
 }));
@@ -125,6 +129,14 @@ const WorkItem = ({ work, workLinks }) => {
     );
   }
 
+  const addLineBreaks = (string) =>
+    string.split("\\n").map((text, index) => (
+      <React.Fragment key={`${text}-${index}`}>
+        {text}
+        <br />
+      </React.Fragment>
+    ));
+
   if (!!work?.id) {
     return (
       <TouchCarousel
@@ -137,12 +149,13 @@ const WorkItem = ({ work, workLinks }) => {
         loop
         renderCard={(index, modIndex) => {
           const item = work?.photos[modIndex];
+          const isDesc = photosCount === modIndex + 1;
 
           return (
             <Box
               key={modIndex}
               display="flex"
-              justifyContent="flex-end"
+              justifyContent={isDesc ? "center" : "flex-end"}
               alignitems="center"
               className={classes.carouselCard}
               style={{
@@ -150,10 +163,18 @@ const WorkItem = ({ work, workLinks }) => {
                 flex: `0 0 ${cardSize}px`,
               }}
             >
-              {photosCount === modIndex + 1 ? (
-                <div className={classes.descriptionWrapper}>
-                  <p>{work?.description}</p>
-                </div>
+              {isDesc ? (
+                <Linkify
+                  componentDecorator={(decoratedHref, decoratedText, key) => (
+                    <a target="blank" href={decoratedHref} key={key}>
+                      {decoratedText}
+                    </a>
+                  )}
+                >
+                  <div className={classes.descriptionWrapper}>
+                    <p>{addLineBreaks(work?.description)}</p>
+                  </div>
+                </Linkify>
               ) : (
                 <ImageBox srcLink={item?.img} carouselHeight={carouselHeight} />
               )}
