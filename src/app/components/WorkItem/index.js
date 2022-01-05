@@ -40,10 +40,12 @@ const useStyles = makeStyles((theme) => ({
     display: "table",
     tableLayout: "fixed",
     width: downMediumScreen ? "80%" : "60%",
+    height: "100%",
     "&  p": {
       alignSelf: "center",
       display: "table-cell",
       verticalAlign: "middle",
+      overflowWrap: "break-word",
       "& a": {
         color: "black",
         fontStyle: "italic",
